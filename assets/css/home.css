@@ -5,6 +5,10 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
+            html {
+    scroll-behavior: smooth;
+    }
+
 header{
     display: flex;
       position: absolute;

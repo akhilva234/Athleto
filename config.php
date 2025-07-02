@@ -11,7 +11,6 @@ try {
 
     // 2. Create database if not exists
     $pdo->exec("CREATE DATABASE IF NOT EXISTS $dbname");
-    echo "Database created or already exists.<br>";
 
     // 3. Connect to the newly created (or existing) database
     $pdo->exec("USE $dbname");
@@ -115,7 +114,6 @@ try {
 
     foreach ($tables as $sql) {
         $pdo->exec($sql);
-        echo "Table created successfully.<br>";
     }
 
 } catch (PDOException $e) {
