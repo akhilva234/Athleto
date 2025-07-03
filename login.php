@@ -18,6 +18,7 @@ error_reporting(E_ALL);
     <title>Athleto</title>
     <link rel="stylesheet" href="assets/css/home.css">
     <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="assets/css/common.css">
 </head>
 <body>
     <?php

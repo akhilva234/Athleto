@@ -4,3 +4,57 @@
      box-sizing: border-box;
     font-family: 'Segoe UI', system-ui, sans-serif;
 }
+
+body{
+    background-color:   #e2e8f0;
+}
+.main-body{
+
+    display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-header{
+
+    display: flex;
+     background-color:  #f8fafc;
+    position: absolute;
+    z-index: 1000;
+    padding:.5rem ;
+    min-width: 180px
+}
+
+.left-body{
+
+    padding: 20px;
+  width: 180px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color:  #f8fafc;
+  margin-top: 4rem;
+  color:  #64748b;
+  box-shadow: 50px 0px 10px rgba(0,0,0,0.1);
+}
+
+.right-body{
+
+ flex: 1;
+  padding: 40px;
+  background-color:#e2e8f0;
+  overflow-y: auto
+}
+.add-phrase{
+    display: inline-block;
+}
+select{
+    border: none;
+    width: 70px;
+    margin-left: 5px;
+}
+
+a{
+    color:  #64748b;
+}
+

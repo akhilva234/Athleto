@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $password = "";
-$dbname = "Athleto";
+$dbname = "athleto";
 
 try {
     // 1. Connect to MySQL without selecting a database yet
@@ -18,17 +18,17 @@ try {
     // 4. Define all table creation queries
     $tables = [
 
-        "CREATE TABLE IF NOT EXISTS Departments (
+        "CREATE TABLE IF NOT EXISTS departments (
             dept_id INT(5) PRIMARY KEY,
             dept_name VARCHAR(50) NOT NULL UNIQUE
         )",
 
-        "CREATE TABLE IF NOT EXISTS Categories (
+        "CREATE TABLE IF NOT EXISTS categories (
             category_id INT(5) PRIMARY KEY,
             category_name ENUM('Men', 'Women') NOT NULL UNIQUE
         )",
 
-        "CREATE TABLE IF NOT EXISTS Users (
+        "CREATE TABLE IF NOT EXISTS users (
             user_id INT(5) PRIMARY KEY,
             username VARCHAR(30) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
@@ -37,7 +37,7 @@ try {
             FOREIGN KEY (dept_id) REFERENCES Departments(dept_id)
         )",
 
-        "CREATE TABLE IF NOT EXISTS Athletes (
+        "CREATE TABLE IF NOT EXISTS athletes (
             athlete_id INT(5) PRIMARY KEY,
             first_name VARCHAR(50) NOT NULL,
             last_name VARCHAR(50) NOT NULL,
@@ -47,7 +47,7 @@ try {
             FOREIGN KEY (dept_id) REFERENCES Departments(dept_id)
         )",
 
-        "CREATE TABLE IF NOT EXISTS Events (
+        "CREATE TABLE IF NOT EXISTS events (
             event_id INT(5) PRIMARY KEY,
             event_name VARCHAR(50) NOT NULL,
             category_id INT(5) NOT NULL,
@@ -55,7 +55,7 @@ try {
             FOREIGN KEY (category_id) REFERENCES Categories(category_id)
         )",
 
-        "CREATE TABLE IF NOT EXISTS Participation (
+        "CREATE TABLE IF NOT EXISTS participation (
             part_id INT(5) PRIMARY KEY,
             athlete_id INT(5) NOT NULL,
             event_id INT(5) NOT NULL,
@@ -63,7 +63,7 @@ try {
             FOREIGN KEY (event_id) REFERENCES Events(event_id)
         )",
 
-        "CREATE TABLE IF NOT EXISTS Relay_teams (
+        "CREATE TABLE IF NOT EXISTS relay_teams (
             team_id INT(5) PRIMARY KEY,
             dept_id INT(5) NOT NULL,
             event_id INT(5) NOT NULL,
@@ -71,7 +71,7 @@ try {
             FOREIGN KEY (event_id) REFERENCES Events(event_id)
         )",
 
-        "CREATE TABLE IF NOT EXISTS Relay_team_members (
+        "CREATE TABLE IF NOT EXISTS relay_team_members (
             member_id INT(5) PRIMARY KEY,
             team_id INT(5) NOT NULL,
             athlete_id INT(5) NOT NULL,
@@ -79,7 +79,7 @@ try {
             FOREIGN KEY (athlete_id) REFERENCES Athletes(athlete_id)
         )",
 
-        "CREATE TABLE IF NOT EXISTS Results (
+        "CREATE TABLE IF NOT EXISTS results (
             result_id INT(5) PRIMARY KEY,
             event_id INT(5) NOT NULL,
             athlete_id INT(5),
@@ -93,14 +93,14 @@ try {
             FOREIGN KEY (added_by) REFERENCES Users(user_id)
         )",
 
-        "CREATE TABLE IF NOT EXISTS Certificate_templates (
+        "CREATE TABLE IF NOT EXISTS certificate_templates (
             template_id INT(5) PRIMARY KEY,
             template_name VARCHAR(50) NOT NULL UNIQUE,
             file_path VARCHAR(255),
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )",
 
-        "CREATE TABLE IF NOT EXISTS Certificates (
+        "CREATE TABLE IF NOT EXISTS certificates (
             certificate_id INT(5) PRIMARY KEY,
             template_id INT(5) NOT NULL,
             result_id INT(5) NOT NULL,

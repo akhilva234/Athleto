@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AthleteFlow | Meet Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Modern sidebar */
+        .sidebar {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            padding-top: 1rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: all 0.2s;
+        }
+        
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            color: var(--primary);
+            background: #eef2ff;
+        }
+        
+        /* Main content area */
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Card grid layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-icon.blue {
+            background: #e0e7ff;
+            color: var(--primary);
+        }
+        
+        .card-icon.green {
+            background: #d1fae5;
+            color: var(--success);
+        }
+        
+        .card-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-description {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        /* Activity feed */
+        .activity-feed {
+            margin-top: 2rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .activity-time {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: flex;
+                padding: 0.5rem;
+                justify-content: space-around;
+            }
+            
+            .nav-item {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Modern Icon Navigation -->
+        <nav class="sidebar">
+            <a href="#" class="nav-item active" title="Dashboard">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" title="Athletes">
+                <i class="fas fa-running"></i>
+                <span>Athletes</span>
+            </a>
+            <a href="#" class="nav-item" title="Events">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+            <a href="#" class="nav-item" title="Results">
+                <i class="fas fa-medal"></i>
+                <span>Results</span>
+            </a>
+            <a href="#" class="nav-item" title="Teams">
+                <i class="fas fa-users"></i>
+                <span>Teams</span>
+            </a>
+            <a href="#" class="nav-item" title="Schedule">
+                <i class="fas fa-clock"></i>
+                <span>Schedule</span>
+            </a>
+            <a href="#" class="nav-item" title="Settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="header">
+                <h1>Meet Dashboard</h1>
+                <div class="user-profile">
+                    <div class="avatar">AD</div>
+                    <span>Admin</span>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Registered Athletes</h3>
+                        <div class="card-icon blue">
+                            <i class="fas fa-running"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">142</div>
+                    <p class="card-description">+12 this week</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Upcoming Events</h3>
+                        <div class="card-icon green">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">8</div>
+                    <p class="card-description">Next: 100m Dash in 2 days</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Teams Competing</h3>
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">24</div>
+                    <p class="card-description">From 6 institutions</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="dashboard-grid" style="margin-top: 1.5rem;">
+                <div class="card" style="grid-column: span 2;">
+                    <h3 class="card-title">Quick Actions</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <button style="padding: 0.8rem; border: none; background: #e0e7ff; border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-user-plus"></i> Add Athlete
+                        </button>
+                        <button style="padding: 0.8rem; border: none; background: #e0e7ff; border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-calendar-plus"></i> Schedule Event
+                        </button>
+                        <button style="padding: 0.8rem; border: none; background: #e0e7ff; border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-medal"></i> Record Results
+                        </button>
+                        <button style="padding: 0.8rem; border: none; background: #e0e7ff; border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-file-export"></i> Generate Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-feed">
+                <h3 style="margin-bottom: 1rem;">Recent Activity</h3>
+                <div class="activity-item">
+                    <div style="width: 40px; height: 40px; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-medal" style="color: var(--primary);"></i>
+                    </div>
+                    <div>
+                        <p><strong>New record</strong> set in Women's 100m Dash</p>
+                        <p class="activity-time">10 minutes ago</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div style="width: 40px; height: 40px; background: #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-user-plus" style="color: var(--success);"></i>
+                    </div>
+                    <div>
+                        <p><strong>3 new athletes</strong> registered for the meet</p>
+                        <p class="activity-time">1 hour ago</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div style="width: 40px; height: 40px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i>
+                    </div>
+                    <div>
+                        <p>High jump event <strong>rescheduled</strong> due to weather</p>
+                        <p class="activity-time">3 hours ago</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple active state for nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                // In a real app, you would load content here
+                console.log('Navigating to:', this.getAttribute('title'));
+            });
+        });
+    </script>
+</body>
+</html>
