@@ -1,5 +1,9 @@
 
 <?php
+    ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
      session_start();
     include "config.php";
 
@@ -23,7 +27,7 @@
         $uname=$_POST['username'];
         $password=$_POST['password'];
 
-        $sql=$pdo->prepare("select * from users where username=:username");
+        $sql=$pdo->prepare("select * from Users where username=:username");
 
         $sql->execute(['username'=>$uname]);
 
@@ -31,11 +35,19 @@
          
          if($user && password_verify($password,$user['password'])){
 
-            $msg="admin found";
+             $_SESSION['msg'] ="admin found";
          }
          else{
-            $msg= "Invalid Username or Password";
+              $_SESSION['msg'] = "Invalid Username or Password";
          }
+
+          header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
+    }
+
+    if(isset($_SESSION['msg'])){
+        $msg=$_SESSION['msg'];
+        unset($_SESSION['msg']);
     }
 ?>
     <header class="header">
@@ -73,11 +85,12 @@
         <h2>Streamline Your Sports Management</h2>
         <p>Athleto provides an all-in-one platform for organizing competitions, tracking results, and rewarding participants with seamless certificate generation.</p>
     </section>
-     <form action="" method="post">
+    
     <div class="sign-in-container" id="signin">
-       <h2 class="sign-in-title">Sign in</h2>
+         <h2 class="sign-in-title">Sign in</h2>
+         <form action="" method="post">
         <div class="username-container">
-            <input type="text" placeholder="Username" name="username" class="username-box box-style">
+            <input type="text" placeholder="Username" name="username" class="username-box box-style" required>
          </div>
          <div class="password-container">   
             <input type="password" placeholder="password" name="password" class="password-box box-style">
@@ -85,13 +98,13 @@
         <div class="submit-btn-container" name="submit">
             <input type="submit" class="sign-in-button" name="submit">
         </div>
-       </form> 
-       <h4 class="login-info"><?=$msg?></h4>
+          </form> 
+            <h4 class="login-info"><?=$msg?></h4>
     </div>
+  
+  
  <footer>
         <p>&copy; 2023 Athleto Sports Management. All rights reserved.</p>
     </footer>
- <script>
-</script>
 </body>
 </html>    
