@@ -32,6 +32,7 @@ try {
             user_id INT(5) PRIMARY KEY,
             username VARCHAR(30) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
+            email VARCHAR(50) NOT NULL,
             role ENUM('admin', 'faculty', 'captain') NOT NULL,
             dept_id INT(5) NOT NULL,
             FOREIGN KEY (dept_id) REFERENCES Departments(dept_id)

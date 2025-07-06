@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Select Redirect Example</title>
+</head>
+<body>
+
+  <select id="action-select">
+    <option value="">-- Select Action --</option>
+    <option value="?page=add_user">Add User</option>
+    <option value="?page=add_athlete">Add Athlete</option>
+    <option value="?page=add_event">Add Event</option>
+  </select>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const select = document.getElementById('action-select');
+      if (select) {
+        select.addEventListener('change', function() {
+          const page = this.value;
+          if (page) {
+            window.location.href = page;
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
