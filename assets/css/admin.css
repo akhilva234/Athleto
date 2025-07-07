@@ -20,8 +20,8 @@ body{
      background-color:  #f8fafc;
     position: absolute;
     z-index: 1000;
-    padding:.5rem ;
-    min-width: 180px
+    padding: 7px;
+    width: 180px;
 }
 
 .left-body{
