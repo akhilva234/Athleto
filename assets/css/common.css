@@ -1,18 +1,11 @@
 
-.logo{
+   * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
 
-    display: flex;
-
-}
-.logo-img{
-    max-width: 50px;
-}
-
-.dashboard-header{
-
-    display: flex;
-}
-
-a{
-    text-decoration: none;
-}
+            html {
+    scroll-behavior: smooth;
+    }

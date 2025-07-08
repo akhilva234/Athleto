@@ -12,6 +12,16 @@
         if (isset($_GET['status']) && $_GET['status'] == 'success') {
             $message = "User added successfully!";
         }
+        if (isset($_GET['depstatus']) && $_GET['depstatus'] == 'failure') {
+             $message = "Please select a valid department.";
+        }
+
+        if (isset($_GET['passstatus']) && $_GET['passstatus'] == 'failure') {
+
+            $message ="Passwords do not match.";
+            
+        }
+        
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -22,13 +32,14 @@
             $role=$_POST['role-select'];
             $dep=$_POST['dep-select'];
             if (empty($dep)) {
-                echo "Please select a valid department.";
+                 header("Location: dashboard.php?page=add_user&depstatus=failure");
                 exit;
+                
             }
 
 
             if ($plainpassword !== $cpassword) {
-                echo "Passwords do not match.";
+                 header("Location: dashboard.php?page=add_user&passstatus=failure");
                 exit;
             }
              $password=password_hash($_POST['password'],PASSWORD_DEFAULT);
@@ -86,47 +97,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Athleto</title>
+     <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/user_add.css">
 </head>
 <body>
+    <h2 class="add-heading">Add Users</h2>
     <div class="insert-container">
-        <h3 class="add-heading">Add Users</h3>
-             <?php if (!empty($message)): ?>
-            <p><?php echo htmlspecialchars($message); ?></p>
-        <?php endif; ?>
-        <form action="" method="post">
+        <div class="form-container">
+            <form action="" method="post" class="form">
             <div class="username">
-                USERNAME
+                Username<br>
                 <input type="text" placeholder="Username" name="username" class="username-input">
             </div>
             <div class="set-password">
-                PASSWORD
+                Password<br>
                 <input type="text" placeholder="Set Password" name="password" class="password-input">
             </div>
             <div class="confirm-password">
-                <input type="text" placeholder="Confirm Password" name="cpassword" class="password-input">
+               Confirm Password <br>
+               <input type="text" placeholder="Confirm Password" name="cpassword" class="password-input">
             </div>
             <div class="add-email">
-                <input type="email" placeholder="Email" name="email" class="email-input">
+                Email
+                <br><input type="email" placeholder="Email" name="email" class="email-input">
             </div>
             <div class="role-select-container">
-                 Role<select name="role-select" id="" class="role-select">
+                 Role<br>
+                 <select name="role-select"  class="role-insert">
                     <option value="">-- Select Action --</option>
                 <option value="captain" class="role-captain">captain</option>
                 <option value="faculty" class="role-faculty">faculty</option>
             </select>
             </div>
             <div class="dep-id-container">
-                Department<select name="dep-select" id="" class="dep-select">
+                Department
+                <br><select name="dep-select"  class="dep-insert">
                     <option value="">-- Select Action --</option>
                     <option value="BCA" class="dep-options">BCA</option>
                     <option value="BBA" class="dep-options">BBA</option>
                     <option value="Bcom" class="dep-options">Bcom CA</option>
+                 </select>   
             </div>
-           <div class="submit-container">
-            <input type="submit" value="add" class="add-btn" name="submit">
+            <div class="submit-container">
+            <input type="submit" value="Add" class="add-btn" name="submit">
            </div>
         </form>
+        </div>
+        
+          <?php if (!empty($message)): ?>
+            <p class="success-message"><?php echo htmlspecialchars($message); ?></p>
+        <?php endif; ?>
     </div>
 </body>
 </html>

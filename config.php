@@ -44,6 +44,7 @@ try {
             last_name VARCHAR(50) NOT NULL,
             category_id INT(5) NOT NULL,
             dept_id INT(5) NOT NULL,
+            year ENUM('1', '2', '3') NOT NULL,
             FOREIGN KEY (category_id) REFERENCES categories(category_id),
             FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
         )",

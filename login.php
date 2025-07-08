@@ -16,9 +16,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Athleto</title>
-    <link rel="stylesheet" href="assets/css/home.css">
-    <link rel="stylesheet" href="assets/css/login.css">
-    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/homepage.css">
+    <link rel="stylesheet" href="assets/css/logininfo.css">
+    <link rel="stylesheet" href="assets/css/header_common.css">
 </head>
 <body>
     <?php
@@ -36,7 +36,10 @@
          
          if($user && password_verify($password,$user['password'])){
 
-             $_SESSION['msg'] ="admin found";
+            $_SESSION['role']=$user['role'];
+
+             header('Location: dashboard.php');
+             exit;
          }
          else{
               $_SESSION['msg'] = "Invalid Username or Password";
