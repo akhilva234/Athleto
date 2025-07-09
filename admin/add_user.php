@@ -5,13 +5,15 @@
 
     $message = "";
 
+    if (isset($_SESSION['add_user_msg'])) {
+    $message = $_SESSION['add_user_msg'];
+    unset($_SESSION['add_user_msg']);
+}
+
 
 ?> 
 <?php
     
-        if (isset($_GET['status']) && $_GET['status'] == 'success') {
-            $message = "User added successfully!";
-        }
         if (isset($_GET['depstatus']) && $_GET['depstatus'] == 'failure') {
              $message = "Please select a valid department.";
         }
@@ -69,6 +71,10 @@
                         'dep_id' => $id
                     ]);
                     if($success){
+
+                        $_SESSION['add_user_msg'] = "User added successfully!\n Username: {$uname}
+                        \n Password: {$plainpassword} \n Please Note this username and Password";
+
                          header("Location: dashboard.php?page=add_user&status=success");
                             exit;
                     }       
@@ -85,10 +91,7 @@
             }else{
 
                 echo "NO department found";
-            }
-            if (isset($_GET['status']) && $_GET['status'] == 'success') {
-                    echo "<p>User added successfully!</p>";
-                }    
+            } 
     }
     
 ?>    
@@ -145,7 +148,7 @@
         </div>
         
           <?php if (!empty($message)): ?>
-            <p class="success-message"><?php echo htmlspecialchars($message); ?></p>
+            <p class="success-message"><?php echo nl2br(htmlspecialchars($message)); ?></p>
         <?php endif; ?>
     </div>
 </body>

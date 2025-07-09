@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
       select.addEventListener('change', function() {
         const selectedPage = this.value;
         if (selectedPage) {
-          window.location.href = selectedPage;
+          window.location.href = '?page=' + selectedPage;
         }
       });
     }

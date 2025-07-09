@@ -7,7 +7,7 @@
 
     if($user=='admin'){
 
-      header('Location: admin/dashboard.php');
+      header('Location: admin/adm_dashboard.php');
       exit;
     }
 

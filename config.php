@@ -52,9 +52,7 @@ try {
         "CREATE TABLE IF NOT EXISTS events (
             event_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
             event_name VARCHAR(50) NOT NULL,
-            category_id INT(5) NOT NULL,
-            is_relay BOOLEAN DEFAULT FALSE,
-            FOREIGN KEY (category_id) REFERENCES categories(category_id)
+            is_relay BOOLEAN DEFAULT FALSE
         )",
 
         "CREATE TABLE IF NOT EXISTS participation (
