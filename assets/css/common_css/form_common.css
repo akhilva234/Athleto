@@ -1,0 +1,62 @@
+.insert-container{
+
+    display: grid;
+     background-color:  #f8fafc;
+     gap: 3rem;
+     min-height: 300px;
+     max-width: 900px;
+     margin-top: 50px;
+     border-radius: 1rem;
+     align-items: center;
+}
+
+.form{
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3.4rem;
+    padding: 2rem;
+    font-weight: bold;
+    
+}
+
+input[type="text"],
+[type="email"],
+[type="password"]{
+
+    padding: .3rem;
+    min-width:300px ;
+    margin-top: 5px;
+    border:solid 2px #f8fafc;
+    border-bottom: solid 2px #3b82f6;
+    outline: none;
+    font-size: 17px;
+}
+
+input[type="text"]:focus,
+[type="email"]:focus,
+[type="password"]:focus{
+
+     border-bottom: solid 2px black;
+}
+
+.add-btn{
+      padding: .7rem;
+    min-width: 70px;
+    margin-left: 20rem;
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+    background-color: #3b82f6;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+     transition: all .3s ease;
+}
+
+.add-btn:hover{
+    
+    transform: scale(1.1);
+    color: black;
+}
+

@@ -57,7 +57,7 @@
                 <i class="fas fa-medal"></i>
                 Results</a>
             </span>
-             <span class="view-atheletes-container"><a href="?page=view_participants">
+             <span class="view-atheletes-container"><a href="?page=participants">
                 <i class="fas fa-running"></i>
                 Participants</a>
             </span>
@@ -73,7 +73,7 @@
 
                 $page=$_GET['page'];
 
-                $allowed=['adm_home','add_user','add_athlete','add_event','add_department','manage_results','view_participants','generate_certificate'];
+                $allowed=['adm_home','add_user','add_athlete','add_event','add_department','manage_results','participants','generate_certificate'];
 
                 if(in_array($page,$allowed)&& file_exists($page.".php")){
                     include $page.".php";

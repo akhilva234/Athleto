@@ -3,7 +3,7 @@
   session_start();
     include "../config.php";
 
-    $message = "";
+    $message = " ";
 
     if (isset($_SESSION['add_user_msg'])) {
     $message = $_SESSION['add_user_msg'];
@@ -23,7 +23,6 @@
             $message ="Passwords do not match.";
             
         }
-        
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -32,31 +31,25 @@
             $cpassword=$_POST['cpassword'];
             $email=$_POST['email'];
             $role=$_POST['role-select'];
-            $dep=$_POST['dep-select'];
-            if (empty($dep)) {
-                 header("Location: dashboard.php?page=add_user&depstatus=failure");
+            $dep_id=(int)$_POST['dep-select'];
+            if (empty($dep_id)) {
+                 header("Location: adm_dashboard.php?page=add_user&depstatus=failure");
                 exit;
                 
             }
 
 
             if ($plainpassword !== $cpassword) {
-                 header("Location: dashboard.php?page=add_user&passstatus=failure");
+                 header("Location:  adm_dashboard.php?page=add_user&passstatus=failure");
                 exit;
             }
              $password=password_hash($_POST['password'],PASSWORD_DEFAULT);
-
-            $idsql=$pdo->prepare("select dept_id from departments where dept_name=:dep");
-
-            $idsql->execute([
-                'dep' =>  $dep
-            ]);
-
-            $idExists=$idsql->fetch(PDO::FETCH_ASSOC);
-    
-            if($idExists){
-
-                $id=$idExists['dept_id'];
+             $depCheck = $pdo->prepare("SELECT dept_id FROM departments WHERE dept_id = ?");
+            $depCheck->execute([$dep_id]);
+        if (!$depCheck->fetch()) {
+            $message = "Invalid Department selected.";
+        }
+        else{
             
                 try{
 
@@ -68,14 +61,14 @@
                         'password' => $password,
                         'email' => $email,
                         'role' => $role,
-                        'dep_id' => $id
+                        'dep_id' => $dep_id
                     ]);
                     if($success){
 
                         $_SESSION['add_user_msg'] = "User added successfully!\n Username: {$uname}
                         \n Password: {$plainpassword} \n Please Note this username and Password";
 
-                         header("Location: dashboard.php?page=add_user&status=success");
+                         header("Location: adm_dashboard.php?page=add_user&status=success");
                             exit;
                     }       
 
@@ -88,10 +81,8 @@
 
                     echo "Transaction failed: " . $e->getMessage();
                 }
-            }else{
 
-                echo "NO department found";
-            } 
+        }
     }
     
 ?>    
@@ -102,6 +93,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link rel="stylesheet" href="../assets/css/common.css">
     <link rel="stylesheet" href="../assets/css/user_add.css">
+    <link rel="stylesheet" href="../assets/css/common_css/form_common.css">
 </head>
 <body>
     <h2 class="add-heading">Add Users</h2>
@@ -134,11 +126,12 @@
             </div>
             <div class="dep-id-container">
                 Department
+                <?php $dep=$pdo->query("select * from departments");?>
                 <br><select name="dep-select"  class="dep-insert">
                     <option value="">-- Select Action --</option>
-                    <option value="BCA" class="dep-options">BCA</option>
-                    <option value="BBA" class="dep-options">BBA</option>
-                    <option value="Bcom" class="dep-options">Bcom CA</option>
+                    <?php foreach($dep as $deps):?>
+                        <option value="<?=$deps['dept_id']?>"><?=$deps['dept_name']?></option>
+                    <?php endforeach; ?>    
                  </select>   
             </div>
             <div class="submit-container">
@@ -146,7 +139,6 @@
            </div>
         </form>
         </div>
-        
           <?php if (!empty($message)): ?>
             <p class="success-message"><?php echo nl2br(htmlspecialchars($message)); ?></p>
         <?php endif; ?>

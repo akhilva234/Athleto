@@ -1,66 +1,8 @@
-.insert-container{
 
-    display: grid;
-     background-color:  #f8fafc;
-     gap: 3rem;
-     min-height: 300px;
-     max-width: 900px;
-     margin-top: 50px;
-     border-radius: 1rem;
-     align-items: center;
-}
 .success-message{
 
     margin-left: 20rem;
     font-size: 15px;
     font-weight: bold;
     margin-bottom: 15px;
-}
-
-
-
-.form{
-
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 3.4rem;
-    padding: 2rem;
-    font-weight: bold;
-    
-}
-
-input[type="text"],[type="email"],[type="password"]{
-
-    padding: .3rem;
-    min-width:300px ;
-    margin-top: 5px;
-    border:solid 1px rgb(214, 207, 207);
-    outline: none;
-    font-size: 17px;
-}
-
-input[type="text"],[type="email"],[type="password"]:focus{
-
-     border: none;
-    border-bottom: solid 2px #3b82f6;
-}
-
-.add-btn{
-      padding: .7rem;
-    min-width: 70px;
-    margin-left: 20rem;
-    border-radius: 1rem;
-    border: none;
-    outline: none;
-     background-color: #3b82f6;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-     transition: all .3s ease;
-}
-
-.add-btn:hover{
-    
-    transform: scale(1.1);
-    color: black;
 }
