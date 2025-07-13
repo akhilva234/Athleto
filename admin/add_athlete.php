@@ -72,6 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             'yr' => $year
                         ]);
 
+                        if ($athleteSql->fetch()) {
+                            echo "Athlete already exists.";
+                            exit;
+                        }
+
                         $athleteId = $pdo->lastInsertId();
 
                         $participation = $pdo->prepare("INSERT INTO participation (athlete_id, event_id) VALUES (:athleteid, :eventid)");
@@ -92,12 +97,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         }
                     } catch (Exception $e) {
                         $pdo->rollBack();
+                         if ($e->errorInfo[1] == 1062) { 
+                        $message="Duplicate athlete found. Insertion skipped.";
+                    } else {
                         $message = "Failed: " . $e->getMessage();
                     }
                 }
             }
         }
     }
+}
 }
 ?>
 
