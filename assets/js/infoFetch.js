@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded',function(){
     
-    const form=document.querySelector('.result-form-container');
+    const form=document.querySelector('.modal');
+    const blurContainer=document.querySelector('.whole-blur-container');
     const closeButton=document.querySelector('.cancel-btn');
     const athleteId=document.querySelector('.athlete-id');
     const eventId=document.querySelector('.event-id');
@@ -20,9 +21,14 @@ document.addEventListener('DOMContentLoaded',function(){
             .then(data =>{
                 document.querySelector('.athlete-name').value=data.athlete_name;
                 document.querySelector('.event-name').value=data.event_name;
+                 form.style.display='grid';
+                 blurContainer.style.display='block';
             })
             .catch(err => alert('Error loading data'));
+
+           
         });
     });
+
 
 });

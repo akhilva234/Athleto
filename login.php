@@ -28,7 +28,7 @@
         $uname=$_POST['username'];
         $password=$_POST['password'];
 
-        $sql=$pdo->prepare("select * from Users where username=:username");
+        $sql=$pdo->prepare("select * from users where username=:username");
 
         $sql->execute(['username'=>$uname]);
 

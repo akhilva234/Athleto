@@ -1,0 +1,72 @@
+.modal {
+    display: none;
+  position: fixed;
+  background-color:white; 
+  z-index: 1100;
+  top: 50%;
+  left: 50%;
+   min-width: 500px;
+  max-height:500px;
+  padding: 3rem 5rem;
+  transform: translate(-50%,-50%);
+  align-items: center;
+  border-radius: 1rem;
+  color: #1f2937;
+  font-size: 1.2rem;
+}
+
+.modal-content {
+  
+  padding: 20px;
+  border-radius: 10px;
+  margin: 10% auto;
+  width: 400px;
+}
+
+.result-form{
+   display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: .5rem;
+    padding: 1rem;
+    font-weight: bold;
+}
+.input-style{
+  padding: .3rem;
+    min-width:100px ;
+     margin-top: 5px;
+    border:solid 2px #f8fafc;
+    border-bottom: solid 2px #3b82f6;
+    outline: none;
+    font-size: 17px;
+}
+.whole-blur-container{
+  background-color:rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  z-index: 1006;
+  backdrop-filter: blur(1px);
+}
+
+.btns{
+     padding: .6rem;
+     max-width: 5rem;
+    margin-left: 5rem;
+    margin-top:1rem;
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+     background-color: #3b82f6;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+     transition: all .3s ease;
+}
+.btns:hover{
+  transform: scale(1.1);
+    color: black;
+
+}

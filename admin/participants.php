@@ -9,8 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link rel="stylesheet" href="../assets/css/common.css">
      <link rel="stylesheet" href="../assets/css/participants.css">
+     <link rel="stylesheet" href="../assets/css/result_form.css">
 </head>
 <body>
+    <div class="whole-blur-container"></div>
     <h2>Participants</h2>
     <?php
         $Participants=$pdo->query("SELECT  
@@ -68,25 +70,28 @@ ORDER BY
             </tbody>
         </table>
     </div>
-    <div class="result-form-container">
+    <div class="result-form-container modal">
+        <h3 class="result-form-head">Mark Result</h3>
+        <div class="modal-container">
         <form action="add_result.php" class="result-form">
-            <input type="number" class="athlete-id" name="athleteid">
-            <input type="number" class="event-id" name="eventid">
+            <input type="hidden" class="athlete-id" name="athleteid">
+            <input type="hidden" class="event-id " name="eventid">
 
-            <input type="text" class="athlete-name" name="athelete_name" readonly><br>
-            <input type="text" class="event-name" name="event_name" readonly><br>
+            <input type="text" class="athlete-name input-style" name="athelete_name" readonly><br>
+            <input type="text" class="event-name input-style" name="event_name" readonly><br>
 
                 <label>Position:</label>
                 <select name="position">
                 <option value="">-- Select Position --</option>
-                <option value="1">1st</option>
-                <option value="2">2nd</option>
-                <option value="3">3rd</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
                 </select><br>
                 
-            <button type="submit" class="submit-btn">Submit</button>
-            <button type="button" class="cancel-btn">Cancel</button>
+            <button type="submit" class="submit-btn btns">Submit</button>
+            <button type="button" class="cancel-btn btns">Cancel</button>
         </form>
+        </div>
     </div>
 </body>
 <script src="../assets/js/infoFetch.js"></script>
