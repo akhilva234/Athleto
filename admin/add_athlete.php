@@ -1,5 +1,6 @@
 <?php
-session_start();
+    require_once "../session_check.php";
+    $user= $_SESSION['user'];
 include "../config.php";
 
 $message = '';
@@ -10,11 +11,6 @@ $message = '';
 
         unset($_SESSION['athlete-msg']);
     }
-
-if(isset($_GET['status'])&&$_GET['status']=='success'){
-
-
-}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -122,7 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <h2>Add Athlete</h2>
-
+    <?php  echo "user:".$user;
+            echo session_id();
+?>
     <div class="insert-container">
         <div class="form-container ">
             <form action="" method="post" class="form">

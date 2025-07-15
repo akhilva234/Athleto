@@ -1,6 +1,8 @@
 
 <?php
+     require_once "../session_check.php";
     include "../config.php";
+    $user= $_SESSION['user'];
 
     $page_error='';
 

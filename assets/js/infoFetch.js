@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded',function(){
             athleteId.value=this.getAttribute('data-athlete-id');
             eventId.value=this.getAttribute('data-event-id');
 
-            console.log(athleteId);
-            console.log(eventId);
-
             fetch(`fetch_names.php?athlete_id=${athleteId.value}&event_id=${eventId.value}`)
             .then(res=>res.json())
             .then(data =>{
@@ -30,5 +27,9 @@ document.addEventListener('DOMContentLoaded',function(){
         });
     });
 
+    closeButton.addEventListener('click',()=>{
+        form.style.display='none';
+         blurContainer.style.display='none';
+    });
 
 });

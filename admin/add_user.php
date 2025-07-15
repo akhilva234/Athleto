@@ -1,7 +1,8 @@
 
 <?php
-  session_start();
+    require_once "../session_check.php";
     include "../config.php";
+    $user= $_SESSION['user'];
 
     $message = " ";
 
@@ -97,6 +98,9 @@
 </head>
 <body>
     <h2 class="add-heading">Add Users</h2>
+    <?php  echo "user:".$user;
+            echo session_id();
+?>
     <div class="insert-container">
         <div class="form-container">
             <form action="" method="post" class="form">

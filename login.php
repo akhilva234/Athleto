@@ -1,10 +1,9 @@
 
 <?php
+    require_once "session_check.php";
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
-
-     session_start();
     include "config.php";
 
     $msg=" ";
@@ -37,6 +36,7 @@
          if($user && password_verify($password,$user['password'])){
 
             $_SESSION['role']=$user['role'];
+            $_SESSION['user']=$user['user_id'];
 
              header('Location: dashboard.php');
              exit;

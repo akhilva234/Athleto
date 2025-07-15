@@ -1,5 +1,19 @@
 <?php
+    require_once "../session_check.php";
+     if(isset($_POST['resultadd'])){
+                require '../common_pages/add_result.php';
+            }
     include_once "../config.php";
+    $user=$_SESSION['user'];
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false); // for IE
+    header("Pragma: no-cache");
+    header("Expires: 0");
+
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -14,6 +28,7 @@
 <body>
     <div class="whole-blur-container"></div>
     <h2>Participants</h2>
+    <?php  echo "user:".$user;?>
     <?php
         $Participants=$pdo->query("SELECT  
     a.athlete_id,   
@@ -73,7 +88,7 @@ ORDER BY
     <div class="result-form-container modal">
         <h3 class="result-form-head">Mark Result</h3>
         <div class="modal-container">
-        <form action="add_result.php" class="result-form">
+        <form action="" class="result-form" method='post'>
             <input type="hidden" class="athlete-id" name="athleteid">
             <input type="hidden" class="event-id " name="eventid">
 
@@ -88,11 +103,11 @@ ORDER BY
                 <option value="3">3</option>
                 </select><br>
                 
-            <button type="submit" class="submit-btn btns">Submit</button>
+            <input type="submit" class="submit-btn btns" name="resultadd">
             <button type="button" class="cancel-btn btns">Cancel</button>
         </form>
         </div>
-    </div>
+        </div>
 </body>
 <script src="../assets/js/infoFetch.js"></script>
 </html>
