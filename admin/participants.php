@@ -22,7 +22,7 @@ if (!isset($_SESSION['user'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link rel="stylesheet" href="../assets/css/common.css">
-     <link rel="stylesheet" href="../assets/css/participants.css">
+     <link rel="stylesheet" href="../assets/css/common_css/tables.css">
      <link rel="stylesheet" href="../assets/css/result_form.css">
 </head>
 <body>
@@ -53,7 +53,7 @@ ORDER BY
     a.athlete_id
 ");
     ?>
-    <div class="participants-table-container">
+    <div class="participants-table-container table-whole-container">
         <table class="participants-table">
             <thead>
             <tr>
@@ -72,7 +72,9 @@ ORDER BY
             <?php foreach($Participants as $athlete):?>
                 <tr>
                     <td><?=htmlspecialchars($count++)?></td>
-                    <td><?=htmlspecialchars($athlete['athlete_id'])?></td>
+                     <td><span class="chest-no-tr">
+                        <?=htmlspecialchars($athlete['athlete_id'])?>
+                    </span></td>
                     <td><?=htmlspecialchars($athlete['first_name'])?><?=" "?><?=htmlspecialchars($athlete['last_name'])?></td>
                     <td><?=htmlspecialchars($athlete['category_name'])?></td>
                     <td><?=htmlspecialchars($athlete['event_name'])?></td>
@@ -85,6 +87,14 @@ ORDER BY
             </tbody>
         </table>
     </div>
+       <div class="success-msg">
+            <?php if(isset($_SESSION['result-add-msg'])){
+        $result_message=$_SESSION['result-add-msg'];
+        unset($_SESSION['result-add-msg']);
+    }
+    echo $result_message;
+?>
+        </div>
     <div class="result-form-container modal">
         <h3 class="result-form-head">Mark Result</h3>
         <div class="modal-container">
@@ -96,7 +106,7 @@ ORDER BY
             <input type="text" class="event-name input-style" name="event_name" readonly><br>
 
                 <label>Position:</label>
-                <select name="position">
+                <select name="position" required>
                 <option value="">-- Select Position --</option>
                 <option value="1">1</option>
                 <option value="2">2</option>

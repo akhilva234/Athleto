@@ -71,21 +71,26 @@
         <div class="right-body content" >
         <?php
 
-            if(isset($_GET['page'])){
+               $allowed = [
+                'adm_home' => 'adm_home.php',
+                'add_user' => 'add_user.php',
+                'add_athlete' => 'add_athlete.php',
+                'add_event' => 'add_event.php',
+                'add_department' => 'add_department.php',
+                'manage_results' => '../common_pages/manage_results.php',
+                'participants' => 'participants.php',
+                'generate_certificate' => 'generate_certificate.php'
+            ];
+            if (isset($_GET['page'])) {
+            $page = $_GET['page'];
 
-                $page=$_GET['page'];
-
-                $allowed=['adm_home','add_user','add_athlete','add_event','add_department','manage_results','participants','generate_certificate'];
-
-                if(in_array($page,$allowed)&& file_exists($page.".php")){
-                    include $page.".php";
-                }
-                else{
-
-                    $_SESSION['page_error']="page not found";
-
-                }
+            if (array_key_exists($page, $allowed) && file_exists($allowed[$page])) {
+                include $allowed[$page];
+            } else {
+                $_SESSION['page_error'] = "Page not found";
             }
+        }
+
               if(isset($_SESSION['page_error'])){
                 $page_error=$_SESSION['page_error'];
                 unset($_SESSION['page_error']);

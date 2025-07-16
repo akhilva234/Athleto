@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         }
                     } catch (Exception $e) {
                         $pdo->rollBack();
-                         if ($e->errorInfo[1] == 1062) { 
+                         if ($e->errorInfo[1]== 1062) { 
                         $message="Duplicate athlete found. Insertion skipped.";
                     } else {
                         $message = "Failed: " . $e->getMessage();

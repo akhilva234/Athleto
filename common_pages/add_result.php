@@ -3,11 +3,6 @@
     $user=$_SESSION['user'];
 include_once "../config.php";
 
-    if(isset($_SESSION['result-add-msg'])){
-        $message=$_SESSION['result-add-msg'];
-        unset($_SESSION['result-add-msg']);
-    }
-
     if(isset($_SERVER['REQUEST_METHOD'])=='POST'){
 
         $athlete_id=$_POST['athleteid'];

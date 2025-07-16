@@ -1,4 +1,4 @@
-.participants-table-container {
+.table-whole-container {
     max-width: 95%;
     margin: 30px auto;
     overflow-x: auto;
@@ -7,7 +7,7 @@
     background-color: #ffffff;
 }
 
-.participants-table {
+.participants-table,.result-table {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,28 +16,35 @@
     overflow: hidden;
 }
 
-.participants-table thead {
+.participants-table thead,.result-table thead {
     background-color: #1f2937;
     color: #ffffff;
 }
 
-.participants-table th, .participants-table td {
+.participants-table th, .participants-table td,.result-table th, .result-table td {
     padding: 14px 16px;
     text-align: left;
     border-bottom: 1px solid #e2e8f0;
 }
 
-.participants-table tr:nth-child(even) {
+.participants-table tr:nth-child(even),.result-table tr:nth-child(even) {
     background-color: #f9fafb;
 }
 
-.participants-table tr:hover {
+.participants-table tbody tr:hover,.result-table tbody tr:hover {
     background-color: #f1f5f9;
     transition: background-color 0.2s ease-in-out;
 }
 
-.participants-table th {
+.participants-table th ,.result-table th {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-size: 0.85rem;
+}
+
+.chest-no-tr{
+    background-color:#1f2937;
+    border-radius: 50%;
+    color: white;
+    padding: 0.15rem 0.3rem;
 }
