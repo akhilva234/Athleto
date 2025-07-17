@@ -91,9 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             header("Location: adm_dashboard.php?page=add_athlete&status=success");
                             exit;
                         }
-                    } catch (Exception $e) {
+                    } catch (PDOException $e) {
                         $pdo->rollBack();
-                         if ($e->errorInfo[1]== 1062) { 
+                         if (isset($e->errorInfo[1]) && $e->errorInfo[1]== 1062) { 
                         $message="Duplicate athlete found. Insertion skipped.";
                     } else {
                         $message = "Failed: " . $e->getMessage();

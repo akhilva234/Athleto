@@ -24,6 +24,7 @@ if (!isset($_SESSION['user'])) {
      <link rel="stylesheet" href="../assets/css/common.css">
      <link rel="stylesheet" href="../assets/css/common_css/tables.css">
      <link rel="stylesheet" href="../assets/css/result_form.css">
+     <link rel="stylesheet" href="../assets/css/participant.css">
 </head>
 <body>
     <div class="whole-blur-container"></div>
