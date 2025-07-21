@@ -1,0 +1,15 @@
+.success-msg{
+
+    background-color:#f8fafc;
+    color:black;
+    display: flex;
+    align-items: center;    /* Vertical alignment */
+    justify-content: center;
+    width: 30%;
+    height: 10%;
+    border-radius: .5rem;
+     position: fixed;
+      top: 50%;
+     left: 40%;
+    z-index: 1100;
+}

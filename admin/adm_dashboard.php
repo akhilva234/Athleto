@@ -32,6 +32,13 @@
              <i class="fas fa-home"></i>
              Home
         </span></a> 
+
+         <span class="display-athletes-container">
+            <a href="?page=athletes_info">
+                Athletes
+            </a>
+            </span>
+
             <div class="select-container">
                  <p class="add-phrase">
                     <i class="fas fa-plus-circle"></i>
@@ -77,6 +84,7 @@
                 'add_athlete' => 'add_athlete.php',
                 'add_event' => 'add_event.php',
                 'add_department' => 'add_department.php',
+                'athletes_info' => '../common_pages/athletes_info.php',
                 'manage_results' => '../common_pages/manage_results.php',
                 'participants' => 'participants.php',
                 'generate_certificate' => 'generate_certificate.php'

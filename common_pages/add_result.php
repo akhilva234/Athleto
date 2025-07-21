@@ -12,25 +12,31 @@ include_once "../config.php";
         try{
             $pdo->beginTransaction();
 
-            $ifExists = $pdo->prepare("SELECT * FROM results WHERE athlete_id = ? AND event_id = ?");
-            $ifExists->execute([$athlete_id, $event_id]);
-            $exists = $ifExists->fetch(PDO::FETCH_ASSOC);
-                if($exists) {
-                    $_SESSION['result-add-msg'] = "Position for event already secured";
-                    header("Location: adm_dashboard.php?page=participants&status=success");
+             $catStmt = $pdo->prepare("SELECT category_id FROM athletes WHERE athlete_id = ?");
+                $catStmt->execute([$athlete_id]);
+                $athleteCategory = $catStmt->fetchColumn();
+
+                 $ifExists = $pdo->prepare("SELECT 1 FROM results WHERE athlete_id = ? AND event_id = ?");
+                $ifExists->execute([$athlete_id, $event_id]);
+                if ($ifExists->fetch()) {
+                    $_SESSION['result-add-msg'] = "Position for event already secured by this athlete.";
+                    header("Location: adm_dashboard.php?page=participants&status=error");
                     exit;
                 }
-             $positionExists = $pdo->prepare("SELECT * FROM results WHERE event_id = ? 
-             AND position = ?");
-            $positionExists->execute([$event_id, $position]);
-            $positionTaken = $positionExists->fetch(PDO::FETCH_ASSOC);
+                   $positionExists = $pdo->prepare("
+                        SELECT r.result_id 
+                        FROM results r
+                        INNER JOIN athletes a ON r.athlete_id = a.athlete_id
+                        WHERE r.event_id = ? AND r.position = ? AND a.category_id = ?
+                    ");
+                    $positionExists->execute([$event_id, $position, $athleteCategory]);
 
-            if ($positionTaken) {
-                $_SESSION['result-add-msg'] = "That position is already taken for this event.";
-                header("Location: adm_dashboard.php?page=participants&status=error");
-                exit;
-            }
-   
+                    if ($positionExists->fetch()) {
+                        $_SESSION['result-add-msg'] = "That position is already taken for this event in the selected category.";
+                        header("Location: adm_dashboard.php?page=participants&status=error");
+                        exit;
+                    }
+
 
             $result_add=$pdo->prepare("INSERT INTO results(event_id,athlete_id,position,added_by)
              VALUES(:eventid,:athleteid,:position,:added)");

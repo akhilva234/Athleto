@@ -24,7 +24,7 @@ if (!isset($_SESSION['user'])) {
      <link rel="stylesheet" href="../assets/css/common.css">
      <link rel="stylesheet" href="../assets/css/common_css/tables.css">
      <link rel="stylesheet" href="../assets/css/result_form.css">
-     <link rel="stylesheet" href="../assets/css/participant.css">
+     <link rel="stylesheet" href="../assets/css/common_css/message.css">
 </head>
 <body>
     <div class="whole-blur-container"></div>
@@ -66,12 +66,13 @@ ORDER BY
             <th>Department</th>
             <th>Year</th>
             <th>Result Entry</th>
+            <th>Delete</th>
             </tr>
             </thead>
             <?php $count=1;?>
             <tbody>
             <?php foreach($Participants as $athlete):?>
-                <tr>
+                <tr id="row-<?= $athlete['athlete_id'] . '-' . $athlete['event_id']; ?>">
                     <td><?=htmlspecialchars($count++)?></td>
                      <td><span class="chest-no-tr">
                         <?=htmlspecialchars($athlete['athlete_id'])?>
@@ -83,19 +84,18 @@ ORDER BY
                     <td><?=htmlspecialchars($athlete['year'])?></td>
                     <td><button class="result-entry-btn" data-athlete-id="<?=$athlete['athlete_id']?>" data-event-id="<?=$athlete['event_id']?>">
                         Enter Result</button></td>
+                     <td><button class="delete-btn" data-athlete-id="<?=$athlete['athlete_id']?>" data-event-id="<?=$athlete['event_id']?>">
+                        Delete</button></td>   
                 </tr>
             <?php endforeach ;?>
             </tbody>
         </table>
     </div>
-       <div class="success-msg">
-            <?php if(isset($_SESSION['result-add-msg'])){
-        $result_message=$_SESSION['result-add-msg'];
-        unset($_SESSION['result-add-msg']);
-    }
-    echo $result_message;
-?>
-        </div>
+            <?php if(isset($_SESSION['result-add-msg'])):?>
+                <div class="success-msg"><?=htmlspecialchars($_SESSION['result-add-msg'])?>
+            </div>
+            <?php unset($_SESSION['result-add-msg'])?>
+          <?php endif;?>  
     <div class="result-form-container modal">
         <h3 class="result-form-head">Mark Result</h3>
         <div class="modal-container">
@@ -121,4 +121,6 @@ ORDER BY
         </div>
 </body>
 <script src="../assets/js/infoFetch.js"></script>
+<script src="../assets/js/messagePopup.js"></script>
+<script src="../assets/js/delete.js"></script>
 </html>
