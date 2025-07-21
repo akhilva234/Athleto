@@ -54,6 +54,7 @@ ORDER BY
     a.athlete_id
 ");
     ?>
+     <?php include_once "../common_pages/filter.php"?>
     <div class="participants-table-container table-whole-container">
         <table class="participants-table">
             <thead>

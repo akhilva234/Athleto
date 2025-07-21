@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="../assets/css/common_css/tables.css">
 </head>
 <body>
-     <?php include_once "filter.php"?>
  <div class="participants-table-container table-whole-container">
         <table class="participants-table">
             <thead>
