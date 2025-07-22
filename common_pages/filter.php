@@ -55,5 +55,5 @@
     </div>
     </div>
 </body>
-<script src="../assets/js/filter.js"></script>
+<script src="../assets/js/filter.js" type="module"></script>
 </html>

@@ -73,7 +73,7 @@ ORDER BY
             <?php $count=1;?>
             <tbody>
             <?php foreach($Participants as $athlete):?>
-                <tr id="row-<?= $athlete['athlete_id'] . '-' . $athlete['event_id']; ?>">
+                <tr id="row-<?= $athlete['athlete_id'] . '-' . $athlete['event_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
                      <td><span class="chest-no-tr">
                         <?=htmlspecialchars($athlete['athlete_id'])?>
@@ -121,7 +121,7 @@ ORDER BY
         </div>
         </div>
 </body>
-<script src="../assets/js/infoFetch.js"></script>
+<script src="../assets/js/infoFetch.js" type="module"></script>
 <script src="../assets/js/messagePopup.js"></script>
-<script src="../assets/js/delete.js"></script>
+<script src="../assets/js/delete.js" type="module"></script>
 </html>
