@@ -35,6 +35,7 @@
 
          <span class="display-athletes-container">
             <a href="?page=athletes_info">
+                <i class="fa-solid fa-ribbon"></i>
                 Athletes
             </a>
             </span>

@@ -27,7 +27,7 @@
 </head>
 <body>
  <div class="participants-table-container table-whole-container">
-        <table class="participants-table">
+        <table class="participants-table athletes-table">
             <thead>
             <tr>
             <th>SI.NO</th>
@@ -36,12 +36,14 @@
             <th>Category</th>
             <th>Department</th>
             <th>Year</th>
+            <th>Update</th>
+            <th>Delete</th>
             </tr>
             </thead>
             <?php $count=1;?>
             <tbody>
             <?php foreach($athletes as $athlete):?>
-                <tr>
+                <tr id="row-<?= $athlete['athlete_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
                      <td><span class="chest-no-tr">
                         <?=htmlspecialchars($athlete['athlete_id'])?>
@@ -50,10 +52,17 @@
                     <td><?=htmlspecialchars($athlete['category_name'])?></td>
                     <td><?=htmlspecialchars($athlete['dept_name'])?></td>
                     <td><?=htmlspecialchars($athlete['year'])?></td>
+                    <td><button class="update-btn" data-athlete-id="<?=htmlspecialchars($athlete['athlete_id'])?>">
+                        Update
+                    </button></td>
+                      <td><button class="delete-btn" data-athlete-id="<?=htmlspecialchars($athlete['athlete_id'])?>">
+                        Delete
+                    </button></td>
                  </tr>   
             <?php endforeach ;?>
             </tbody>
         </table>
     </div>
 </body>
+<script src="../assets/js/delete_whole.js"></script>
 </html>

@@ -21,6 +21,7 @@
      <div class="dropdown-checkbox" id="deptDropdown">
         <button type="button" class="dropdown-btn">Departments ▼</button>
         <div class="dropdown-content">
+             <input type="text" class="dropdown-search" placeholder="Search departments...">
             <?php foreach ($departments as $dept): ?>
                 <label>
                     <input type="checkbox" class="dept-checkbox" value="<?= htmlspecialchars($dept['dept_id']) ?>">
@@ -33,6 +34,7 @@
     <div class="dropdown-checkbox" id="eventDropdown">
         <button type="button" class="dropdown-btn">Events ▼</button>
         <div class="dropdown-content event-content">
+             <input type="text" class="dropdown-search" placeholder="Search events...">
             <?php foreach ($events as $event): ?>
                 <label>
                     <input type="checkbox" class="event-checkbox" value="<?= htmlspecialchars($event['event_id']) ?>">
@@ -45,6 +47,7 @@
     <div class="dropdown-checkbox" id="catDropdown">
         <button type="button" class="dropdown-btn">Categories ▼</button>
         <div class="dropdown-content">
+             <input type="text" class="dropdown-search" placeholder="Search categories...">
             <?php foreach ($categories as $cat): ?>
                 <label>
                     <input type="checkbox" class="cat-checkbox" value="<?= htmlspecialchars($cat['category_id']) ?>">

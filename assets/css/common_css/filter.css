@@ -92,6 +92,21 @@
     background-color: #9ca3af;
 }
 
+.dropdown-search {
+    width: 90%;
+    padding: 6px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    outline: none;
+}
+
+.dropdown-search:focus {
+    border-color: #9ca3af;
+}
+
+
 /* Smooth Animation */
 /*@keyframes dropdownFade {
     from { opacity: 0; transform: translateY(-5px); }
