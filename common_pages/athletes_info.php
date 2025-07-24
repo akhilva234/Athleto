@@ -24,6 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="../assets/css/common.css">
     <link rel="stylesheet" href="../assets/css/common_css/tables.css">
+    <link rel="stylesheet" href="../assets/css/update_form.css">
 </head>
 <body>
  <div class="participants-table-container table-whole-container">
@@ -63,6 +64,14 @@
             </tbody>
         </table>
     </div>
+    <div id="editAthleteModal">
+    <div class="modal-content" id="editAthleteContent">
+        
+    </div>
+</div>
+
 </body>
+<script src="../assets/js/limitCheck.js"></script>
 <script src="../assets/js/delete_whole.js"></script>
+<script src="../assets/js/update_form.js"></script>
 </html>

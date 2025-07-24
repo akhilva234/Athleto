@@ -15,7 +15,7 @@ function deleteWhole(){
 
            if(confirm("Are you sure want to delete this athlete.All the participation and result info will be deleted" )){
 
-                fetch(`delete_athletes.php?athleteid=${athlete}`)
+                fetch(`../common_pages/delete_athletes.php?athleteid=${athlete}`)
                 .then(res => res.json())
                 .then(data => {
 
