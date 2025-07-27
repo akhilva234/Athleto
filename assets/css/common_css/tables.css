@@ -48,3 +48,21 @@
     color: white;
     padding: 0.15rem 0.3rem;
 }
+
+.update-btn,.delete-btn,.result-entry-btn{
+        padding: .7rem;
+    min-width: 70px;
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+    background-color: #1f2937;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+     transition: all .3s ease;
+}
+
+.update-btn:hover,.delete-btn:hover,.result-entry-btn:hover{
+
+     transform: scale(1.05);
+}

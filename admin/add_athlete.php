@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <h2>Add Athlete</h2>
     <?php  echo "user:".$user;
-            echo session_id();
+            //echo session_id();
 ?>
     <div class="insert-container">
         <div class="form-container ">

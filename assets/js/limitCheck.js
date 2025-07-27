@@ -1,28 +1,46 @@
+export function setupCheckboxLimit() {
+  const individualEvents = document.querySelectorAll(".individual-event");
 
-document.addEventListener("DOMContentLoaded", function () {
-    const individualCheckboxes = document.querySelectorAll(".individual-event");
+  function checkBoxUpdate() {
+    const checkedCount = Array.from(individualEvents).filter(cb => cb.checked).length;
+    console.log("Checked count:", checkedCount);
 
-    function updateCheckboxStates() {
-        const checkedCount = Array.from(individualCheckboxes)
-                                  .filter(cb => cb.checked).length;
+    individualEvents.forEach(cb => {
+      cb.disabled = !cb.checked && checkedCount >= 3;
+    });
+  }
 
-        console.log(checkedCount);
-        individualCheckboxes.forEach(cb => {
-            // Disable only if not checked and 3 are already selected
-            if (!cb.checked) {
-                cb.disabled = checkedCount >= 3;
-            } else {
-                cb.disabled = false;
+  individualEvents.forEach(cb => {
+    cb.addEventListener("change", checkBoxUpdate);
+  });
+
+  checkBoxUpdate();
+}
+
+export function relayCatCheck(){
+
+   console.log("relayCatCheck called!");
+
+    const categorySelect=document.getElementById('category-check');
+    const relayCheckBoxes=document.querySelectorAll('.relay-events');
+
+    function updateRelayCheckboes(){
+
+        const selectedCategory=parseInt(categorySelect.value);
+        relayCheckBoxes.forEach(cb=>{
+            const eventId=cb.dataset.eventId;
+            const allowedCats = allowedCategoriesByEvent[eventId] || [];
+            console.log(allowedCats);
+
+            if(allowedCats.includes(selectedCategory)){
+                cb.disabled=false;
+            }else if(!cb.checked){
+                cb.disabled=true;
             }
         });
+
     }
 
-    // Attach event listeners to each checkbox
-    individualCheckboxes.forEach(cb => {
-        cb.addEventListener("change", updateCheckboxStates);
-    });
-
-    // Call once on load in case 3 are already pre-checked
-     updateCheckboxStates();
-});
-
+    updateRelayCheckboes();
+    categorySelect.addEventListener("change",updateRelayCheckboes);
+}

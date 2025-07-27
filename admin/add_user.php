@@ -99,7 +99,7 @@
 <body>
     <h2 class="add-heading">Add Users</h2>
     <?php  echo "user:".$user;
-            echo session_id();
+           // echo session_id();
 ?>
     <div class="insert-container">
         <div class="form-container">

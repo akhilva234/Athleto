@@ -55,6 +55,13 @@ try {
             event_name VARCHAR(50) NOT NULL,
             is_relay BOOLEAN DEFAULT FALSE
         )",
+            "CREATE TABLE IF NOT EXISTS event_categories (
+            event_id INT NOT NULL,
+            category_id INT NOT NULL,
+            PRIMARY KEY (event_id, category_id),
+            FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE,
+            FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
+        )",
 
         "CREATE TABLE IF NOT EXISTS participation (
             part_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,

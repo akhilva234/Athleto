@@ -59,17 +59,38 @@
         $categories=$pdo->query("SELECT * FROM categories");
          $relay_events=$pdo->query("SELECT * FROM events WHERE is_relay=1");
 
+         $event_cat_status=$pdo->query("SELECT e.event_id, e.event_name, c.category_name,c.category_id
+                                        FROM events e
+                                        JOIN event_categories ec ON e.event_id = ec.event_id
+                                        JOIN categories c ON ec.category_id = c.category_id;
+                                        ");
+
+
+         $allowed_categories=[];
+
+         foreach($event_cat_status as $row){
+
+            $event_id=$row['event_id'];
+            $category_id=$row['category_id'];
+
+            if(!isset($allowed_categories[$event_id])){
+                $allowed_categories[$event_id]=[];
+            }
+            $allowed_categories[$event_id][]=$category_id;
+         }
+
     }catch(Exception $e){
 
         echo "Failed:".$e->getMessage();
     }
+    ob_start();
 ?>
 
 <span style="float:right; cursor:pointer; font-size:22px; font-weight:bold;"
      onclick="document.getElementById('editAthleteModal').style.display='none'">
         &times;</span>
 <h3>Update Athlete</h3>
-<form action="update_athletes.php" method="post">
+<form action="" method="post">
     <input type="hidden" name="athlete_id" value="<?= $athlete['athlete_id'] ?>">
 
     <!-- Name -->
@@ -99,7 +120,7 @@
 
     <!-- Category -->
     <label>Category:</label>
-    <select name="category_id">
+    <select name="category_id" id="category-check">
         <?php foreach ($categories as $cat): ?>
             <option value="<?= $cat['category_id'] ?>" <?= $athlete['category_id'] == $cat['category_id'] ? 'selected' : '' ?>>
                 <?= htmlspecialchars($cat['category_name']) ?>
@@ -125,21 +146,44 @@
                     </label><br>
                 <?php endforeach; ?>
             </div>
-            <div class="relay-events">
-             <label>Relay Events:</label><br>
-            <?php foreach ($relay_events as $relay): ?>
-             <label>
+        <div class="relay-events">
+    <label>Relay Events:</label><br>
+    <?php foreach ($relay_events as $relay): 
+        $event_id = $relay['event_id'];
+        $event_name = $relay['event_name'];
+
+        $allowed_cats = $allowed_categories[$event_id] ?? [];
+        $is_checked = in_array($event_id, $registered_event_ids);
+        $is_allowed = in_array($athlete['category_id'], $allowed_cats);
+    ?>
+        <label>
             <input 
                 type="checkbox" 
-                name="event_ids[]" 
-                value="<?= $relay['event_id'] ?>"
-                <?= in_array($relay['event_id'], $registered_event_ids) ? 'checked' : '' ?>
-                <?= !$isFull || in_array($relay['event_id'], $registered_event_ids) ? '' : 'disabled' ?>
+                class="relay-events category-checker"
+                name="relay_event_ids[]" 
+                 data-event-id="<?= $event_id ?>"
+                value="<?= $event_id ?>"
+                <?= $is_checked ? 'checked' : '' ?>
+                <?= (!$is_allowed && !$is_checked) ? 'disabled' : '' ?>
             >
-            <?= htmlspecialchars($relay['event_name']) ?>
+            <?= htmlspecialchars($event_name) ?>
         </label><br>
-        <?php endforeach; ?>
-            </div>
+    <?php endforeach; ?>
+</div>
+
         </div>
-    <button type="submit">Update</button>
+    <button type="submit" name="update">Update</button>
 </form>
+<?php
+// Capture the output into a variable
+$htmlForm = ob_get_clean();
+
+// Now output JSON
+header('Content-Type: application/json');
+echo json_encode([
+    'html' => $htmlForm,
+    'allowedCategoriesByEvent' => $allowed_categories
+]);
+exit;
+?>
+

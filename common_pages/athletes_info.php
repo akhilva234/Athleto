@@ -4,6 +4,17 @@
     include "../config.php";
     $user= $_SESSION['user'];
 
+    if(isset($_POST['update'])){
+
+         require '../common_pages/update_athletes.php';
+        
+    }
+
+    $message='';
+    if(isset($_SESSION['athlete-msg'])){
+        $message=$_SESSION['athlete-msg'];
+        unset($_SESSION['athlete-msg']);
+    }
     $athletes=$pdo->query("SELECT 
     a.athlete_id,
     a.first_name,
@@ -25,8 +36,10 @@
       <link rel="stylesheet" href="../assets/css/common.css">
     <link rel="stylesheet" href="../assets/css/common_css/tables.css">
     <link rel="stylesheet" href="../assets/css/update_form.css">
+    <link rel="stylesheet" href="../assets/css/common_css/message.css">
 </head>
 <body>
+<div class="whole-blur-container"></div>
  <div class="participants-table-container table-whole-container">
         <table class="participants-table athletes-table">
             <thead>
@@ -64,14 +77,19 @@
             </tbody>
         </table>
     </div>
+     <?php if(isset($_SESSION['result-add-msg'])):?>
+                <div class="success-msg"><?=htmlspecialchars($_SESSION['result-add-msg']) ?><?=htmlspecialchars($message)?>
+            </div>
+            <?php unset($_SESSION['result-add-msg'])?>
+     <?php endif;?>  
     <div id="editAthleteModal">
     <div class="modal-content" id="editAthleteContent">
         
     </div>
 </div>
-
 </body>
-<script src="../assets/js/limitCheck.js"></script>
+<script src="../assets/js/limitCheck.js" type="module"></script>
 <script src="../assets/js/delete_whole.js"></script>
-<script src="../assets/js/update_form.js"></script>
+<script src="../assets/js/update_form.js" type="module"></script>
+<script src="../assets/js/messagePopup.js"></script>
 </html>
