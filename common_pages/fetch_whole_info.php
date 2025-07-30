@@ -146,7 +146,7 @@
                     </label><br>
                 <?php endforeach; ?>
             </div>
-        <div class="relay-events">
+        <div class="relay-events-group">
     <label>Relay Events:</label><br>
     <?php foreach ($relay_events as $relay): 
         $event_id = $relay['event_id'];

@@ -134,7 +134,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     Lastname<br>
                     <input type="text" name="lastname" placeholder="Lastname" required>
                 </div>
-                <div class="department-container">
+
+                <div class="events-whole-container">
+                   Individual Events (Max 3)<br>
+                    <div class="events-container">
+                         <?php
+                    $events = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=0")->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($events as $event) {
+                        echo '<input type="checkbox" name="events[]" value="' . htmlspecialchars($event['event_id']) . '" class="events individual-event"> ' . htmlspecialchars($event['event_name']) . '<br>';
+                    }
+                    ?>
+                    </div>
+                   
+                </div>
+
+                <div class="events-whole-container">
+                   Relay Events <br>
+                    <div class="events-container">
+                         <?php
+                    $events = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=1")->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($events as $event) {
+                        echo '<input type="checkbox" name="events[]" value="' . htmlspecialchars($event['event_id']) . '" class="events relay-events"> ' . htmlspecialchars($event['event_name']) . '<br>';
+                    }
+                    ?>
+                    </div>
+                   
+                </div>
+
+                 <div class="department-container">
                     Department<br>
                     <select name="dep_id" required>
                         <option value="">-- Select Department --</option>
@@ -145,19 +172,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         }
                         ?>
                     </select>
-                </div>
-
-                <div class="events-whole-container">
-                    Events (Max 3)<br>
-                    <div class="events-container">
-                         <?php
-                    $events = $pdo->query("SELECT event_id, event_name FROM events")->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($events as $event) {
-                        echo '<input type="checkbox" name="events[]" value="' . htmlspecialchars($event['event_id']) . '" class="events"> ' . htmlspecialchars($event['event_name']) . '<br>';
-                    }
-                    ?>
-                    </div>
-                   
                 </div>
 
                    <div class="category-container">
@@ -183,9 +197,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <option value="4">4</option>
                     </select>
                 </div>
-
+                <br>
                 <div>
-                    <input type="submit" value="Add" name="submit" class="add-btn">
+                    <input type="submit" value="Add" name="submit" class="add-btn athlete-add-btn">
                 </div>
 
             </form>
@@ -197,4 +211,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 </body>
+<script type="module" src="../assets/js/maxEventRestrict.js"></script>
+<!--<script type="module" src="../assets/js/limitCheck.js"></script> -->
 </html>

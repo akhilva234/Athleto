@@ -14,33 +14,51 @@ export function setupCheckboxLimit() {
     cb.addEventListener("change", checkBoxUpdate);
   });
 
+  // Initial state check
   checkBoxUpdate();
 }
 
-export function relayCatCheck(){
+export function relayCatCheck() {
+  //console.log("relayCatCheck called!");
 
-   console.log("relayCatCheck called!");
+  const categorySelect = document.getElementById("category-check");
 
-    const categorySelect=document.getElementById('category-check');
-    const relayCheckBoxes=document.querySelectorAll('.relay-events');
+  if (!categorySelect) {
+    console.warn("Category select element not found!");
+    return;
+  }
 
-    function updateRelayCheckboes(){
+  const relayCheckBoxes = document.querySelectorAll("input.relay-events");
 
-        const selectedCategory=parseInt(categorySelect.value);
-        relayCheckBoxes.forEach(cb=>{
-            const eventId=cb.dataset.eventId;
-            const allowedCats = allowedCategoriesByEvent[eventId] || [];
-            console.log(allowedCats);
-
-            if(allowedCats.includes(selectedCategory)){
-                cb.disabled=false;
-            }else if(!cb.checked){
-                cb.disabled=true;
-            }
-        });
-
+  function updateRelayCheckboxes() {
+    const selectedCategory = parseInt(categorySelect.value);
+    if (isNaN(selectedCategory)) {
+     // console.warn("Selected category is not a valid number.");
+      return;
     }
 
-    updateRelayCheckboes();
-    categorySelect.addEventListener("change",updateRelayCheckboes);
+    relayCheckBoxes.forEach(cb => {
+      const eventId = cb.dataset.eventId;
+
+      if (!eventId) {
+       // console.warn("Missing data-event-id for checkbox", cb);
+        return;
+      }
+
+      const allowedCats = window.allowedCategoriesByEvent?.[eventId] || [];
+      const isAllowed = allowedCats.includes(selectedCategory.toString()) || allowedCats.includes(selectedCategory); // Ensure both int & string match
+
+      if (isAllowed) {
+        cb.disabled = false;
+      } else if (!cb.checked) {
+        cb.disabled = true;
+      }
+
+      //console.log(`Event ${eventId}:`, allowedCats, "| Selected:", selectedCategory, "| Allowed:", isAllowed);
+    });
+  }
+
+  // Attach listener and call once initially
+  categorySelect.addEventListener("change", updateRelayCheckboxes);
+  updateRelayCheckboxes();
 }
