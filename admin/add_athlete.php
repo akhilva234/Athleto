@@ -51,12 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if (empty($validEvents)) {
                     $message = "No valid events selected.";
-                } elseif (count($validEvents) > 3) {
-                    $message = "You can select a maximum of 3 events.";
                 } else {
                     try {
                         $pdo->beginTransaction();
-
+                        $completed=false;
                         $athleteSql = $pdo->prepare("INSERT INTO athletes (first_name, last_name, category_id, dept_id,year) 
                                                     VALUES (:fname, :lname, :category, :department, :yr)");
 
@@ -83,10 +81,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 'eventid' => $event_id
                             ]);
                         }
-                        $pdo->commit();
-                        if($insert_Participant){
 
+                    $relayEvents = $pdo->prepare("SELECT event_id FROM events WHERE is_relay = 1");
+                    $relayEvents->execute();
+                    $relayEventIds = array_column($relayEvents->fetchAll(PDO::FETCH_ASSOC), 'event_id');
+
+                    foreach ($validEvents as $event_id) {
+                        if (in_array($event_id, $relayEventIds)) {
+
+                            $checkTeam = $pdo->prepare("SELECT team_id FROM relay_teams WHERE event_id = ? AND dept_id = ?");
+                            $checkTeam->execute([$event_id, $dep_id]);
+                            $team = $checkTeam->fetch();
+
+                            if ($team) {
+                                $relayTeamId = $team['team_id'];
+                            } else {
+                                $createTeam = $pdo->prepare("INSERT INTO relay_teams (event_id, dept_id) VALUES (?, ?)");
+                                $createTeam->execute([$event_id, $dep_id]);
+                                $relayTeamId = $pdo->lastInsertId();
+                            }
                             
+                            $memberCount=$pdo->prepare("SELECT COUNT(*) FROM relay_team_members WHERE team_id = ?");
+                            $memberCount->execute([$relayTeamId]);
+                            $count=$memberCount->fetch();
+                            if($count<6){
+                                 $addMember = $pdo->prepare("INSERT INTO relay_team_members (team_id, athlete_id) VALUES (?, ?)");
+                            $addMember->execute([$relayTeamId, $athleteId]);
+                            }else{
+                                $message = "Team already has five members.";
+                            }
+                           
+                        }
+                    }
+                        $completed=true;
+                        $pdo->commit();
+                        if($completed){
+
                           $_SESSION['athlete-msg'] = "Athlete and participation successfully registered!";
                             header("Location: adm_dashboard.php?page=add_athlete&status=success");
                             exit;
@@ -134,37 +164,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="text" name="lastname" placeholder="Lastname" required>
                 </div>
 
-                <div class="events-whole-container">
-                    Individual Events (Max 3)<br>
-                    <div class="events-container">
-                        <?php
-                        $events = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=0")->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($events as $event): ?>
-                            <input type="checkbox" 
-                                   name="events[]" 
-                                   value="<?= htmlspecialchars($event['event_id']) ?>" 
-                                   class="events individual-event"> 
-                            <?= htmlspecialchars($event['event_name']) ?><br>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-
-                <div class="events-whole-container">
-                    Relay Events<br>
-                    <div class="events-container">
-                        <?php
-                        $relayEvents = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=1")->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($relayEvents as $event): ?>
-                            <input type="checkbox" 
-                                   name="events[]" 
-                                   value="<?= htmlspecialchars($event['event_id']) ?>" 
-                                   class="events relay-events"  
-                                   data-event-id="<?= htmlspecialchars($event['event_id']) ?>"> 
-                            <?= htmlspecialchars($event['event_name']) ?><br>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-
                 <div class="department-container">
                     Department<br>
                     <select name="dep_id" required>
@@ -181,16 +180,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="category-container">
                     Category<br>
-                    <select name="cat_id" required>
+                    <select name="cat_id"  id="category-check" required>
                         <option value="">-- Select Category --</option>
                         <?php
                         $categories = $pdo->query("SELECT category_id, category_name FROM categories");
                         foreach ($categories as $cat): ?>
-                            <option value="<?= htmlspecialchars($cat['category_id']) ?>" class="category" id="category-check">
+                            <option value="<?= htmlspecialchars($cat['category_id']) ?>" class="category">
                                 <?= htmlspecialchars($cat['category_name']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
+                </div>
+                
+                <div class="events-whole-container">
+                    Individual Events (Max 3)<br>
+                    <input type="text" class="event-search" data-target="individual-event" placeholder="Search Individual Events" name="search">
+                    <div class="no-events-message" style="display: none; color: red; font-style: italic;">No events found</div>
+
+                    <div class="events-container scrollable" id="individual-events-box">
+                        <?php
+                        $events = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=0")->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($events as $event): ?>
+                            <label>
+                                <input type="checkbox" 
+                                    name="events[]" 
+                                    value="<?= htmlspecialchars($event['event_id']) ?>" 
+                                    class="events individual-event"> 
+                                <?= htmlspecialchars($event['event_name']) ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <div class="events-whole-container">
+                    Relay Events<br>
+                    <input type="text" class="event-search" data-target="relay-events" placeholder="Search Relay Events"  name="search">
+                    <div class="no-events-message" style="display: none; color: red; font-style: italic;">No events found</div>
+
+                    <div class="events-container scrollable" id="relay-events-box">
+                        <?php
+                        $relayEvents = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=1")->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($relayEvents as $event): ?>
+                            <label>
+                                <input type="checkbox" 
+                                    name="events[]" 
+                                    value="<?= htmlspecialchars($event['event_id']) ?>" 
+                                    class="events relay-events"  
+                                    data-event-id="<?= htmlspecialchars($event['event_id']) ?>"> 
+                                <?= htmlspecialchars($event['event_name']) ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
 
                 <div class="year-container">
@@ -219,6 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
     <script type="module" src="../assets/js/maxEventRestrict.js"></script>
+    <script src="../assets/js/eventSearch.js"></script>
 </body>
 </html>
 

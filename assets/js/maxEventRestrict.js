@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const individualEvents = document.querySelectorAll(".individual-event");
     const categorySelect = document.getElementById("category-check");
-    categorySelect.value=" ";
     const relayCheckBoxes = document.querySelectorAll("input.relay-events");
 
 
@@ -17,13 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateRelayCat() {
         const selectedValue = categorySelect.value;
 
+        console.log(`selected value ${selectedValue}`);
         // If no category selected, enable ALL relay checkboxes
-        if (!selectedValue) {
+        /*if (!selectedValue.trim()) {
             relayCheckBoxes.forEach(cb => {
                 cb.disabled = false;
             });
             return;
-        }
+        }*/
 
         const selectedCategory = parseInt(selectedValue);
 

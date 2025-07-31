@@ -46,8 +46,6 @@
 
                 if (empty($validEvents)) {
                     $_SESSION['athlete-msg'] = "No valid events selected.";
-                } elseif (count($validEvents) > 3) {
-                    $_SESSION['athlete-msg'] = "You can select a maximum of 3 events.";
                 } else {
                     try {
                         $pdo->beginTransaction();
@@ -88,5 +86,4 @@
         }
 }
    
-
 ?>
