@@ -23,7 +23,13 @@
                 $allowed_categories[$event_id]=[];
             }
             $allowed_categories[$event_id][]=$category_id;
+
          }
+         header('Content-Type: application/json');
+            echo json_encode([
+                'allowedCategoriesByEvent' => $allowed_categories
+            ]);
+            exit;
     }catch(Exception $e){
         echo "Failed:".$e->getMessage();
     }

@@ -1,35 +1,62 @@
-import { relayCatCheck,setupCheckboxLimit } from "./limitCheck.js";
+document.addEventListener('DOMContentLoaded', () => {
+    const individualEvents = document.querySelectorAll(".individual-event");
+    const categorySelect = document.getElementById("category-check");
+    categorySelect.value=" ";
+    const relayCheckBoxes = document.querySelectorAll("input.relay-events");
 
-document.addEventListener('DOMContentLoaded',()=>{
 
-      const individualEvents = document.querySelectorAll(".individual-event");
-     const categorySelect = document.getElementById("category-check");
+     
+    fetch(`../common_pages/add_auth.php`)
+        .then(res => res.json())
+        .then(data => {
+            window.allowedCategoriesByEvent = data.allowedCategoriesByEvent;
+            updateRelayCat();
+        })
+        .catch(err => console.error('Error loading athlete data:', err));
+    
+    function updateRelayCat() {
+        const selectedValue = categorySelect.value;
 
-    /* function updateRelatCat(){
-         const selectedCategory = parseInt(categorySelect.value);
-         
-     }
-        
-            fetch(`../common_pages/add_auth.php?athleteid=${athlete}`)
-            .then(res=>res.json())
-            .then(data=>{
-                window.allowedCategoriesByEvent = data.allowedCategoriesByEvent;
-                setupCheckboxLimit();
-            })
-            .catch(err => console.error('Error loading athlete data:', err));  
-*/
-           function updateEventCount(){
-
-            const checkedCount = Array.from(individualEvents).filter(cb => cb.checked).length;
-             individualEvents.forEach(cb => {
-            cb.disabled = !cb.checked && checkedCount >= 3;
+        // If no category selected, enable ALL relay checkboxes
+        if (!selectedValue) {
+            relayCheckBoxes.forEach(cb => {
+                cb.disabled = false;
             });
-    } 
+            return;
+        }
+
+        const selectedCategory = parseInt(selectedValue);
+
+        relayCheckBoxes.forEach(cb => {
+            const eventId = cb.dataset.eventId;
+
+            // Convert to array of integers safely
+            const raw = window.allowedCategoriesByEvent?.[eventId] || [];
+            const allowedCats = Array.isArray(raw)
+                ? raw.map(x => parseInt(x)) // normalize to numbers
+                : raw.toString().split(',').map(x => parseInt(x.trim()));
+
+            const isAllowed = allowedCats.includes(selectedCategory);
+
+            console.log(`Event ${eventId}, allowed:`, allowedCats, "selected:", selectedCategory, "allowed?", isAllowed);
+
+            // Allow if selected category is allowed or already checked
+            cb.disabled = !isAllowed && !cb.checked;
+        });
+    }
+
+    function updateEventCount() {
+        const checkedCount = Array.from(individualEvents).filter(cb => cb.checked).length;
+
         individualEvents.forEach(cb => {
-    cb.addEventListener("change", updateEventCount);
-  });
-  updateEventCount();
+            cb.disabled = !cb.checked && checkedCount >= 3;
+        });
+    }
+
+    // Event listeners
+    individualEvents.forEach(cb => cb.addEventListener("change", updateEventCount));
+    categorySelect.addEventListener("change", updateRelayCat);
+
+    // Initial state
+    updateEventCount();
 });
-
-
-

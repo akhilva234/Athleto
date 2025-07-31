@@ -105,7 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,16 +112,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Athlete</title>
     <link rel="stylesheet" href="../assets/css/add_athlete.css">
-     <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
     <link rel="stylesheet" href="../assets/css/common_css/form_common.css">
 </head>
 <body>
     <h2>Add Athlete</h2>
-    <?php  echo "user:".$user;
-            //echo session_id();
-?>
+
+    <p>User: <?= htmlspecialchars($user) ?></p>
+
     <div class="insert-container">
-        <div class="form-container ">
+        <div class="form-container">
             <form action="" method="post" class="form">
 
                 <div class="name-container">
@@ -136,54 +135,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
                 <div class="events-whole-container">
-                   Individual Events (Max 3)<br>
+                    Individual Events (Max 3)<br>
                     <div class="events-container">
-                         <?php
-                    $events = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=0")->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($events as $event) {
-                        echo '<input type="checkbox" name="events[]" value="' . htmlspecialchars($event['event_id']) . '" class="events individual-event"> ' . htmlspecialchars($event['event_name']) . '<br>';
-                    }
-                    ?>
+                        <?php
+                        $events = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=0")->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($events as $event): ?>
+                            <input type="checkbox" 
+                                   name="events[]" 
+                                   value="<?= htmlspecialchars($event['event_id']) ?>" 
+                                   class="events individual-event"> 
+                            <?= htmlspecialchars($event['event_name']) ?><br>
+                        <?php endforeach; ?>
                     </div>
-                   
                 </div>
 
                 <div class="events-whole-container">
-                   Relay Events <br>
+                    Relay Events<br>
                     <div class="events-container">
-                         <?php
-                    $events = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=1")->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($events as $event) {
-                        echo '<input type="checkbox" name="events[]" value="' . htmlspecialchars($event['event_id']) . '" class="events relay-events"> ' . htmlspecialchars($event['event_name']) . '<br>';
-                    }
-                    ?>
+                        <?php
+                        $relayEvents = $pdo->query("SELECT event_id, event_name FROM events WHERE is_relay=1")->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($relayEvents as $event): ?>
+                            <input type="checkbox" 
+                                   name="events[]" 
+                                   value="<?= htmlspecialchars($event['event_id']) ?>" 
+                                   class="events relay-events"  
+                                   data-event-id="<?= htmlspecialchars($event['event_id']) ?>"> 
+                            <?= htmlspecialchars($event['event_name']) ?><br>
+                        <?php endforeach; ?>
                     </div>
-                   
                 </div>
 
-                 <div class="department-container">
+                <div class="department-container">
                     Department<br>
                     <select name="dep_id" required>
                         <option value="">-- Select Department --</option>
                         <?php
                         $departments = $pdo->query("SELECT dept_id, dept_name FROM departments");
-                        foreach ($departments as $department) {
-                            echo '<option value="' . htmlspecialchars($department['dept_id']) . '" class="department">' . htmlspecialchars($department['dept_name']) . '</option>';
-                        }
-                        ?>
+                        foreach ($departments as $department): ?>
+                            <option value="<?= htmlspecialchars($department['dept_id']) ?>" class="department">
+                                <?= htmlspecialchars($department['dept_name']) ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
-                   <div class="category-container">
+                <div class="category-container">
                     Category<br>
                     <select name="cat_id" required>
                         <option value="">-- Select Category --</option>
                         <?php
-                        $category = $pdo->query("SELECT category_id, category_name FROM categories");
-                        foreach ($category as $cat) {
-                            echo '<option value="' . htmlspecialchars($cat['category_id']) . '" class="category">' . htmlspecialchars($cat['category_name']) . '</option>';
-                        }
-                        ?>
+                        $categories = $pdo->query("SELECT category_id, category_name FROM categories");
+                        foreach ($categories as $cat): ?>
+                            <option value="<?= htmlspecialchars($cat['category_id']) ?>" class="category" id="category-check">
+                                <?= htmlspecialchars($cat['category_name']) ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
@@ -197,20 +203,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <option value="4">4</option>
                     </select>
                 </div>
+
                 <br>
                 <div>
                     <input type="submit" value="Add" name="submit" class="add-btn athlete-add-btn">
                 </div>
 
+                <?php if (!empty($message)): ?>
+                    <div class="success-message <?= (strpos($message, 'Failed') !== false || strpos($message, 'Invalid') !== false) ? 'error' : '' ?>">
+                        <?= htmlspecialchars($message) ?>
+                    </div>
+                <?php endif; ?>
+
             </form>
-             <?php if (!empty($message)): ?>
-        <div class="success-message <?= strpos($message, 'Failed') !== false || strpos($message, 'Invalid') !== false ? 'error' : '' ?>">
-            <?= htmlspecialchars($message) ?>
-        </div>
-    <?php endif; ?>
         </div>
     </div>
+    <script type="module" src="../assets/js/maxEventRestrict.js"></script>
 </body>
-<script type="module" src="../assets/js/maxEventRestrict.js"></script>
-<!--<script type="module" src="../assets/js/limitCheck.js"></script> -->
 </html>
+
