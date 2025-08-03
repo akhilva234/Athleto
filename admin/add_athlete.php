@@ -101,14 +101,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 $relayTeamId = $pdo->lastInsertId();
                             }
                             
-                            $memberCount=$pdo->prepare("SELECT COUNT(*) FROM relay_team_members WHERE team_id = ?");
-                            $memberCount->execute([$relayTeamId]);
-                            $count=$memberCount->fetch();
-                            if($count<6){
-                                 $addMember = $pdo->prepare("INSERT INTO relay_team_members (team_id, athlete_id) VALUES (?, ?)");
-                            $addMember->execute([$relayTeamId, $athleteId]);
-                            }else{
-                                $message = "Team already has five members.";
+                                $getGender = $pdo->prepare("SELECT category_name FROM categories WHERE category_id = ?");
+                                $getGender->execute([$cat_id]);
+                                $category = $getGender->fetch(PDO::FETCH_ASSOC);
+                                $gender = strtolower(trim($category['category_name']));
+                            $memberCount = $pdo->prepare("
+                                    SELECT COUNT(*) 
+                                    FROM relay_team_members rtm
+                                    JOIN athletes a ON rtm.athlete_id = a.athlete_id
+                                    WHERE rtm.team_id = ? AND a.category_id = ?
+                                ");
+                                $memberCount->execute([$relayTeamId, $cat_id]);
+                                $count = $memberCount->fetchColumn();
+                            if ($count < 5) {
+                                $addMember = $pdo->prepare("INSERT INTO relay_team_members (team_id, athlete_id) VALUES (?, ?)");
+                                $addMember->execute([$relayTeamId, $athleteId]);
+                            } else {
+                                throw new Exception("This relay team already has 5 {$gender} participants.");
                             }
                            
                         }
@@ -116,7 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $completed=true;
                         $pdo->commit();
                         if($completed){
-
                           $_SESSION['athlete-msg'] = "Athlete and participation successfully registered!";
                             header("Location: adm_dashboard.php?page=add_athlete&status=success");
                             exit;

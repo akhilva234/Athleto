@@ -71,9 +71,9 @@
                 <i class="fas fa-running"></i>
                 Participants</a>
             </span>
-              <span class="generte-certificate-container"><a href="?page=generate_certificate">
-                <i class="fas fa-scroll"></i>
-                Certificates
+              <span class="Championships-container"><a href="?page=championships">
+               <i class="fas fa-trophy"></i>
+                Championships
             </a></span>
         </div>
         <div class="right-body content" >
@@ -88,7 +88,7 @@
                 'athletes_info' => '../common_pages/athletes_info.php',
                 'manage_results' => '../common_pages/manage_results.php',
                 'participants' => 'participants.php',
-                'generate_certificate' => 'generate_certificate.php'
+                'championships' => '../common_pages/championships.php'
             ];
             if (isset($_GET['page'])) {
             $page = $_GET['page'];
