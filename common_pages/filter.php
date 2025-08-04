@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="../assets/css/common_css/filter.css">
 </head>
 <body>
+    <span class="filter-icon">
+        <i class="fas fa-filter"></i>
+    </span>
     <div class="filter-section">
      <div class="dropdown-checkbox" id="deptDropdown">
         <button type="button" class="dropdown-btn">Departments ▼</button>
@@ -56,7 +59,12 @@
             <?php endforeach; ?>
         </div>
     </div>
+    <div class="search-box">
+        <label>
+            <input type="text" placeholder="Enter chest no.">
+        </label>
     </div>
+ </div>
 </body>
 <script src="../assets/js/filter.js" type="module"></script>
 </html>

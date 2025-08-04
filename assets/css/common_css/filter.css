@@ -1,14 +1,15 @@
 /* General Filter Section */
 .filter-section {
-    display: flex;
+    display: inline-flex;
     flex-wrap: wrap;
     gap: 15px;
-    align-items: center;
+    align-items: flex-start;
     padding: 10px 15px;
     background: #f9fafb;
     border-radius: 8px;
     border: 1px solid #e5e7eb;
     font-family: Arial, sans-serif;
+    margin-left: 10px;
 }
 
 /* Dropdown Container */
@@ -106,6 +107,35 @@
     border-color: #9ca3af;
 }
 
+.search-box {
+    margin-top: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5rem;
+}
+
+.search-box input[type="text"] {
+    background-color: #ffffff;
+    border:1px solid #d1d5db;
+    outline: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    width: 100%;
+    text-align: left;
+    color: #374151;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.search-box input[type="text"]:focus {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); /* subtle blue glow */
+}
+
+.filter-icon{
+    margin-left: 3rem;
+    font-size: 1.4rem;
+}
 
 /* Smooth Animation */
 /*@keyframes dropdownFade {

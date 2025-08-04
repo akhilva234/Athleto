@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="../assets/css/common_css/message.css">
 </head>
 <body>
+    <h2>Athletes</h2>
 <div class="whole-blur-container"></div>
  <div class="participants-table-container table-whole-container">
         <table class="participants-table athletes-table">

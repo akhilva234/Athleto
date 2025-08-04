@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="../assets/css/header_common.css">
      <link rel="stylesheet" href="../assets/css/common.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="dashboard-header">
@@ -28,12 +31,12 @@
     </header>
     <div class="main-body">
         <div class="left-body">
-           <a href="?page=adm_home"><span class="home-container">
+           <a href="?page=adm_home"><span class="home-container font">
              <i class="fas fa-home"></i>
              Home
         </span></a> 
 
-         <span class="display-athletes-container">
+         <span class="display-athletes-container font">
             <a href="?page=athletes_info">
                 <i class="fa-solid fa-ribbon"></i>
                 Athletes
@@ -63,15 +66,15 @@
                 </option>
             </select>
             </div>
-            <span class="manage-results-container"><a href="?page=manage_results">
+            <span class="manage-results-container font"><a href="?page=manage_results">
                 <i class="fas fa-medal"></i>
                 Results</a>
             </span>
-             <span class="view-atheletes-container"><a href="?page=participants">
+             <span class="view-atheletes-container font"><a href="?page=participants">
                 <i class="fas fa-running"></i>
                 Participants</a>
             </span>
-              <span class="Championships-container"><a href="?page=championships">
+              <span class="Championships-container font"><a href="?page=championships">
                <i class="fas fa-trophy"></i>
                 Championships
             </a></span>
