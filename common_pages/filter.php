@@ -33,7 +33,7 @@
             <?php endforeach; ?>
         </div>
     </div>
-
+    
     <div class="dropdown-checkbox" id="eventDropdown">
         <button type="button" class="dropdown-btn">Events ▼</button>
         <div class="dropdown-content event-content">

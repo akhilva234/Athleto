@@ -125,4 +125,5 @@ ORDER BY
 <script src="../assets/js/infoFetch.js" type="module"></script>
 <script src="../assets/js/messagePopup.js"></script>
 <script src="../assets/js/delete.js" type="module"></script>
+<script src="../assets/js/rendertable.js" type="module"></script>
 </html>

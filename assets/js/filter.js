@@ -1,6 +1,4 @@
-import { resultEntry } from "./infoFetch.js";
-import { deleteEntry } from "./delete.js";
-
+import { renderParticipantsTable } from "./rendertable.js";
 
 document.querySelectorAll('.dropdown-checkbox').forEach(dropdown => {
     const button = dropdown.querySelector('.dropdown-btn');
@@ -44,14 +42,23 @@ function getCheckedValues(classname) {
 }
 
 export async function loadAthletes() {
-    const params = new URLSearchParams({
-        dept: getCheckedValues('dept-checkbox').join(','),
-        event: getCheckedValues('event-checkbox').join(','),
-        category: getCheckedValues('cat-checkbox').join(',')
-    });
+        const chestNoInput = document.querySelector('.search-box input');
+        const chestNo = chestNoInput ? chestNoInput.value.trim() : '';
+
+        const params = new URLSearchParams({
+            dept: getCheckedValues('dept-checkbox').join(','),
+            event: getCheckedValues('event-checkbox').join(','),
+            category: getCheckedValues('cat-checkbox').join(','),
+            chest_no: chestNo
+        });
+
     const response = await fetch('../common_pages/filter_athletes.php?' + params.toString());
     const data = await response.json();
-    renderTable(data);
+    renderParticipantsTable(data);
+}
+const chestNoInput = document.querySelector('.search-box input');
+if (chestNoInput) {
+    chestNoInput.addEventListener('input', loadAthletes);
 }
 
 
@@ -60,7 +67,7 @@ document.querySelectorAll('.dropdown-checkbox input[type="checkbox"]').forEach(c
 });
 
 
-function renderTable(data) {
+/*function renderTable(data) {
     const tableBody = document.querySelector('.participants-table tbody');
     tableBody.innerHTML = '';
 
@@ -93,5 +100,5 @@ function renderTable(data) {
     deleteEntry();
 
 }
-
+*/
 

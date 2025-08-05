@@ -7,6 +7,8 @@ $user = $_SESSION['user'];
 $dept   = isset($_GET['dept'])      && $_GET['dept']      !== '' ? explode(',', $_GET['dept'])      : [];
 $events = isset($_GET['event'])     && $_GET['event']     !== '' ? explode(',', $_GET['event'])     : [];
 $cat    = isset($_GET['category'])  && $_GET['category']  !== '' ? explode(',', $_GET['category'])  : [];
+$chest_no = isset($_GET['chest_no']) && $_GET['chest_no'] !== '' ? trim($_GET['chest_no']) : '';
+
 
 $where  = [];
 $params = [];
@@ -31,6 +33,11 @@ if (!empty($cat)) {
     $where[] = "c.category_id IN ($in)";
     $params = array_merge($params, $cat);
 }
+if ($chest_no !== '') {
+    $where[] = "a.athlete_id LIKE ?";
+    $params[] = "%$chest_no%";
+}
+
 
 $whereSql = $where ? 'WHERE ' . implode('AND ', $where) : '';
 
@@ -50,6 +57,7 @@ JOIN events e ON e.event_id = p.event_id
 JOIN departments d ON a.dept_id = d.dept_id
 JOIN categories c ON a.category_id = c.category_id
 $whereSql
+ORDER BY a.athlete_id
 ";
 
 $stmt = $pdo->prepare($sql);
