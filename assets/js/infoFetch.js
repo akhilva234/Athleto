@@ -4,8 +4,11 @@ export function resultEntry() {
     const closeButton = document.querySelector('.cancel-btn');
     const athleteId = document.querySelector('.athlete-id');
     const eventId = document.querySelector('.event-id');
+     const table = document.querySelector('.participants-table tbody');
 
-    document.querySelector('.participants-table tbody').addEventListener('click', function (e) {
+     if (!form || !blurContainer || !closeButton || !athleteId || !eventId || !table) return;
+
+    table.addEventListener('click', function (e) {
         if (e.target.classList.contains('result-entry-btn')) {
             const btn = e.target;
             athleteId.value = btn.getAttribute('data-athlete-id');

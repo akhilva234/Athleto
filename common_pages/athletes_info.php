@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="../assets/css/common_css/message.css">
     <link rel="stylesheet" href="../assets/css/athlete_info.css">
 </head>
-<body class="hide-events-filter">
+<body class="hide-events-filter" data-view="athletes">
     <h2>Athletes</h2>
     <br>
      <?php include_once "../common_pages/filter.php"?>
@@ -92,9 +92,8 @@
     </div>
 </div>
 </body>
-<script src="../assets/js/filter.js" type="module"></script>
 <script src="../assets/js/limitCheck.js" type="module"></script>
-<script src="../assets/js/delete_whole.js"></script>
+<script src="../assets/js/delete_whole.js" type="module"></script>
 <script src="../assets/js/update_form.js" type="module"></script>
 <script src="../assets/js/messagePopup.js"></script>
 </html>

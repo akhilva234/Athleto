@@ -9,6 +9,9 @@ if (isset($_GET['athleteid'])) {
         
         $pdo->beginTransaction();
 
+         $stmt = $pdo->prepare("DELETE FROM results WHERE athlete_id = ?");
+        $stmt->execute([$athlete_id]);
+
         $stmt = $pdo->prepare("DELETE FROM relay_team_members WHERE athlete_id = ?");
         $stmt->execute([$athlete_id]);
 

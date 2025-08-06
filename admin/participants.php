@@ -26,7 +26,7 @@ if (!isset($_SESSION['user'])) {
      <link rel="stylesheet" href="../assets/css/result_form.css">
      <link rel="stylesheet" href="../assets/css/common_css/message.css">
 </head>
-<body>
+<body data-view="participants">
     <div class="whole-blur-container"></div>
     <h2>Participants</h2>
     <?php  echo "user:".$user;?>
@@ -125,5 +125,4 @@ ORDER BY
 <script src="../assets/js/infoFetch.js" type="module"></script>
 <script src="../assets/js/messagePopup.js"></script>
 <script src="../assets/js/delete.js" type="module"></script>
-<script src="../assets/js/rendertable.js" type="module"></script>
 </html>

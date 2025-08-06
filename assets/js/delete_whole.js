@@ -1,11 +1,14 @@
 
 let deleteEntry=false;
-function deleteWhole(){
+export function deleteWhole(){
 
     if(deleteEntry) return;
     deleteEntry=true;
 
-    document.querySelector('.athletes-table tbody').addEventListener('click',function(e){
+    const tableBody = document.querySelector('.participants-table tbody');
+    if (!tableBody) return; // Page doesn't have participants table
+
+    tableBody.addEventListener('click',function(e){
         if(e.target.classList.contains('delete-btn')){
 
             const btn=e.target;

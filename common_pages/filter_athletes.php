@@ -4,6 +4,7 @@ include "../config.php";
 
 $user = $_SESSION['user'];
 
+//$view = $_GET['view'] ?? 'participants';
 $dept   = isset($_GET['dept'])      && $_GET['dept']      !== '' ? explode(',', $_GET['dept'])      : [];
 $events = isset($_GET['event'])     && $_GET['event']     !== '' ? explode(',', $_GET['event'])     : [];
 $cat    = isset($_GET['category'])  && $_GET['category']  !== '' ? explode(',', $_GET['category'])  : [];

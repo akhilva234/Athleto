@@ -1,5 +1,6 @@
-import { renderParticipantsTable } from "./rendertable.js";
+import { renderParticipantsTable,renderAthletesTable } from "./rendertable.js";
 
+const currentView = document.body.dataset.view || 'participants';
 document.querySelectorAll('.dropdown-checkbox').forEach(dropdown => {
     const button = dropdown.querySelector('.dropdown-btn');
     const searchInput = dropdown.querySelector('.dropdown-search');
@@ -54,7 +55,15 @@ export async function loadAthletes() {
 
     const response = await fetch('../common_pages/filter_athletes.php?' + params.toString());
     const data = await response.json();
-    renderParticipantsTable(data);
+
+    console.log(currentView);
+    if(currentView==='participants'){
+        renderParticipantsTable(data);
+    }
+    else if(currentView==='athletes'){
+        renderAthletesTable(data);
+    }
+    
 }
 const chestNoInput = document.querySelector('.search-box input');
 if (chestNoInput) {
