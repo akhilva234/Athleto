@@ -36,7 +36,7 @@ export function renderParticipantsTable(data) {
 
 }
 export function renderAthletesTable(data) {
-    const tableBody = document.querySelector('.participants-table tbody');
+    const tableBody = document.querySelector('.athletes-table tbody');
     if (!tableBody) return;
 
     tableBody.innerHTML = '';

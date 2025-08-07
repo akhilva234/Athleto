@@ -47,4 +47,4 @@ export function deleteEntry() {
     });
 }
 
-// ⚠️ DO NOT call deleteEntry() here if you're importing it in rendertable.js and calling there.
+deleteEntry();

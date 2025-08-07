@@ -66,11 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             'yr' => $year
                         ]);
 
-                        if ($athleteSql->fetch()) {
-                            echo "Athlete already exists.";
-                            exit;
-                        }
-
                         $athleteId = $pdo->lastInsertId();
 
                         $participation = $pdo->prepare("INSERT INTO participation (athlete_id, event_id) VALUES (:athleteid, :eventid)");
@@ -105,14 +100,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 $getGender->execute([$cat_id]);
                                 $category = $getGender->fetch(PDO::FETCH_ASSOC);
                                 $gender = strtolower(trim($category['category_name']));
-                            $memberCount = $pdo->prepare("
-                                    SELECT COUNT(*) 
-                                    FROM relay_team_members rtm
-                                    JOIN athletes a ON rtm.athlete_id = a.athlete_id
-                                    WHERE rtm.team_id = ? AND a.category_id = ?
+                                $memberCount = $pdo->prepare("
+                                        SELECT COUNT(*) 
+                                        FROM relay_team_members rtm
+                                        JOIN athletes a ON rtm.athlete_id = a.athlete_id
+                                        JOIN categories c ON a.category_id = c.category_id
+                                        WHERE rtm.team_id = ? AND LOWER(TRIM(c.category_name)) = ?
                                 ");
                                 $memberCount->execute([$relayTeamId, $cat_id]);
                                 $count = $memberCount->fetchColumn();
+                                echo $count; 
                             if ($count < 5) {
                                 $addMember = $pdo->prepare("INSERT INTO relay_team_members (team_id, athlete_id) VALUES (?, ?)");
                                 $addMember->execute([$relayTeamId, $athleteId]);

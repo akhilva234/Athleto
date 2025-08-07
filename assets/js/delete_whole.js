@@ -5,7 +5,7 @@ export function deleteWhole(){
     if(deleteEntry) return;
     deleteEntry=true;
 
-    const tableBody = document.querySelector('.participants-table tbody');
+    const tableBody = document.querySelector('.athletes-table tbody');
     if (!tableBody) return; // Page doesn't have participants table
 
     tableBody.addEventListener('click',function(e){
@@ -41,5 +41,4 @@ export function deleteWhole(){
     });
 
 }
-
 deleteWhole();

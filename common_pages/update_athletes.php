@@ -1,89 +1,134 @@
 <?php
+require_once "../session_check.php";
+include "../config.php";
+$user = $_SESSION['user'];
 
-    require_once "../session_check.php";
-    include "../config.php";
-    $user= $_SESSION['user'];
-
-    if($_SERVER['REQUEST_METHOD']=='POST'){
-
-    $athleteId=(int)$_POST['athlete_id'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $athleteId = (int)$_POST['athlete_id'];
     $fname = ucwords(strtolower(trim($_POST['first_name'])));
     $lname = ucwords(strtolower(trim($_POST['last_name'])));
-    $year=(int)$_POST['year'];
+    $year = (int)$_POST['year'];
+    $depId = (int)$_POST['dept_id'];
+    $categoryId = (int)$_POST['category_id'];
 
-    $depId=(int)$_POST['dept_id'];
-    $categoryId=(int)$_POST['category_id'];
+    $eventIds = $_POST['event_ids'] ?? [];
+    $relayEventIds = $_POST['relay_event_ids'] ?? [];
 
-    $eventIds=$_POST['event_ids'];
+    if (empty($athleteId) || empty($fname) || empty($lname) || empty($year) ||
+        empty($depId) || empty($categoryId) || empty($eventIds)) {
 
-    $relayEventIds=$_POST['relay_event_ids'];
+        $_SESSION['athlete-msg'] = "All fields are required";
+        exit;
+    } else {
+        $validEvents = [];
 
-    if(empty($athleteId)||empty($fname)||empty($lname)||empty($year)||
-        empty($depId)||empty($categoryId)||empty($eventIds)){
-
-            $_SESSION['athlete-msg']="All fields are required";
-            exit;
-            } else {
-                
-                $validEvents = [];
-                foreach ($eventIds as $eid) {
-                    $eid = (int)$eid;
-                    $eventCheck = $pdo->prepare("SELECT event_id FROM events WHERE event_id = ?");
-                    $eventCheck->execute([$eid]);
-                    if ($eventCheck->fetch()) {
-                        $validEvents[] = $eid;
-                    }
-                }
-
-                 foreach ($relayEventIds as $eid) {
-                    $eid = (int)$eid;
-                    $eventCheck = $pdo->prepare("SELECT event_id FROM events WHERE event_id = ?");
-                    $eventCheck->execute([$eid]);
-                    if ($eventCheck->fetch()) {
-                        $validEvents[] = $eid;
-                    }
-                }
-
-                if (empty($validEvents)) {
-                    $_SESSION['athlete-msg'] = "No valid events selected.";
-                } else {
-                    try {
-                        $pdo->beginTransaction();
-
-                        $athleteSql = $pdo->prepare("UPDATE athletes SET first_name=?,last_name=?,category_id=?,
-                        dept_id=?,year=? WHERE athlete_id=?");
-
-                        $athleteSql->execute([
-                            $fname,
-                            $lname,
-                            $categoryId,
-                            $depId,
-                            $year,
-                            $athleteId
-                        ]);
-
-                        $delete = $pdo->prepare("DELETE FROM participation WHERE athlete_id = ?");
-                        $delete->execute([$athleteId]);
-
-                        $insert = $pdo->prepare("INSERT INTO participation (athlete_id, event_id) VALUES (?, ?)");
-                        foreach ($validEvents as $event_id) {
-                            $insert->execute([$athleteId, $event_id]);
-                        }
-
-                        $pdo->commit();
-                        if($insert){
-
-                            
-                          $_SESSION['result-add-msg'] = "Athlete and participation updated successfully";
-                            header("Location: adm_dashboard.php?page=athletes_info&status=success");
-                            exit;
-                        }
-                    } catch (PDOException $e) {
-                        $pdo->rollBack();
-                        $message = "Failed: " . $e->getMessage();
-                }
+        // Validate individual event IDs
+        foreach ($eventIds as $eid) {
+            $eid = (int)$eid;
+            $eventCheck = $pdo->prepare("SELECT event_id FROM events WHERE event_id = ?");
+            $eventCheck->execute([$eid]);
+            if ($eventCheck->fetch()) {
+                $validEvents[] = $eid;
             }
         }
+
+        // Validate relay event IDs
+        foreach ($relayEventIds as $eid) {
+            $eid = (int)$eid;
+            $eventCheck = $pdo->prepare("SELECT event_id FROM events WHERE event_id = ?");
+            $eventCheck->execute([$eid]);
+            if ($eventCheck->fetch()) {
+                $validEvents[] = $eid;
+            }
+        }
+
+        if (empty($validEvents)) {
+            $_SESSION['athlete-msg'] = "No valid events selected.";
+        } else {
+            try {
+                $pdo->beginTransaction();
+
+                // Update athlete info
+                $athleteSql = $pdo->prepare("UPDATE athletes SET first_name=?, last_name=?, category_id=?, dept_id=?, year=? WHERE athlete_id=?");
+                $athleteSql->execute([
+                    $fname,
+                    $lname,
+                    $categoryId,
+                    $depId,
+                    $year,
+                    $athleteId
+                ]);
+
+                // Delete previous participation and relay team members
+                $deleteParticipation = $pdo->prepare("DELETE FROM participation WHERE athlete_id = ?");
+                $deleteParticipation->execute([$athleteId]);
+
+                $deleteRelay = $pdo->prepare("DELETE FROM relay_team_members WHERE athlete_id = ?");
+                $deleteRelay->execute([$athleteId]);
+
+                // Insert new participation records
+                $insertParticipation = $pdo->prepare("INSERT INTO participation (athlete_id, event_id) VALUES (?, ?)");
+                foreach ($validEvents as $event_id) {
+                    $insertParticipation->execute([$athleteId, $event_id]);
+                }
+
+                // Get gender of athlete
+                $getGender = $pdo->prepare("SELECT category_name FROM categories WHERE category_id = ?");
+                $getGender->execute([$categoryId]);
+                $category = $getGender->fetch(PDO::FETCH_ASSOC);
+                $gender = strtolower(trim($category['category_name']));
+
+                // Handle relay teams
+                foreach ($relayEventIds as $event_id) {
+                    $event_id = (int)$event_id;
+
+                    // Check or create team
+                    $checkTeam = $pdo->prepare("SELECT team_id FROM relay_teams WHERE event_id = ? AND dept_id = ?");
+                    $checkTeam->execute([$event_id, $depId]);
+                    $team = $checkTeam->fetch();
+
+                    if ($team) {
+                        $relayTeamId = $team['team_id'];
+                    } else {
+                        $createTeam = $pdo->prepare("INSERT INTO relay_teams (event_id, dept_id) VALUES (?, ?)");
+                        $createTeam->execute([$event_id, $depId]);
+                        $relayTeamId = $pdo->lastInsertId();
+                    }
+
+                    // Check gender-based team limit
+                    $memberCount = $pdo->prepare("
+                        SELECT COUNT(*) 
+                        FROM relay_team_members rtm
+                        JOIN athletes a ON rtm.athlete_id = a.athlete_id
+                        JOIN categories c ON a.category_id = c.category_id
+                        WHERE rtm.team_id = ? AND LOWER(TRIM(c.category_name)) = ?
+                    ");
+                    $memberCount->execute([$relayTeamId, $gender]);
+                    $count = $memberCount->fetchColumn();
+
+                    if ($count < 5) {
+                        // Add to relay team
+                        $addMember = $pdo->prepare("INSERT INTO relay_team_members (team_id, athlete_id) VALUES (?, ?)");
+                        $addMember->execute([$relayTeamId, $athleteId]);
+                    } else {
+                        throw new Exception("Relay team for event ID $event_id already has 5 $gender participants.");
+                    }
+                }
+
+                $pdo->commit();
+
+                $_SESSION['result-add-msg'] = "Athlete and participation updated successfully";
+                header("Location: adm_dashboard.php?page=athletes_info&status=success");
+                exit;
+
+            } catch (PDOException $e) {
+                $pdo->rollBack();
+                $_SESSION['athlete-msg'] = "Failed: " . $e->getMessage();
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                $_SESSION['athlete-msg'] = $e->getMessage();
+            }
+        }
+    }
 }
-   
 ?>

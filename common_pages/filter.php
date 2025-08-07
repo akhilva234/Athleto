@@ -18,7 +18,6 @@
 </head>
 <body>
     <span class="filter-icon">
-        <i class="fas fa-filter"></i>
     </span>
     <div class="filter-section">
      <div class="dropdown-checkbox" id="deptDropdown">

@@ -59,6 +59,7 @@ export async function loadAthletes() {
     console.log(currentView);
     if(currentView==='participants'){
         renderParticipantsTable(data);
+        
     }
     else if(currentView==='athletes'){
         renderAthletesTable(data);
