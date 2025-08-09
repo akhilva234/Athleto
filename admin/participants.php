@@ -68,7 +68,7 @@ ORDER BY
             <th>Department</th>
             <th>Year</th>
             <th>Result Entry</th>
-            <th>Delete</th>
+           <!-- <th>Delete</th>-->
             </tr>
             </thead>
             <?php $count=1;?>
@@ -86,8 +86,9 @@ ORDER BY
                     <td><?=htmlspecialchars($athlete['year'])?></td>
                     <td><button class="result-entry-btn" data-athlete-id="<?=$athlete['athlete_id']?>" data-event-id="<?=$athlete['event_id']?>">
                         Enter Result</button></td>
-                     <td><button class="delete-btn" data-athlete-id="<?=$athlete['athlete_id']?>" data-event-id="<?=$athlete['event_id']?>">
-                        Delete</button></td>   
+                   <!--  <td><button class="delete-btn" data-athlete-id="<?=$athlete['athlete_id']?>" data-event-id="<?=$athlete['event_id']?>">
+                        Delete</button></td> 
+            -->      
                 </tr>
             <?php endforeach ;?>
             </tbody>

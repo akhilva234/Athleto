@@ -10,8 +10,8 @@ header("Expires: 0");
 if (isset($_GET['athlete_id']) && isset($_GET['event_id'])) {
     $athlete_id = (int) $_GET['athlete_id'];
     $event_id   = (int) $_GET['event_id'];
-
-    $deletion = $pdo->prepare("
+try{
+        $deletion = $pdo->prepare("
         DELETE FROM participation
         WHERE athlete_id = :athlete_id AND event_id = :event_id
     ");
@@ -23,5 +23,7 @@ if (isset($_GET['athlete_id']) && isset($_GET['event_id'])) {
 
     echo json_encode(['success' => $success]);
     exit;
+}
+    
 }
 ?>

@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         FROM relay_team_members rtm
                                         JOIN athletes a ON rtm.athlete_id = a.athlete_id
                                         JOIN categories c ON a.category_id = c.category_id
-                                        WHERE rtm.team_id = ? AND LOWER(TRIM(c.category_name)) = ?
+                                        WHERE rtm.team_id = ? AND c.category_id = ?
                                 ");
                                 $memberCount->execute([$relayTeamId, $cat_id]);
                                 $count = $memberCount->fetchColumn();
@@ -133,6 +133,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     } else {
                         $message = "Failed: " . $e->getMessage();
                     }
+                }catch (Exception $e) {
+                    $pdo->rollBack();
+                    $message = $e->getMessage();
                 }
             }
         }

@@ -25,8 +25,6 @@ export function renderParticipantsTable(data) {
             <td>${athlete.year}</td>
             <td><button class="result-entry-btn" data-athlete-id="${athlete.athlete_id}" data-event-id="${athlete.event_id}">
                     Enter Result</button></td>
-            <td><button class="delete-btn" data-athlete-id="${athlete.athlete_id}" data-event-id="${athlete.event_id}">
-                    Delete</button></td>
         `;
         tableBody.appendChild(row);
     });

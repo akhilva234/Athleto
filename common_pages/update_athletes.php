@@ -15,9 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $relayEventIds = $_POST['relay_event_ids'] ?? [];
 
     if (empty($athleteId) || empty($fname) || empty($lname) || empty($year) ||
-        empty($depId) || empty($categoryId) || empty($eventIds)) {
-
+        empty($depId) || empty($categoryId)) {
         $_SESSION['athlete-msg'] = "All fields are required";
+        header("Location: adm_dashboard.php?page=athletes_info&status=error");
         exit;
     } else {
         $validEvents = [];
@@ -44,6 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (empty($validEvents)) {
             $_SESSION['athlete-msg'] = "No valid events selected.";
+            header("Location: adm_dashboard.php?page=athletes_info&status=error");
+            exit;
+
         } else {
             try {
                 $pdo->beginTransaction();
@@ -101,9 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         FROM relay_team_members rtm
                         JOIN athletes a ON rtm.athlete_id = a.athlete_id
                         JOIN categories c ON a.category_id = c.category_id
-                        WHERE rtm.team_id = ? AND LOWER(TRIM(c.category_name)) = ?
+                        WHERE rtm.team_id = ? AND c.category_id = ?
                     ");
-                    $memberCount->execute([$relayTeamId, $gender]);
+                    $memberCount->execute([$relayTeamId, $categoryId]);
                     $count = $memberCount->fetchColumn();
 
                     if ($count < 5) {
