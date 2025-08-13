@@ -23,6 +23,8 @@ try{
 
     echo json_encode(['success' => $success]);
     exit;
+}catch(PDOException $e){
+    echo "failed:".$e->getMessage();
 }
     
 }
