@@ -70,10 +70,19 @@
                 <i class="fas fa-medal"></i>
                 Results</a>
             </span>
-             <span class="view-atheletes-container font"><a href="?page=participants">
+             <div class="view-atheletes-container select-container font">
                 <i class="fas fa-running"></i>
-                Participants</a>
-            </span>
+                Participants
+                <select name="participants-container" class="action-select" value="" >
+                <option value="">-- Select List --</option>
+                <option value="?page=participants" class="option-inparticipants">
+                    <span class="participation-list">Individual Participants</span>
+                </option>
+                <option value="?page=relay" class="option-relayparticipants">
+                    <span class="participation-list">Relay Participants</span>
+                </option>
+                </select>
+            </div>
               <span class="Championships-container font"><a href="?page=championships">
                <i class="fas fa-trophy"></i>
                 Championships
@@ -91,6 +100,7 @@
                 'athletes_info' => '../common_pages/athletes_info.php',
                 'manage_results' => '../common_pages/manage_results.php',
                 'participants' => 'participants.php',
+                'relay' => '../common_pages/relay.php',
                 'championships' => '../common_pages/championships.php'
             ];
             if (isset($_GET['page'])) {

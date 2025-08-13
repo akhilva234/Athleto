@@ -28,7 +28,7 @@ if (!isset($_SESSION['user'])) {
 </head>
 <body data-view="participants">
     <div class="whole-blur-container"></div>
-    <h2>Participants</h2>
+    <h2>Individual Participants</h2>
     <?php  echo "user:".$user;?>
     <?php
         $Participants=$pdo->query("SELECT  
