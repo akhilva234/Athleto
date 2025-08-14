@@ -1,6 +1,9 @@
 <?php
     require_once "../session_check.php";
     include "../config.php";
+     if(isset($_POST['resultadd'])){
+                require '../common_pages/relayResultAdd.php';
+            }
     $user= $_SESSION['user'];
 ?>
 <!DOCTYPE html>
@@ -14,12 +17,14 @@
      <link rel="stylesheet" href="../assets/css/common_css/message.css">
 </head>
 <body>
+     <div class="whole-blur-container"></div>
      <h2>Relay Participants</h2>
         <?php  echo "user:".$user;
         
         $sql="SELECT 
         rt.team_id,
         e.event_name,
+        e.event_id,
         d.dept_name,
         GROUP_CONCAT(CONCAT(a.first_name, ' ', a.last_name) SEPARATOR ', ') AS team_members
     FROM relay_teams rt
@@ -51,12 +56,37 @@
                  <td><?=htmlspecialchars($relay['event_name'])?></td>
                  <td><?=htmlspecialchars($relay['dept_name'])?></td>
                  <td><?=htmlspecialchars($relay['team_members'])?></td>
-                 <td><button class="result-entry-btn">
+                 <td><button class="result-entry-btn" data-team-id="<?=$relay['team_id']?>"
+                  data-event-id="<?=$relay['event_id']?>">
                         Enter Result</button></td>
             </tr>
          <?php endforeach ;?>   
         </tbody>
     </table>
     </div>
+      <div class="result-form-container modal">
+        <h3 class="result-form-head">Mark Result</h3>
+        <div class="modal-container">
+        <form action="" class="result-form" method='post'>
+            <input type="hidden" class="team-id" name="teamid">
+            <input type="hidden" class="event-id " name="eventid">
+
+            <input type="text" class="team-name input-style" name="team_name" readonly><br>
+            <input type="text" class="event-name input-style" name="event_name" readonly><br>
+
+                <label>Position:</label>
+                <select name="position" required>
+                <option value="">-- Select Position --</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                </select><br>
+                
+            <input type="submit" class="submit-btn btns" name="resultadd">
+            <button type="button" class="cancel-btn btns">Cancel</button>
+        </form>
+        </div>
+        </div>
 </body>
+<script type="module" src="../assets/js/relayInfoFetch.js"></script>
 </html>

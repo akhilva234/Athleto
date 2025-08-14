@@ -26,3 +26,4 @@ if (isset($_GET['athlete_id'], $_GET['event_id'])) {
 } else {
     echo json_encode(['error' => 'Missing parameters']);
 }
+?>
