@@ -20,6 +20,7 @@ export function relayResultEntry() {
                 .then(data => {
                     document.querySelector('.team-name').value = data.team_name;
                     document.querySelector('.event-name').value = data.event_name;
+                    document.querySelector('.category-name').value= data.category_name;
                     form.style.display = 'grid';
                     blurContainer.style.display = 'block';
                 })

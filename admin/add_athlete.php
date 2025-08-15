@@ -5,11 +5,11 @@ include "../config.php";
 
 $message = '';
 
-    if(isset($_SESSION['athlete-msg'])){
-
-        $message=$_SESSION['athlete-msg'];
-
-        unset($_SESSION['athlete-msg']);
+    if (isset($_GET['status']) && $_GET['status'] === 'success') {
+        if (isset($_SESSION['athlete-msg'])) {
+            $message = $_SESSION['athlete-msg'];
+            unset($_SESSION['athlete-msg']);
+        }
     }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -84,37 +84,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     foreach ($validEvents as $event_id) {
                         if (in_array($event_id, $relayEventIds)) {
 
-                            $checkTeam = $pdo->prepare("SELECT team_id FROM relay_teams WHERE event_id = ? AND dept_id = ?");
-                            $checkTeam->execute([$event_id, $dep_id]);
+                            $checkTeam = $pdo->prepare("SELECT team_id FROM relay_teams WHERE event_id = ? AND dept_id = ? AND category_id=?");
+                            $checkTeam->execute([$event_id, $dep_id, $cat_id]);
                             $team = $checkTeam->fetch();
 
                             if ($team) {
                                 $relayTeamId = $team['team_id'];
                             } else {
-                                $createTeam = $pdo->prepare("INSERT INTO relay_teams (event_id, dept_id) VALUES (?, ?)");
-                                $createTeam->execute([$event_id, $dep_id]);
-                                $relayTeamId = $pdo->lastInsertId();
+                                $createTeam = $pdo->prepare(
+                                "INSERT INTO relay_teams (dept_id,event_id, category_id) VALUES (?, ?, ?)");
+                            $createTeam->execute([$dep_id,$event_id, $cat_id]);
+                            $relayTeamId = $pdo->lastInsertId();
                             }
-                            
-                                $getGender = $pdo->prepare("SELECT category_name FROM categories WHERE category_id = ?");
-                                $getGender->execute([$cat_id]);
-                                $category = $getGender->fetch(PDO::FETCH_ASSOC);
-                                $gender = strtolower(trim($category['category_name']));
                                 $memberCount = $pdo->prepare("
-                                        SELECT COUNT(*) 
-                                        FROM relay_team_members rtm
-                                        JOIN athletes a ON rtm.athlete_id = a.athlete_id
-                                        JOIN categories c ON a.category_id = c.category_id
-                                        WHERE rtm.team_id = ? AND c.category_id = ?
-                                ");
-                                $memberCount->execute([$relayTeamId, $cat_id]);
-                                $count = $memberCount->fetchColumn();
-                                echo $count; 
+                                SELECT COUNT(*) 
+                                FROM relay_team_members
+                                WHERE team_id = ?
+                            ");
+                            $memberCount->execute([$relayTeamId]);
+                            $count = $memberCount->fetchColumn(); 
                             if ($count < 5) {
                                 $addMember = $pdo->prepare("INSERT INTO relay_team_members (team_id, athlete_id) VALUES (?, ?)");
                                 $addMember->execute([$relayTeamId, $athleteId]);
                             } else {
-                                throw new Exception("This relay team already has 5 {$gender} participants.");
+                                throw new Exception("This relay team already has 5 participants.");
                             }
                            
                         }

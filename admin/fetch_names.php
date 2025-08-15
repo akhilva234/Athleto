@@ -7,10 +7,11 @@ include '../config.php';
 if (isset($_GET['athlete_id'], $_GET['event_id'])) {
     $athlete_id = (int) $_GET['athlete_id'];
     $event_id = (int) $_GET['event_id'];
-    $stmt = $pdo->prepare("SELECT a.first_name, a.last_name, e.event_name
+    $stmt = $pdo->prepare("SELECT a.first_name, a.last_name, e.event_name,c.category_name
     FROM participation p
     JOIN athletes a ON a.athlete_id = p.athlete_id
     JOIN events e ON e.event_id = p.event_id
+    JOIN categories c ON c.category_id=a.category_id
     WHERE p.athlete_id = :athlete_id AND p.event_id = :event_id");
     $stmt->execute(['athlete_id' => $athlete_id, 'event_id' => $event_id]);
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -18,7 +19,9 @@ if (isset($_GET['athlete_id'], $_GET['event_id'])) {
     if ($data) {
         echo json_encode([
             'athlete_name' => $data['first_name'] . ' ' . $data['last_name'],
-            'event_name' => $data['event_name']
+            'event_name' => $data['event_name'],
+            'category_name' =>$data['category_name']
+
         ]);
     } else {
         echo json_encode(['error' => 'No data found']);

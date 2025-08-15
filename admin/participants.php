@@ -103,11 +103,12 @@ ORDER BY
         <h3 class="result-form-head">Mark Result</h3>
         <div class="modal-container">
         <form action="" class="result-form" method='post'>
-            <input type="hidden" class="athlete-id" name="athleteid">
+            <input type="number" class="athlete-id input-style" name="athleteid" readonly>
             <input type="hidden" class="event-id " name="eventid">
 
             <input type="text" class="athlete-name input-style" name="athelete_name" readonly><br>
             <input type="text" class="event-name input-style" name="event_name" readonly><br>
+            <input type="text" class="category-name input-style" name="category_name" readonly><br>
 
                 <label>Position:</label>
                 <select name="position" required>

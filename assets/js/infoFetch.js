@@ -19,6 +19,7 @@ export function resultEntry() {
                 .then(data => {
                     document.querySelector('.athlete-name').value = data.athlete_name;
                     document.querySelector('.event-name').value = data.event_name;
+                     document.querySelector('.category-name').value= data.category_name;
                     form.style.display = 'grid';
                     blurContainer.style.display = 'block';
                 })

@@ -64,15 +64,21 @@
         </tbody>
     </table>
     </div>
+     <?php if(isset($_SESSION['result-add-msg'])):?>
+                <div class="success-msg"><?=htmlspecialchars($_SESSION['result-add-msg'])?>
+            </div>
+            <?php unset($_SESSION['result-add-msg'])?>
+          <?php endif;?>  
       <div class="result-form-container modal">
         <h3 class="result-form-head">Mark Result</h3>
         <div class="modal-container">
         <form action="" class="result-form" method='post'>
-            <input type="hidden" class="team-id" name="teamid">
+            <input type="number" class="team-id input-style" name="teamid">
             <input type="hidden" class="event-id " name="eventid">
 
             <input type="text" class="team-name input-style" name="team_name" readonly><br>
             <input type="text" class="event-name input-style" name="event_name" readonly><br>
+            <input type="text" class="category-name input-style" name="category_name" readonly><br>
 
                 <label>Position:</label>
                 <select name="position" required>
@@ -89,4 +95,5 @@
         </div>
 </body>
 <script type="module" src="../assets/js/relayInfoFetch.js"></script>
+<script src="../assets/js/messagePopup.js"></script>
 </html>
