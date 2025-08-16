@@ -1,5 +1,6 @@
 
 <?php
+ob_start();
      require_once "../session_check.php";
     include "../config.php";
     $user= $_SESSION['user'];
@@ -47,7 +48,7 @@
                  <p class="add-phrase">
                     <i class="fas fa-plus-circle"></i>
                     Add
-                </p><select name="Add-container" class="action-select" value="" >
+                </p><br><select name="Add-container" class="action-select" value="" >
                     <option value="">-- Select Action --</option>
                 <option value="?page=add_user" class="option-adduser">
                     <span class="add-user-container">User</span>
@@ -66,10 +67,6 @@
                 </option>
             </select>
             </div>
-            <span class="manage-results-container font"><a href="?page=manage_results">
-                <i class="fas fa-medal"></i>
-                Results</a>
-            </span>
              <div class="view-atheletes-container select-container font">
                 <i class="fas fa-running"></i>
                 Participants
@@ -83,6 +80,15 @@
                 </option>
                 </select>
             </div>
+              <div class="manage-results-container select-container font">
+        <i class="fas fa-medal"></i>
+        Results
+        <select name="results-container" class="action-select">
+            <option value="">-- Select List --</option>
+            <option value="?page=manage_results">Individual Results</option>
+            <option value="?page=manage_relay_results">Relay Results</option>
+        </select>
+        </div>
               <span class="Championships-container font"><a href="?page=championships">
                <i class="fas fa-trophy"></i>
                 Championships
@@ -99,6 +105,7 @@
                 'add_department' => 'add_department.php',
                 'athletes_info' => '../common_pages/athletes_info.php',
                 'manage_results' => '../common_pages/manage_results.php',
+                'manage_relay_results' => '../common_pages/manage_relay_results.php',
                 'participants' => 'participants.php',
                 'relay' => '../common_pages/relay.php',
                 'championships' => '../common_pages/championships.php'
@@ -123,5 +130,7 @@
     </div>
      <script src="../assets/js/pageLoader.js"></script>
 </body>
- 
+ <?php
+ob_end_flush(); // <-- Sends the buffered output
+?>
 </html>

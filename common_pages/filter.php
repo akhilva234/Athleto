@@ -38,6 +38,10 @@
         <div class="dropdown-content event-content">
              <input type="text" class="dropdown-search" placeholder="Search events...">
             <?php foreach ($events as $event): ?>
+                <?php
+
+                     if ($filter_type === 'individual' && $event['is_relay'] === 1) continue;
+                    ?>
                 <label>
                     <input type="checkbox" class="event-checkbox" value="<?= htmlspecialchars($event['event_id']) ?>">
                     <?= htmlspecialchars($event['event_name']) ?>

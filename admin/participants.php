@@ -5,10 +5,6 @@
             }
     include_once "../config.php";
     $user=$_SESSION['user'];
-    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-    header("Cache-Control: post-check=0, pre-check=0", false); // for IE
-    header("Pragma: no-cache");
-    header("Expires: 0");
 
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -50,12 +46,14 @@ JOIN
     participation p ON a.athlete_id = p.athlete_id
 JOIN 
     events e ON p.event_id = e.event_id
+ WHERE e.is_relay=0   
 ORDER BY 
     a.athlete_id
 ");
     ?>
     <br>
-     <?php include_once "../common_pages/filter.php"?>
+   <?php $filter_type = 'individual'; ?>
+     <?php include_once "../common_pages/filter.php";?>
     <div class="participants-table-container table-whole-container">
         <table class="participants-table">
             <thead>

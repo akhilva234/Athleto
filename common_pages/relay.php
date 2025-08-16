@@ -38,6 +38,7 @@
 
     $relayParticipants=$pdo->query($sql);
 ?>
+<br>
     <div class="participants-table-container table-whole-container">
         <table class="participants-table">
         <thead>
