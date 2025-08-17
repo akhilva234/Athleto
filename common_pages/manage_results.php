@@ -18,8 +18,8 @@ if (!isset($_SESSION['user'])) {
      <link rel="stylesheet" href="../assets/css/common.css">
       <link rel="stylesheet" href="../assets/css/common_css/tables.css">
 </head>
-<body>
-    <h2>Results</h2>
+<body data-view="results">
+    <h2>Individual Results</h2>
     <?php
     try{
          $results=$pdo->query("SELECT  
@@ -30,6 +30,7 @@ if (!isset($_SESSION['user'])) {
     d.dept_name,
     c.category_name,
     e.event_name,
+    e.event_id,
     position,
     u.username,
     recorded_at
@@ -44,6 +45,9 @@ if (!isset($_SESSION['user'])) {
         echo "Failed:".$e->getMessage();
     }  
     ?>
+    <br>
+    <?php $filter_type = 'individual'; ?>
+     <?php include_once "../common_pages/filter.php";?>
     <div class="result-table-container table-whole-container">
         <table class="result-table">
             <thead>
@@ -63,7 +67,7 @@ if (!isset($_SESSION['user'])) {
              <?php $count=1;?>
             <tbody>
                 <?php foreach($results as $result):?>
-                <tr>
+                <tr id="row-<?= $result['athlete_id'] . '-' . $result['event_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
                     <td><span class="chest-no-tr">
                         <?=htmlspecialchars($result['athlete_id'])?>

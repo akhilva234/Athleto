@@ -39,6 +39,7 @@ if ($chest_no !== '') {
     $params[] = "%$chest_no%";
 }
 
+$where[] = "e.is_relay = 0";
 
 $whereSql = $where ? 'WHERE ' . implode('AND ', $where) : '';
 

@@ -73,3 +73,34 @@ export function renderAthletesTable(data) {
         deleteWhole();
     }
 }
+
+export function renderResultsTable(data){
+
+     const tableBody = document.querySelector('.result-table tbody');
+    tableBody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="9">No results found</td></tr>';
+        return;
+    }
+
+    let count = 1;
+    data.forEach(athlete => {
+        const row = document.createElement('tr');
+        row.id = `row-${athlete.athlete_id}-${athlete.event_id}`; 
+        row.innerHTML = `
+            <td>${count++}</td>
+            <td><span class="chest-no-tr">${athlete.athlete_id}</span></td>
+            <td>${athlete.first_name} ${athlete.last_name}</td>
+            <td>${athlete.category_name}</td>
+            <td>${athlete.event_name}</td>
+            <td>${athlete.position}</td>
+            <td>${athlete.dept_name}</td>
+            <td>${athlete.year}</td>
+            <td>${athlete.username}</td>
+            <td>${athlete.recorded_at}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+}

@@ -26,12 +26,14 @@
         e.event_name,
         e.event_id,
         d.dept_name,
+        c.category_name,
         GROUP_CONCAT(CONCAT(a.first_name, ' ', a.last_name) SEPARATOR ', ') AS team_members
     FROM relay_teams rt
     JOIN events e ON rt.event_id = e.event_id
     JOIN departments d ON rt.dept_id = d.dept_id
     JOIN relay_team_members rtm ON rt.team_id = rtm.team_id
     JOIN athletes a ON rtm.athlete_id = a.athlete_id
+    JOIN categories c ON rt.category_id=c.category_id
     WHERE e.is_relay = 1
     GROUP BY rt.team_id, e.event_name, d.dept_name
     ORDER BY e.event_id, rt.team_id";
@@ -45,6 +47,7 @@
             <tr>
                 <th>Team Id</th>
                 <th>Event Name</th>
+                <th>Category</th>
                 <th>Department</th>
                 <th>Team Members</th>
                 <th>Result</th>
@@ -55,6 +58,7 @@
             <tr>
                 <td><?=htmlspecialchars($relay['team_id'])?></td>
                  <td><?=htmlspecialchars($relay['event_name'])?></td>
+                 <td><?=htmlspecialchars($relay['category_name'])?></td>
                  <td><?=htmlspecialchars($relay['dept_name'])?></td>
                  <td><?=htmlspecialchars($relay['team_members'])?></td>
                  <td><button class="result-entry-btn" data-team-id="<?=$relay['team_id']?>"
