@@ -23,7 +23,7 @@ if (!isset($_SESSION['user'])) {
      <link rel="stylesheet" href="../assets/css/common.css">
       <link rel="stylesheet" href="../assets/css/common_css/tables.css">
 </head>
-<body>
+<body data-view="relayResults">
     <h2>Relay Results</h2>
     <?php
     try{
@@ -51,6 +51,8 @@ if (!isset($_SESSION['user'])) {
         echo "Failed:".$e->getMessage();
     }  
     ?>
+    <br>
+    <?php include_once '../common_pages/filter.php' ;?>
     <div class="result-table-container table-whole-container">
         <table class="result-table">
             <thead>
@@ -69,7 +71,7 @@ if (!isset($_SESSION['user'])) {
              <?php $count=1;?>
             <tbody>
                 <?php foreach($results as $result):?>
-                <tr>
+                <tr id="row-<?= $result['team_id'] . '-' . $result['event_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
                     <td><span class="chest-no-tr">
                         <?=htmlspecialchars($result['team_id'])?>

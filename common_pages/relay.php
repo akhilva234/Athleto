@@ -16,7 +16,7 @@
      <link rel="stylesheet" href="../assets/css/result_form.css">
      <link rel="stylesheet" href="../assets/css/common_css/message.css">
 </head>
-<body>
+<body data-view="relays">
      <div class="whole-blur-container"></div>
      <h2>Relay Participants</h2>
         <?php  echo "user:".$user;
@@ -41,10 +41,12 @@
     $relayParticipants=$pdo->query($sql);
 ?>
 <br>
+<?php include_once '../common_pages/filter.php' ;?>
     <div class="participants-table-container table-whole-container">
         <table class="participants-table">
         <thead>
             <tr>
+                <th>SI No.</th>
                 <th>Team Id</th>
                 <th>Event Name</th>
                 <th>Category</th>
@@ -53,9 +55,11 @@
                 <th>Result</th>
             </tr>
         </thead>
+        <?php $count=1;?>
         <tbody>
             <?php foreach($relayParticipants as $relay) :?>
-            <tr>
+            <tr id="row-<?= $relay['team_id'] . '-' . $relay['event_id']?>">
+                <td><?=htmlspecialchars($count++)?></td>
                 <td><?=htmlspecialchars($relay['team_id'])?></td>
                  <td><?=htmlspecialchars($relay['event_name'])?></td>
                  <td><?=htmlspecialchars($relay['category_name'])?></td>

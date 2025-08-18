@@ -1,4 +1,4 @@
-import { renderParticipantsTable,renderAthletesTable,renderResultsTable } from "./rendertable.js";
+import { renderParticipantsTable,renderAthletesTable,renderResultsTable,renderRelayTable,relayResultsTable } from "./rendertable.js";
 
 const currentView = document.body.dataset.view || 'participants';
 document.querySelectorAll('.dropdown-checkbox').forEach(dropdown => {
@@ -50,7 +50,8 @@ export async function loadAthletes() {
             dept: getCheckedValues('dept-checkbox').join(','),
             event: getCheckedValues('event-checkbox').join(','),
             category: getCheckedValues('cat-checkbox').join(','),
-            chest_no: chestNo
+            chest_no: chestNo,
+            view:currentView
         });
 
     const response = await fetch('../common_pages/filter_athletes.php?' + params.toString());
@@ -66,9 +67,17 @@ export async function loadAthletes() {
     else if(currentView==='athletes'){
         renderAthletesTable(data);
     }
+    else if(currentView==='relays'){
+        renderRelayTable(data);
+    }
     else if(currentView==='results'){
         const data2= await response2.json();
         renderResultsTable(data2);
+    }
+    else if(currentView==='relayResults'){
+        const data2= await response2.json();
+        console.log("relay results");
+        relayResultsTable(data);
     }
     
 }

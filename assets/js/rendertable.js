@@ -1,6 +1,7 @@
 import { resultEntry } from "./infoFetch.js";
 import { deleteEntry } from "./delete.js";
 import { deleteWhole } from "./delete_whole.js";
+import { relayResultEntry } from "./relayInfoFetch.js";
 
 export function renderParticipantsTable(data) {
     const tableBody = document.querySelector('.participants-table tbody');
@@ -30,7 +31,7 @@ export function renderParticipantsTable(data) {
     });
 
     resultEntry();
-    deleteEntry();
+    //deleteEntry();
 
 }
 export function renderAthletesTable(data) {
@@ -97,6 +98,65 @@ export function renderResultsTable(data){
             <td>${athlete.position}</td>
             <td>${athlete.dept_name}</td>
             <td>${athlete.year}</td>
+            <td>${athlete.username}</td>
+            <td>${athlete.recorded_at}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+}
+
+export function renderRelayTable(data){
+     const tableBody = document.querySelector('.participants-table tbody');
+    tableBody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="9">No athletes found</td></tr>';
+        return;
+    }
+
+    let count = 1;
+    data.forEach(athlete => {
+        const row = document.createElement('tr');
+        row.id = `row-${athlete.team_id}-${athlete.event_id}`; 
+        row.innerHTML = `
+            <td>${count++}</td>
+            <td><span class="chest-no-tr">${athlete.team_id}</span></td>
+            <td>${athlete.event_name}</td>
+            <td>${athlete.category_name}</td>
+            <td>${athlete.dept_name}</td>
+            <td>${athlete.team_members}</td>
+            <td><button class="result-entry-btn" data-team-id="${athlete.team_id}" data-event-id="${athlete.event_id}">
+                    Enter Result</button></td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    relayResultEntry();
+}
+
+export function relayResultsTable(data){
+
+     const tableBody = document.querySelector('.result-table tbody');
+    tableBody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="9">No results found</td></tr>';
+        return;
+    }
+
+    let count = 1;
+    data.forEach(athlete => {
+        const row = document.createElement('tr');
+        row.id = `row-${athlete.team_id}-${athlete.event_id}`; 
+        row.innerHTML = `
+            <td>${count++}</td>
+            <td><span class="chest-no-tr">${athlete.team_id}</span></td>
+            <td>${athlete.dept_name}</td>
+             <td>${athlete.team_members}</td>
+            <td>${athlete.category_name}</td>
+            <td>${athlete.event_name}</td>
+            <td>${athlete.position}</td>
             <td>${athlete.username}</td>
             <td>${athlete.recorded_at}</td>
         `;
