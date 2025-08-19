@@ -1,11 +1,8 @@
 <?php
     require_once "../session_check.php";
+    include_once "../nocache.php";
     include_once "../config.php";
     $user=$_SESSION['user'];
-if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
-    exit;
-}
 ?>
 
 
@@ -87,5 +84,6 @@ if (!isset($_SESSION['user'])) {
             </tbody>
         </table>
     </div>
+    <script src="../assets/js/pageReload.js"></script>
 </body>
 </html>

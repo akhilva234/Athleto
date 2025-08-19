@@ -1,15 +1,11 @@
 <?php
     require_once "../session_check.php";
+   include_once "../nocache.php";
      if(isset($_POST['resultadd'])){
                 require '../common_pages/add_result.php';
             }
     include_once "../config.php";
     $user=$_SESSION['user'];
-
-if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
-    exit;
-}
 ?>
 
 <!DOCTYPE html>
@@ -121,6 +117,7 @@ ORDER BY
         </form>
         </div>
         </div>
+        <script src="../assets/js/pageReload.js"></script>
 </body>
 <script src="../assets/js/infoFetch.js" type="module"></script>
 <script src="../assets/js/messagePopup.js"></script>

@@ -1,5 +1,6 @@
 <?php
       require_once "../session_check.php";
+      include_once "../nocache.php";
         include "../config.php";
         $user= $_SESSION['user'];
 
@@ -194,5 +195,6 @@
         </tbody>
     </table>
    </div> 
+   <script src="../assets/js/pageReload.js"></script>
 </body>
 </html>

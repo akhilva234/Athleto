@@ -1,3 +1,10 @@
+<?php
+     require_once "../session_check.php";
+    include_once "../nocache.php";
+    include "../config.php";
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,5 +16,6 @@
     <h2>Home Page</h2>
 <p>This is the Home page content displayed on the right.</p>
 
+<script src="../assets/js/pageReload.js"></script>
 </body>
 </html>

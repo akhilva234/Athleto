@@ -108,6 +108,7 @@ try {
             e.event_id,
             e.event_name,
             d.dept_name,
+            c.category_name,
             GROUP_CONCAT(a.first_name, ' ', a.last_name) as team_members,
             u.username
         FROM results r

@@ -93,6 +93,12 @@ ob_start();
                <i class="fas fa-trophy"></i>
                 Championships
             </a></span>
+            <span class="logout-container font">
+                <a href="?page=logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </span>
         </div>
         <div class="right-body content" >
         <?php
@@ -108,17 +114,17 @@ ob_start();
                 'manage_relay_results' => '../common_pages/manage_relay_results.php',
                 'participants' => 'participants.php',
                 'relay' => '../common_pages/relay.php',
-                'championships' => '../common_pages/championships.php'
+                'championships' => '../common_pages/championships.php',
+                'logout' => '../logout.php'  
             ];
-            if (isset($_GET['page'])) {
-            $page = $_GET['page'];
+            
+            $page = $_GET['page'] ?? 'adm_home';
 
             if (array_key_exists($page, $allowed) && file_exists($allowed[$page])) {
                 include $allowed[$page];
             } else {
                 $_SESSION['page_error'] = "Page not found";
             }
-        }
 
               if(isset($_SESSION['page_error'])){
                 $page_error=$_SESSION['page_error'];
@@ -129,8 +135,9 @@ ob_start();
         </div>
     </div>
      <script src="../assets/js/pageLoader.js"></script>
+     <script src="../assets/js/pageReload.js"></script>
 </body>
  <?php
-ob_end_flush(); // <-- Sends the buffered output
+ob_end_flush(); 
 ?>
 </html>

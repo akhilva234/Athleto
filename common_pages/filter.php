@@ -41,6 +41,7 @@
                 <?php
 
                      if ($filter_type === 'individual' && $event['is_relay'] === 1) continue;
+                     if($filter_type === 'relay' && $event['is_relay'] === 0) continue;
                     ?>
                 <label>
                     <input type="checkbox" class="event-checkbox" value="<?= htmlspecialchars($event['event_id']) ?>">

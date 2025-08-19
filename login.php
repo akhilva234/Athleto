@@ -1,6 +1,6 @@
 
 <?php
-    require_once "session_check.php";
+   require_once "session_check.php";
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -110,5 +110,6 @@
  <footer>
         <p>&copy; 2023 Athleto Sports Management. All rights reserved.</p>
     </footer>
+    <script src="./assets/js/pageReload.js"></script>
 </body>
 </html>    

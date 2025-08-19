@@ -1,5 +1,6 @@
 <?php
     require_once "../session_check.php";
+   include_once "../nocache.php";
     include "../config.php";
      if(isset($_POST['resultadd'])){
                 require '../common_pages/relayResultAdd.php';
@@ -41,6 +42,7 @@
     $relayParticipants=$pdo->query($sql);
 ?>
 <br>
+<?php $filter_type = 'relay'; ?>
 <?php include_once '../common_pages/filter.php' ;?>
     <div class="participants-table-container table-whole-container">
         <table class="participants-table">
@@ -102,6 +104,7 @@
         </form>
         </div>
         </div>
+        <script src="../assets/js/pageReload.js"></script>
 </body>
 <script type="module" src="../assets/js/relayInfoFetch.js"></script>
 <script src="../assets/js/messagePopup.js"></script>

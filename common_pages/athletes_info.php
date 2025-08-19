@@ -1,6 +1,7 @@
 <?php
 
       require_once "../session_check.php";
+      include_once "../nocache.php";
     include "../config.php";
     $user= $_SESSION['user'];
 
@@ -91,6 +92,7 @@
         
     </div>
 </div>
+<script src="../assets/js/pageReload.js"></script>
 </body>
 <script src="../assets/js/limitCheck.js" type="module"></script>
 <script src="../assets/js/delete_whole.js" type="module"></script>

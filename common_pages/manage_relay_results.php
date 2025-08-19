@@ -1,11 +1,8 @@
 <?php
     require_once "../session_check.php";
+   include_once "../nocache.php";
     include_once "../config.php";
     $user=$_SESSION['user'];
-   /* header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-    header("Cache-Control: post-check=0, pre-check=0", false); // for IE
-    header("Pragma: no-cache");
-    header("Expires: 0");*/
 
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -32,6 +29,7 @@ if (!isset($_SESSION['user'])) {
         d.dept_name,
         c.category_name,
         e.event_name,
+        e.event_id,
         GROUP_CONCAT(CONCAT(a.first_name,' ',a.last_name) SEPARATOR ', ') AS athletes,
         r.position,
         u.username,
@@ -52,6 +50,7 @@ if (!isset($_SESSION['user'])) {
     }  
     ?>
     <br>
+    <?php $filter_type = 'relay'; ?>
     <?php include_once '../common_pages/filter.php' ;?>
     <div class="result-table-container table-whole-container">
         <table class="result-table">
@@ -71,7 +70,7 @@ if (!isset($_SESSION['user'])) {
              <?php $count=1;?>
             <tbody>
                 <?php foreach($results as $result):?>
-                <tr id="row-<?= $result['team_id'] . '-' . $result['event_id']?>">
+                      <tr id="row-<?= $result['team_id'] . '-' . $result['event_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
                     <td><span class="chest-no-tr">
                         <?=htmlspecialchars($result['team_id'])?>
@@ -88,6 +87,7 @@ if (!isset($_SESSION['user'])) {
             </tbody>
         </table>
     </div>
+    <script src="../assets/js/pageReload.js"></script>
 </body>
 <script src="../assets/js/infoFetch.js" type="module"></script>
 </html>

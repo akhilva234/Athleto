@@ -1,5 +1,6 @@
 <?php
     require_once "../session_check.php";
+    include_once "../nocache.php";
     $user= $_SESSION['user'];
 include "../config.php";
 
@@ -261,6 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     <script type="module" src="../assets/js/maxEventRestrict.js"></script>
     <script src="../assets/js/eventSearch.js"></script>
+    <script src="../assets/js/pageReload.js"></script>
 </body>
 </html>
 

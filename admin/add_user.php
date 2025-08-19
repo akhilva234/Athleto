@@ -1,6 +1,7 @@
 
 <?php
     require_once "../session_check.php";
+   include_once "../nocache.php";
     include "../config.php";
     $user= $_SESSION['user'];
 
@@ -147,5 +148,6 @@
             <p class="success-message"><?php echo nl2br(htmlspecialchars($message)); ?></p>
         <?php endif; ?>
     </div>
+    <script src="../assets/js/pageReload.js"></script>
 </body>
 </html>

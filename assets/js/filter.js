@@ -77,7 +77,7 @@ export async function loadAthletes() {
     else if(currentView==='relayResults'){
         const data2= await response2.json();
         console.log("relay results");
-        relayResultsTable(data);
+        relayResultsTable(data2);
     }
     
 }
