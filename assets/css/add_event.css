@@ -1,0 +1,22 @@
+.add-btn{
+      padding: .7rem;
+    min-width: 70px;
+     border-radius: 1rem;
+     margin-left: 2rem;
+    border: none;
+    outline: none;
+    background-color:  #1f2937;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+     transition: all .3s ease;
+}
+
+.add-btn:hover{
+    
+    transform: scale(1.1);
+}
+
+.eventmodal{
+  display:block;
+}

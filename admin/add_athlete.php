@@ -1,7 +1,6 @@
 <?php
     require_once "../session_check.php";
     include_once "../nocache.php";
-    $user= $_SESSION['user'];
 include "../config.php";
 
 $message = '';

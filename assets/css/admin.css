@@ -60,6 +60,7 @@ select{
     border: none;
     width: 70px;
     margin-left: 5px;
+    border-radius: 1rem;
 }
 
 
