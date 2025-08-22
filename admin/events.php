@@ -6,6 +6,13 @@
     if(isset($_POST['eventadd'])){
         require 'add_events.php';
     }
+
+    $message='';
+        if (isset($_SESSION['event-msg'])) {
+            $message = $_SESSION['event-msg'];
+            unset($_SESSION['event-msg']);
+        }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +26,7 @@
      <link rel="stylesheet" href="../assets/css/common_css/message.css">
      <link rel="stylesheet" href="../assets/css/add_event.css">
 </head>
-<body>
+<body data-view="events">
     <div class="whole-blur-container"></div>
     <h2>Events</h2>
     <?php
@@ -88,11 +95,21 @@
                     </label>
                 <?php endforeach;?>    
             </div>
+            <br>
+            <label>
+            <input type="checkbox" name="is_relay" value="1"> Is Relay
+            </label>
             <input type="submit" class="submit-btn btns" name="eventadd" value="Add">
             <button type="button" class="cancel-btn btns">Cancel</button>
         </form>
         </div>
         </div>
-</div>
+        <?php if (!empty($message)): ?>
+                    <div class="success-message <?= (strpos($message, 'Failed') !== false || strpos($message, 'Invalid') !== false) ? 'error' : '' ?>">
+                        <?= htmlspecialchars($message) ?>
+                    </div>
+        <?php endif; ?>
 </body>
+<script src="../assets/js/addCommon.js"></script>
+<script src="../assets/js/deleteCommon.js"></script>
 </html>

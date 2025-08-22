@@ -59,7 +59,7 @@ ob_start();
                 <option value="?page=events" class="option-addevent">
                      <span class="add-events-container">Event</span>
                 </option>
-                <option value="?page=add_department" class="option-add-department">
+                <option value="?page=departments" class="option-add-department">
                     <span class="add-department-container">Department</span>
                 </option>
                 <option value="?page=add_template" class="option-add-template">
@@ -108,7 +108,7 @@ ob_start();
                 'add_user' => 'add_user.php',
                 'add_athlete' => 'add_athlete.php',
                 'events' => 'events.php',
-                'add_department' => 'add_department.php',
+                'departments' => 'departments.php',
                 'athletes_info' => '../common_pages/athletes_info.php',
                 'manage_results' => '../common_pages/manage_results.php',
                 'manage_relay_results' => '../common_pages/manage_relay_results.php',
