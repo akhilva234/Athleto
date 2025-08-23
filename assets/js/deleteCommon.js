@@ -29,7 +29,7 @@ function deleteEvent(){
                                 row.remove();
                             }, 500);                   
                     }else{
-                          alert("Failed to delete. Try again.");
+                          alert("Can't delete.Athletes registered in the event");
                     }
                 }).catch(() => alert('Error loading data'));
             }
@@ -65,7 +65,7 @@ function deleteDept(){
                                 row.remove();
                             }, 500);                   
                     }else{
-                          alert("Failed to delete. Try again.");
+                          alert("Can't delete. Athletes registered from the department ");
                     }
                 }).catch(() => alert('Error loading data'));
             }

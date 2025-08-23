@@ -15,7 +15,7 @@
             $ifExists = $pdo->prepare("SELECT 1 FROM results WHERE relay_team_id = ? ");
             $ifExists->execute([$team_id]);
             if ($ifExists->fetch()) {
-                    $_SESSION['result-add-msg'] = "Position for event already secured by this team.";
+                    $_SESSION['result-add-msg'] = "Failed: Position for event already secured by this team.";
                     header("Location: adm_dashboard.php?page=relay&status=error");
                     exit;
                 }
@@ -30,7 +30,7 @@
 
 
                 if ($positionExists->fetch()) {
-                        $_SESSION['result-add-msg'] = "That position is already taken for this event.";
+                        $_SESSION['result-add-msg'] = "Failed: That position is already taken for this event.";
                         header("Location: adm_dashboard.php?page=relay&status=error");
                         exit;
                     }  

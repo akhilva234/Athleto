@@ -19,7 +19,7 @@ include_once "../config.php";
                  $ifExists = $pdo->prepare("SELECT 1 FROM results WHERE athlete_id = ? AND event_id = ?");
                 $ifExists->execute([$athlete_id, $event_id]);
                 if ($ifExists->fetch()) {
-                    $_SESSION['result-add-msg'] = "Position for event already secured by this athlete.";
+                    $_SESSION['result-add-msg'] = "Failed:Position for event already secured by this athlete.";
                     header("Location: adm_dashboard.php?page=participants&status=error");
                     exit;
                 }
@@ -32,7 +32,7 @@ include_once "../config.php";
                     $positionExists->execute([$event_id, $position, $athleteCategory]);
 
                     if ($positionExists->fetch()) {
-                        $_SESSION['result-add-msg'] = "That position is already taken for this event in the selected category.";
+                        $_SESSION['result-add-msg'] = "Failed:position is already taken for this event in the selected category.";
                         header("Location: adm_dashboard.php?page=participants&status=error");
                         exit;
                     }

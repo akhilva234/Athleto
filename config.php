@@ -52,7 +52,7 @@ try {
 
         "CREATE TABLE IF NOT EXISTS events (
             event_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-            event_name VARCHAR(50) NOT NULL,
+            event_name VARCHAR(50) NOT NULL UNIQUE,
             is_relay BOOLEAN DEFAULT FALSE
         )",
             "CREATE TABLE IF NOT EXISTS event_categories (

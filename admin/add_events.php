@@ -11,7 +11,8 @@
 
 
         if(empty($event)|| empty($cats)){
-            $_SESSION['event-msg']="All fields are necessary";
+            $_SESSION['event-msg']="Failed:All fields are necessary";
+            header("Location: adm_dashboard.php?page=events&status=failure");
             exit;
         }
         try{
@@ -37,7 +38,7 @@
         }catch(PDOException $e){
             if (isset($e->errorInfo[1]) && $e->errorInfo[1]== 1062) { 
 
-            $_SESSION['event-msg']="Duplicate event found. Insertion skipped";
+            $_SESSION['event-msg']="Failed:Duplicate event found. Insertion skipped";
         }else{
             $_SESSION['event-msg']="Failed To add Event".$e->getMessage();
         }

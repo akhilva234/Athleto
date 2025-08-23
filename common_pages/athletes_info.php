@@ -34,10 +34,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="../assets/js/toast.js"></script>
+    <link rel="stylesheet" href="../assets/css/common.css">
     <link rel="stylesheet" href="../assets/css/common_css/tables.css">
     <link rel="stylesheet" href="../assets/css/update_form.css">
-    <link rel="stylesheet" href="../assets/css/common_css/message.css">
     <link rel="stylesheet" href="../assets/css/athlete_info.css">
 </head>
 <body class="hide-events-filter" data-view="athletes">
@@ -82,11 +85,15 @@
             </tbody>
         </table>
     </div>
-     <?php if(isset($_SESSION['result-add-msg'])):?>
-                <div class="success-msg"><?=htmlspecialchars($_SESSION['result-add-msg']) ?><?=htmlspecialchars($message)?>
-            </div>
-            <?php unset($_SESSION['result-add-msg'])?>
-     <?php endif;?>  
+    <?php if (!empty($message)): ?>
+    <script>
+    <?php if (strpos($message, 'Failed') !== false || strpos($message, 'Invalid') !== false): ?>
+        toastr.error(<?= json_encode($message) ?>);
+    <?php else: ?>
+        toastr.success(<?= json_encode($message) ?>);
+    <?php endif; ?>
+    </script>
+<?php endif; ?>
     <div id="editAthleteModal">
     <div class="modal-content" id="editAthleteContent">
         
@@ -97,5 +104,4 @@
 <script src="../assets/js/limitCheck.js" type="module"></script>
 <script src="../assets/js/delete_whole.js" type="module"></script>
 <script src="../assets/js/update_form.js" type="module"></script>
-<script src="../assets/js/messagePopup.js"></script>
 </html>

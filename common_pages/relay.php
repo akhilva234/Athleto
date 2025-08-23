@@ -12,10 +12,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="../assets/js/toast.js"></script>
      <link rel="stylesheet" href="../assets/css/common.css">
      <link rel="stylesheet" href="../assets/css/common_css/tables.css">
      <link rel="stylesheet" href="../assets/css/result_form.css">
-     <link rel="stylesheet" href="../assets/css/common_css/message.css">
 </head>
 <body data-view="relays">
      <div class="whole-blur-container"></div>
@@ -75,11 +78,16 @@
         </tbody>
     </table>
     </div>
-     <?php if(isset($_SESSION['result-add-msg'])):?>
-                <div class="success-msg"><?=htmlspecialchars($_SESSION['result-add-msg'])?>
-            </div>
-            <?php unset($_SESSION['result-add-msg'])?>
-          <?php endif;?>  
+     <script>
+          <?php if(isset($_SESSION['result-add-msg'])):?>
+            <?php if (strpos($_SESSION['result-add-msg'], 'Failed') !== false || strpos($_SESSION['result-add-msg'], 'Invalid') !== false): ?>
+        toastr.error(<?= json_encode($_SESSION['result-add-msg']) ?>);
+    <?php else: ?>
+        toastr.success(<?= json_encode($_SESSION['result-add-msg']) ?>);
+    <?php endif; ?>
+    <?php unset($_SESSION['result-add-msg']);?>
+          <?php endif;?>
+    </script> 
       <div class="result-form-container modal">
         <h3 class="result-form-head">Mark Result</h3>
         <div class="modal-container">
@@ -107,5 +115,4 @@
         <script src="../assets/js/pageReload.js"></script>
 </body>
 <script type="module" src="../assets/js/relayInfoFetch.js"></script>
-<script src="../assets/js/messagePopup.js"></script>
 </html>

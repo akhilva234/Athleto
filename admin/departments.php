@@ -3,7 +3,15 @@
     require_once "../session_check.php";
      include_once "../nocache.php";
     include "../config.php";
+    if(isset($_POST['deptadd'])){
+        require 'add_dept.php';
+    }
 
+     $message='';
+        if (isset($_SESSION['dept-msg'])) {
+            $message = $_SESSION['dept-msg'];
+            unset($_SESSION['dept-msg']);
+        }
 ?>
 
 <!DOCTYPE html>
@@ -12,6 +20,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="../assets/js/toast.js"></script>
     <link rel="stylesheet" href="../assets/css/common.css">
      <link rel="stylesheet" href="../assets/css/common_css/tables.css">
      <link rel="stylesheet" href="../assets/css/result_form.css">
@@ -65,22 +77,22 @@
         <h3 class="result-form-head">Add Department</h3>
         <div class="modal-container">
         <form action="" class="result-form" method='post'>
-            <input type="text" class="event-name input-style" name="event_name"><br>
-            <div class="category-container">
-                <?php foreach($categories as $cat): ?>
-                    <br><label>
-                        <input type="checkbox"
-                        name="cat_ids[]"
-                        value="<?=$cat['category_id']?>"><?=htmlspecialchars($cat['category_name'])?>
-                    </label>
-                <?php endforeach;?>    
-            </div>
+            <input type="text" class="dept-name input-style" name="dept_name" required><br> 
             <br>
-            <input type="submit" class="submit-btn btns" name="eventadd" value="Add">
+            <input type="submit" class="submit-btn btns" name="deptadd" value="Add">
             <button type="button" class="cancel-btn btns">Cancel</button>
         </form>
         </div>
         </div>
+        <?php if (!empty($message)): ?>
+    <script>
+    <?php if (strpos($message, 'Failed') !== false || strpos($message, 'Invalid') !== false): ?>
+        toastr.error(<?= json_encode($message) ?>);
+    <?php else: ?>
+        toastr.success(<?= json_encode($message) ?>);
+    <?php endif; ?>
+    </script>
+<?php endif; ?>
 </body>
 <script src="../assets/js/addCommon.js"></script>
 <script src="../assets/js/deleteCommon.js"></script>

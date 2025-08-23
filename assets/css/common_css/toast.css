@@ -1,0 +1,40 @@
+/* Make toast match your app’s theme */
+
+/* Base toast box */
+#toast-container > .toast {
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 15px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  opacity: 0.95;
+}
+
+/* Success (match your submit-btn style maybe) */
+#toast-container > .toast-success {
+  background-color: #16a34a; /* green shade from your buttons */
+  color: #fff;
+}
+
+/* Error (match your error message style) */
+#toast-container > .toast-error {
+  background-color: #dc2626;
+  color: #fff;
+}
+
+/* Info */
+#toast-container > .toast-info {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+/* Warning */
+#toast-container > .toast-warning {
+  background-color: #d97706;
+  color: #fff;
+}
+
+/* Optional: progress bar color */
+#toast-container .toast-progress {
+  background: rgba(255, 255, 255, 0.7);
+}

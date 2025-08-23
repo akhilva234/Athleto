@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($athleteId) || empty($fname) || empty($lname) || empty($year) ||
         empty($depId) || empty($categoryId)) {
-        $_SESSION['athlete-msg'] = "All fields are required";
+        $_SESSION['athlete-msg'] = "Failed:All fields are required";
         header("Location: adm_dashboard.php?page=athletes_info&status=error");
         exit;
     } else {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if (empty($validEvents)) {
-            $_SESSION['athlete-msg'] = "No valid events selected.";
+            $_SESSION['athlete-msg'] = "Failed:No valid events selected.";
             header("Location: adm_dashboard.php?page=athletes_info&status=error");
             exit;
 
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $pdo->commit();
 
-                $_SESSION['result-add-msg'] = "Athlete and participation updated successfully";
+                $_SESSION['athlete-msg'] = "Athlete and participation updated successfully";
                 header("Location: adm_dashboard.php?page=athletes_info&status=success");
                 exit;
 
