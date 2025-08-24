@@ -12,6 +12,16 @@ $message = '';
         }
     }
 
+    $role = $_SESSION['role'];
+
+$redirects = [
+    'admin'   => 'adm_dashboard.php?page=add_athlete',
+    'faculty' => 'faculty_dashboard.php?page=add_athlete',
+    'captain' => 'captain_dashboard.php?page=add_athlete'
+];
+
+$redirectPage = $redirects[$role] ?? 'index.php';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $fname = ucwords(strtolower(trim($_POST['firstname'])));
@@ -107,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 $addMember = $pdo->prepare("INSERT INTO relay_team_members (team_id, athlete_id) VALUES (?, ?)");
                                 $addMember->execute([$relayTeamId, $athleteId]);
                             } else {
-                                throw new Exception("This relay team already has 5 participants.");
+                                throw new Exception("Failed:This relay team already has 5 participants.");
                             }
                            
                         }
@@ -116,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $pdo->commit();
                         if($completed){
                           $_SESSION['athlete-msg'] = "Athlete and participation successfully registered!";
-                            header("Location: adm_dashboard.php?page=add_athlete&status=success");
+                            header("Location: $redirectPage&status=success");
                             exit;
                         }
                     } catch (PDOException $e) {
@@ -142,6 +152,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Athlete</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="../assets/js/toast.js"></script>
     <link rel="stylesheet" href="../assets/css/add_athlete.css">
     <link rel="stylesheet" href="../assets/css/common.css">
     <link rel="stylesheet" href="../assets/css/common_css/form_common.css">
@@ -249,16 +263,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div>
                     <input type="submit" value="Add" name="submit" class="add-btn athlete-add-btn">
                 </div>
-
-                <?php if (!empty($message)): ?>
-                    <div class="success-message <?= (strpos($message, 'Failed') !== false || strpos($message, 'Invalid') !== false) ? 'error' : '' ?>">
-                        <?= htmlspecialchars($message) ?>
-                    </div>
-                <?php endif; ?>
-
             </form>
         </div>
     </div>
+        <?php if (!empty($message)): ?>
+    <script>
+        <?php if (strpos($message, 'Failed') !== false || strpos($message, 'Invalid') !== false): ?>
+            toastr.error(<?= json_encode($message) ?>);
+        <?php else: ?>
+            toastr.success(<?= json_encode($message) ?>);
+        <?php endif; ?>
+    </script>
+    <?php endif; ?>
+
     <script type="module" src="../assets/js/maxEventRestrict.js"></script>
     <script src="../assets/js/eventSearch.js"></script>
     <script src="../assets/js/pageReload.js"></script>

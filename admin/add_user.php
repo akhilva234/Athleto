@@ -5,7 +5,7 @@
     include "../config.php";
     $user= $_SESSION['user'];
 
-    $message = " ";
+    $message = '';
 
     if (isset($_SESSION['add_user_msg'])) {
     $message = $_SESSION['add_user_msg'];
@@ -17,12 +17,12 @@
 <?php
     
         if (isset($_GET['depstatus']) && $_GET['depstatus'] == 'failure') {
-             $message = "Please select a valid department.";
+             $message = "Failed:Please select a valid department.";
         }
 
         if (isset($_GET['passstatus']) && $_GET['passstatus'] == 'failure') {
 
-            $message ="Passwords do not match.";
+            $message ="Failed:Passwords do not match.";
             
         }
 
@@ -49,7 +49,7 @@
              $depCheck = $pdo->prepare("SELECT dept_id FROM departments WHERE dept_id = ?");
             $depCheck->execute([$dep_id]);
         if (!$depCheck->fetch()) {
-            $message = "Invalid Department selected.";
+            $message = "Failed:Invalid Department selected.";
         }
         else{
             
@@ -93,6 +93,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="../assets/js/toast.js"></script>
      <link rel="stylesheet" href="../assets/css/common.css">
     <link rel="stylesheet" href="../assets/css/user_add.css">
     <link rel="stylesheet" href="../assets/css/common_css/form_common.css">
@@ -144,10 +148,16 @@
            </div>
         </form>
         </div>
-          <?php if (!empty($message)): ?>
-            <p class="success-message"><?php echo nl2br(htmlspecialchars($message)); ?></p>
-        <?php endif; ?>
     </div>
+         <?php if (!empty($message)): ?>
+    <script>
+        <?php if (strpos($message, 'Failed') !== false || strpos($message, 'Invalid') !== false): ?>
+            toastr.error(<?= json_encode($message) ?>);
+        <?php else: ?>
+            toastr.success(<?= json_encode($message) ?>);
+        <?php endif; ?>
+    </script>
+    <?php endif; ?>
     <script src="../assets/js/pageReload.js"></script>
 </body>
 </html>

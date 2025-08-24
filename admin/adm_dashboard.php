@@ -106,7 +106,7 @@ ob_start();
                $allowed = [
                 'adm_home' => 'adm_home.php',
                 'add_user' => 'add_user.php',
-                'add_athlete' => 'add_athlete.php',
+                'add_athlete' => '../common_pages/add_athlete.php',
                 'events' => 'events.php',
                 'departments' => 'departments.php',
                 'athletes_info' => '../common_pages/athletes_info.php',

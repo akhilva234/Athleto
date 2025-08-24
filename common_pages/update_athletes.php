@@ -2,6 +2,15 @@
 require_once "../session_check.php";
 include "../config.php";
 $user = $_SESSION['user'];
+$role = $_SESSION['role'];
+
+$redirects = [
+    'admin'   => 'adm_dashboard.php?page=athletes_info',
+    'faculty' => 'faculty_dashboard.php?page=athletes_info',
+    'captain' => 'captain_dashboard.php?page=athletes_info'
+];
+
+$redirectPage = $redirects[$role] ?? 'index.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $athleteId = (int)$_POST['athlete_id'];
@@ -17,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($athleteId) || empty($fname) || empty($lname) || empty($year) ||
         empty($depId) || empty($categoryId)) {
         $_SESSION['athlete-msg'] = "Failed:All fields are required";
-        header("Location: adm_dashboard.php?page=athletes_info&status=error");
+        header("Location: $redirectPage&status=error");
         exit;
     } else {
         $validEvents = [];
@@ -44,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (empty($validEvents)) {
             $_SESSION['athlete-msg'] = "Failed:No valid events selected.";
-            header("Location: adm_dashboard.php?page=athletes_info&status=error");
+            header("Location: $redirectPage&status=error");
             exit;
 
         } else {
@@ -107,14 +116,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $addMember = $pdo->prepare("INSERT INTO relay_team_members (team_id, athlete_id) VALUES (?, ?)");
                         $addMember->execute([$relayTeamId, $athleteId]);
                     } else {
-                        throw new Exception("Relay team for event ID $event_id already has 5  participants.");
+                        throw new Exception("Failed:Relay team for event ID $event_id already has 5  participants.");
                     }
                 }
 
                 $pdo->commit();
 
                 $_SESSION['athlete-msg'] = "Athlete and participation updated successfully";
-                header("Location: adm_dashboard.php?page=athletes_info&status=success");
+                header("Location: $redirectPage&status=success");
                 exit;
 
             } catch (PDOException $e) {
