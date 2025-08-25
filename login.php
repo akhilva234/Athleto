@@ -37,6 +37,7 @@
 
             $_SESSION['role']=$user['role'];
             $_SESSION['user']=$user['user_id'];
+            $_SESSION['username']=$user['username'];
 
              header('Location: dashboard.php');
              exit;
