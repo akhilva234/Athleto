@@ -1,5 +1,15 @@
+.container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: stretch; /* Ensures equal height */
+    gap: 20px; /* Optional: space between the two containers */
+    flex-wrap: wrap; /* Optional: wrap on smaller screens */
+}
+
+
 .results-container {
-    max-width: 500px;
+    flex: 1;
+    min-height: 100px;
     margin: 30px 10px;
     padding: 15px;
     background: #f9f9f9;
@@ -32,6 +42,10 @@
     border-bottom: 1px solid #eee;
     color:white;
 }
+.standings-container th,
+.standings-container td{
+    padding: 18px 18px;
+}
 
 .results-container thead {
     background-color:#1f2937;
@@ -56,4 +70,22 @@
     font-size: 0.95rem;
     color:#1f2937;
 
+}
+
+.update-btn,.delete-btn,.result-entry-btn{
+        padding: .7rem;
+    min-width: 70px;
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+    background-color: #1f2937;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+     transition: all .3s ease;
+}
+
+.update-btn:hover,.delete-btn:hover,.result-entry-btn:hover{
+
+     transform: scale(1.05);
 }
