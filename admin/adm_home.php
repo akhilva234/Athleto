@@ -15,8 +15,7 @@ try{
      GROUP BY r.position, e.event_name, a.athlete_id
     ORDER BY r.result_id DESC LIMIT 3");
 
-    $standings=$pdo->query("
-        SELECT 
+    $standings=$pdo->query(" SELECT 
             d.dept_name,
             SUM(CASE r.position
                 WHEN 1 THEN 5
@@ -47,6 +46,7 @@ try{
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/admin_home.css">
+    <link rel="stylesheet" href="../assets/css/update_user_form.css">
     <link rel="stylesheet" href="../assets/css/common.css">
     <title>Athleto</title>
 </head>
@@ -131,12 +131,9 @@ try{
         </tbody>
     </table>
 </div>
-  <div id="editUserModal">
-    <div class="modal-content" id="editUserContent">
-        
-    </div>
-</div>
+  <div id="editUserModal" class="modal"></div>
 <script src="../assets/js/pageReload.js"></script>
 <script src="../assets/js/deleteuser.js"></script>
 </body>
+<script src="../assets/js/userinfoFetch.js"></script>
 </html>

@@ -29,7 +29,8 @@ function deleteUser(){
                     }
                          
                 })
-                .catch(()=>"Error loading data")
+                .catch(err =>{
+                    alert("Error loading data")});
             }
         }
     })
