@@ -28,26 +28,21 @@ try {
         <h3>Update User</h3>
 
         <form action="" method="post">
-            <input type="hidden" name="user_id" value="18">
+            <input type="hidden" name="user_id" value="<?=htmlspecialchars($users['user_id'])?>">
 
             <div class="form-group">
                 <label for="user_name">User Name</label>
-                <input type="text" id="user_name" name="user_name" value="raju" required>
+                <input type="text" id="user_name" name="user_name" value="<?=htmlspecialchars($users['username'])?>" required>
             </div>
 
             <div class="form-group">
                 <label for="user_mail">Email</label>
-                <input type="email" id="user_mail" name="user_mail" value="johnadoe@gmail.com" required>
+                <input type="email" id="user_mail" name="user_mail" value="<?=htmlspecialchars($users['email'])?>" required>
             </div>
 
             <div class="form-group">
                 <label for="user_role">Role</label>
-                <input type="text" id="user_role" name="user_role" value="faculty" required>
-            </div>
-
-            <div class="form-group">
-                <label for="user_dept">Department</label>
-                <input type="text" id="user_dept" name="user_dept" value="Bcom">
+                <input type="text" id="user_role" name="user_role" value="<?=htmlspecialchars($users['role'])?>" required>
             </div>
 
             <div class="form-group">

@@ -2,6 +2,16 @@
      require_once "../session_check.php";
     include_once "../nocache.php";
     include "../config.php";
+
+    if(isset($_POST['update'])){
+        require './update_user.php';
+    }
+       $message = '';
+
+    if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']);
+}
 try{
 
     $results=$pdo->query("SELECT 
@@ -45,6 +55,10 @@ try{
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="../assets/js/toast.js"></script>
     <link rel="stylesheet" href="../assets/css/admin_home.css">
     <link rel="stylesheet" href="../assets/css/update_user_form.css">
     <link rel="stylesheet" href="../assets/css/common.css">
@@ -131,6 +145,15 @@ try{
         </tbody>
     </table>
 </div>
+     <?php if (!empty($message)): ?>
+    <script>
+        <?php if (strpos($message, 'Failed') !== false || strpos($message, 'Invalid') !== false): ?>
+            toastr.error(<?= json_encode($message) ?>);
+        <?php else: ?>
+            toastr.success(<?= json_encode($message) ?>);
+        <?php endif; ?>
+    </script>
+    <?php endif; ?>
   <div id="editUserModal" class="modal"></div>
 <script src="../assets/js/pageReload.js"></script>
 <script src="../assets/js/deleteuser.js"></script>
