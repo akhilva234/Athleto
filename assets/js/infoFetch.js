@@ -14,7 +14,7 @@ export function resultEntry() {
             athleteId.value = btn.getAttribute('data-athlete-id');
             eventId.value = btn.getAttribute('data-event-id');
 
-            fetch(`fetch_names.php?athlete_id=${athleteId.value}&event_id=${eventId.value}`)
+            fetch(`../common_pages/fetch_names.php?athlete_id=${athleteId.value}&event_id=${eventId.value}`)
                 .then(res => res.json())
                 .then(data => {
                     document.querySelector('.athlete-name').value = data.athlete_name;

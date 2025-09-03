@@ -32,7 +32,7 @@ ob_start();
     </header>
     <div class="main-body">
         <div class="left-body">
-           <a href="?page=adm_home"><span class="home-container font">
+           <a href="?page=fac_home"><span class="home-container font">
              <i class="fas fa-home"></i>
              Home
         </span></a> 
@@ -50,20 +50,8 @@ ob_start();
                     Add
                 </p><br><select name="Add-container" class="action-select" value="" >
                     <option value="">-- Select Action --</option>
-                <option value="?page=add_user" class="option-adduser">
-                    <span class="add-user-container">User</span>
-                </option>
                 <option value="?page=add_athlete" class="option-addathlete">
                      <span class="add-athlete-container">Athlete</span>
-                </option>
-                <option value="?page=events" class="option-addevent">
-                     <span class="add-events-container">Event</span>
-                </option>
-                <option value="?page=departments" class="option-add-department">
-                    <span class="add-department-container">Department</span>
-                </option>
-                <option value="?page=add_template" class="option-add-template">
-                    <span class="certificate-template-container">Certificate Template</span>
                 </option>
             </select>
             </div>
@@ -104,22 +92,18 @@ ob_start();
         <?php
 
                $allowed = [
-                'adm_home' => 'adm_home.php',
-                'add_user' => 'add_user.php',
+                'fac_home' => 'fac_home.php',
                 'add_athlete' => '../common_pages/add_athlete.php',
-                'events' => 'events.php',
-                'departments' => 'departments.php',
-                'add_template' => 'upload_template.php',
                 'athletes_info' => '../common_pages/athletes_info.php',
                 'manage_results' => '../common_pages/manage_results.php',
                 'manage_relay_results' => '../common_pages/manage_relay_results.php',
-                'participants' => 'participants.php',
+                'participants' => '../admin/participants.php',
                 'relay' => '../common_pages/relay.php',
                 'championships' => '../common_pages/championships.php',
                 'logout' => '../logout.php'  
             ];
             
-            $page = $_GET['page'] ?? 'adm_home';
+            $page = $_GET['page'] ?? 'fac_home';
 
             if (array_key_exists($page, $allowed) && file_exists($allowed[$page])) {
                 include $allowed[$page];

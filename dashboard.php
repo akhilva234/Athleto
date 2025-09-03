@@ -10,5 +10,11 @@
       header('Location: admin/adm_dashboard.php');
       exit;
     }
+    else if($user=='faculty'){
+
+      header('Location: faculty/faculty_dashboard.php');
+      exit;
+
+    }
 
   ?>  

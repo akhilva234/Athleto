@@ -30,7 +30,8 @@
     e.event_id,
     position,
     u.username,
-    recorded_at
+    recorded_at,
+    result_id
     FROM results r
     JOIN athletes a ON a.athlete_id=r.athlete_id
     JOIN events e ON e.event_id=r.event_id
@@ -59,6 +60,7 @@
             <th>Year</th>
             <th>Verified by</th>
             <th>Time</th>
+            <th>Certificate</th>
             </tr>
             </thead>
              <?php $count=1;?>
@@ -79,11 +81,14 @@
                     <td><?=htmlspecialchars($result['year'])?></td>
                     <td><?=htmlspecialchars($result['username'])?></td>
                     <td><?=htmlspecialchars($result['recorded_at'])?></td>
+                     <td><button class="result-entry-btn dwnld-btn" data-result-id="<?=$result['result_id']?>">
+                        Download</button></td>
                 </tr>    
             <?php endforeach ;?>
             </tbody>
         </table>
     </div>
     <script src="../assets/js/pageReload.js"></script>
+    <script src="../assets/js/certificate.js"></script>
 </body>
 </html>
