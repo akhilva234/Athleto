@@ -33,7 +33,8 @@ if (!isset($_SESSION['user'])) {
         GROUP_CONCAT(CONCAT(a.first_name,' ',a.last_name) SEPARATOR ', ') AS athletes,
         r.position,
         u.username,
-        r.recorded_at
+        r.recorded_at,
+        r.result_id
     FROM results r
     JOIN relay_teams rt ON rt.team_id = r.relay_team_id
     JOIN relay_team_members rtm ON rtm.team_id = rt.team_id
@@ -65,6 +66,7 @@ if (!isset($_SESSION['user'])) {
             <th>Position</th>
             <th>Verified by</th>
             <th>Time</th>
+            <th>certificate</th>
             </tr>
             </thead>
              <?php $count=1;?>
@@ -82,6 +84,9 @@ if (!isset($_SESSION['user'])) {
                     <td><?=htmlspecialchars($result['position'])?></td>
                     <td><?=htmlspecialchars($result['username'])?></td>
                     <td><?=htmlspecialchars($result['recorded_at'])?></td>
+                    <td><button class="result-entry-btn team-btn" data-result-id="<?=$result['result_id']?>"
+                      data-team-id="<?=$result['team_id']?>">
+                        Download</button></td>  
                 </tr>    
             <?php endforeach ;?>
             </tbody>
@@ -90,4 +95,5 @@ if (!isset($_SESSION['user'])) {
     <script src="../assets/js/pageReload.js"></script>
 </body>
 <script src="../assets/js/infoFetch.js" type="module"></script>
+<script src="../assets/js/certificate.js"></script>
 </html>

@@ -113,4 +113,13 @@
     </footer>
     <script src="./assets/js/pageReload.js"></script>
 </body>
+<script>
+if (window.history && window.history.pushState) {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+        window.history.pushState(null, "", window.location.href);
+    };
+}
+</script>
+
 </html>    

@@ -100,6 +100,9 @@ export function renderResultsTable(data){
             <td>${athlete.year}</td>
             <td>${athlete.username}</td>
             <td>${athlete.recorded_at}</td>
+            <td><button class="result-entry-btn dwnld-btn" data-result-id="${athlete.result_id}"
+                      data-athlete-id="${athlete.athlete_id}">
+                        Download</button></td>
         `;
         tableBody.appendChild(row);
     });
@@ -159,6 +162,9 @@ export function relayResultsTable(data){
             <td>${athlete.position}</td>
             <td>${athlete.username}</td>
             <td>${athlete.recorded_at}</td>
+            <td><button class="result-entry-btn team-btn" data-result-id="${athlete.result_id}"
+                      data-team-id="${athlete.team_id}">
+                        Download</button></td>
         `;
         tableBody.appendChild(row);
     });

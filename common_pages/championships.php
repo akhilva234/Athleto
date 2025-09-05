@@ -22,7 +22,7 @@
             JOIN athletes a ON r.athlete_id = a.athlete_id
             JOIN departments d ON a.dept_id=d.dept_id
             GROUP BY a.athlete_id
-            ORDER BY total_points DESC
+            ORDER BY total_points DESC LIMIT 3
         ";
         $stmt = $pdo->query($sql);
         $topAthlete = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -40,7 +40,7 @@
         JOIN athletes a ON r.athlete_id = a.athlete_id
         JOIN departments d ON a.dept_id = d.dept_id
         GROUP BY d.dept_id
-        ORDER BY total_points DESC
+        ORDER BY total_points DESC LIMIT 3
     ";
     $stmt = $pdo->query($sql);
     $deptChampions = $stmt->fetchAll();
@@ -64,7 +64,7 @@
         JOIN categories c ON a.category_id = c.category_id
         JOIN departments d ON a.dept_id=d.dept_id
         GROUP BY c.category_id, a.athlete_id
-        ORDER BY c.category_id, total_points DESC
+        ORDER BY c.category_id, total_points DESC LIMIT 3
     ";
     $stmt = $pdo->query($sql);
     $categoryWise = $stmt->fetchAll();

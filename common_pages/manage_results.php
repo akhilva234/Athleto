@@ -81,7 +81,8 @@
                     <td><?=htmlspecialchars($result['year'])?></td>
                     <td><?=htmlspecialchars($result['username'])?></td>
                     <td><?=htmlspecialchars($result['recorded_at'])?></td>
-                     <td><button class="result-entry-btn dwnld-btn" data-result-id="<?=$result['result_id']?>">
+                     <td><button class="result-entry-btn dwnld-btn" data-result-id="<?=$result['result_id']?>"
+                      data-athlete-id="<?=$result['athlete_id']?>">
                         Download</button></td>
                 </tr>    
             <?php endforeach ;?>
