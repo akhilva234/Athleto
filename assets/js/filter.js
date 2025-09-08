@@ -1,6 +1,7 @@
 import { renderParticipantsTable,renderAthletesTable,renderResultsTable,renderRelayTable,relayResultsTable } from "./rendertable.js";
 
 const currentView = document.body.dataset.view || 'participants';
+const currenUser=document.body.dataset.user;
 document.querySelectorAll('.dropdown-checkbox').forEach(dropdown => {
     const button = dropdown.querySelector('.dropdown-btn');
     const searchInput = dropdown.querySelector('.dropdown-search');
@@ -61,23 +62,23 @@ export async function loadAthletes() {
 
     console.log(currentView);
     if(currentView==='participants'){
-        renderParticipantsTable(data);
+        renderParticipantsTable(data,currenUser);
         
     }
     else if(currentView==='athletes'){
         renderAthletesTable(data);
     }
     else if(currentView==='relays'){
-        renderRelayTable(data);
+        renderRelayTable(data,currenUser);
     }
     else if(currentView==='results'){
         const data2= await response2.json();
-        renderResultsTable(data2);
+        renderResultsTable(data2,currenUser);
     }
     else if(currentView==='relayResults'){
         const data2= await response2.json();
         console.log("relay results");
-        relayResultsTable(data2);
+        relayResultsTable(data2,currenUser);
     }
     
 }

@@ -3,6 +3,7 @@
    include_once "../nocache.php";
     include_once "../config.php";
     $user=$_SESSION['user'];
+     $role=$_SESSION['role'];
 
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -20,7 +21,7 @@ if (!isset($_SESSION['user'])) {
      <link rel="stylesheet" href="../assets/css/common.css">
       <link rel="stylesheet" href="../assets/css/common_css/tables.css">
 </head>
-<body data-view="relayResults">
+<body data-view="relayResults"  data-user="<?=$role?>">
     <h2>Relay Results</h2>
     <?php
     try{

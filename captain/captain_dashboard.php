@@ -91,7 +91,7 @@ ob_start();
         <?php
 
                $allowed = [
-                'fac_home' => 'fac_home.php',
+                'fac_home' => 'cap_home.php',
                 'add_athlete' => '../common_pages/add_athlete.php',
                 'athletes_info' => '../common_pages/athletes_info.php',
                 'manage_results' => '../common_pages/manage_results.php',

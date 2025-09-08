@@ -1,0 +1,65 @@
+/* Container Styling */
+.hero-home-section {
+    padding: 40px 20px;
+    min-height: 80vh;
+    background-color: #f4f6f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Cards Grid Layout */
+.cards-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Individual Card Style */
+.cards-section a,
+.cards-section .select-container {
+    background-color: white;
+    text-decoration: none;
+    color: #1E3A8A;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.cards-section a:hover,
+.cards-section .select-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.cards-section i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #4A90E2;
+}
+
+.cards-section select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+/* Responsive Behavior */
+@media (max-width: 600px) {
+    .cards-section {
+        grid-template-columns: 1fr;
+    }
+}

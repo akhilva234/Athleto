@@ -6,6 +6,7 @@
                 require '../common_pages/relayResultAdd.php';
             }
     $user= $_SESSION['user'];
+     $role=$_SESSION['role'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +21,7 @@
      <link rel="stylesheet" href="../assets/css/common_css/tables.css">
      <link rel="stylesheet" href="../assets/css/result_form.css">
 </head>
-<body data-view="relays">
+<body data-view="relays"  data-user="<?=$role?>">
      <div class="whole-blur-container"></div>
      <h2>Relay Participants</h2>
         <?php  echo "user:".$user;
@@ -57,7 +58,9 @@
                 <th>Category</th>
                 <th>Department</th>
                 <th>Team Members</th>
+                 <?php if($role!=='captain'):?> 
                 <th>Result</th>
+                 <?php endif;?> 
             </tr>
         </thead>
         <?php $count=1;?>
@@ -70,9 +73,11 @@
                  <td><?=htmlspecialchars($relay['category_name'])?></td>
                  <td><?=htmlspecialchars($relay['dept_name'])?></td>
                  <td><?=htmlspecialchars($relay['team_members'])?></td>
+             <?php if($role!=='captain'):?> 
                  <td><button class="result-entry-btn" data-team-id="<?=$relay['team_id']?>"
                   data-event-id="<?=$relay['event_id']?>">
                         Enter Result</button></td>
+              <?php endif;?>            
             </tr>
          <?php endforeach ;?>   
         </tbody>

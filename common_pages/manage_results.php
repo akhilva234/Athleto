@@ -3,6 +3,7 @@
     include_once "../nocache.php";
     include_once "../config.php";
     $user=$_SESSION['user'];
+     $role=$_SESSION['role'];
 ?>
 
 
@@ -15,7 +16,7 @@
      <link rel="stylesheet" href="../assets/css/common.css">
       <link rel="stylesheet" href="../assets/css/common_css/tables.css">
 </head>
-<body data-view="results">
+<body data-view="results"  data-user="<?=$role?>">
     <h2>Individual Results</h2>
     <?php
     try{

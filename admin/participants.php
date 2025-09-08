@@ -6,6 +6,7 @@
             }
     include_once "../config.php";
     $user=$_SESSION['user'];
+    $role=$_SESSION['role'];
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +22,7 @@
      <link rel="stylesheet" href="../assets/css/common_css/tables.css">
      <link rel="stylesheet" href="../assets/css/result_form.css">
 </head>
-<body data-view="participants">
+<body data-view="participants" data-user="<?=$role?>">
     <div class="whole-blur-container"></div>
     <h2>Individual Participants</h2>
     <?php  echo "user:".$user;?>
@@ -64,8 +65,9 @@ ORDER BY
             <th>Event</th>
             <th>Department</th>
             <th>Year</th>
+            <?php if($role!=='captain'):?>  
             <th>Result Entry</th>
-           <!-- <th>Delete</th>-->
+              <?php endif;?>
             </tr>
             </thead>
             <?php $count=1;?>
@@ -81,11 +83,10 @@ ORDER BY
                     <td><?=htmlspecialchars($athlete['event_name'])?></td>
                     <td><?=htmlspecialchars($athlete['dept_name'])?></td>
                     <td><?=htmlspecialchars($athlete['year'])?></td>
+                  <?php if($role!=='captain'):?>  
                     <td><button class="result-entry-btn" data-athlete-id="<?=$athlete['athlete_id']?>" data-event-id="<?=$athlete['event_id']?>">
-                        Enter Result</button></td>
-                   <!--  <td><button class="delete-btn" data-athlete-id="<?=$athlete['athlete_id']?>" data-event-id="<?=$athlete['event_id']?>">
-                        Delete</button></td> 
-            -->      
+                        Enter Result</button></td>  
+                  <?php endif;?>       
                 </tr>
             <?php endforeach ;?>
             </tbody>

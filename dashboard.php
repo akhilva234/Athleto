@@ -16,5 +16,9 @@
       exit;
 
     }
+    else if($user='captain'){
+      header('Location: captain/captain_dashboard.php');
+      exit;
+    }
 
   ?>  
