@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="assets/css/homepage.css">
     <link rel="stylesheet" href="assets/css/logininfo.css">
     <link rel="stylesheet" href="assets/css/header_common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
     <?php
@@ -92,21 +94,21 @@
     </section>
     
     <div class="sign-in-container" id="signin">
-         <h2 class="sign-in-title">Sign in</h2>
-         <form action="" method="post">
+    <h2 class="sign-in-title">Log in</h2>
+    <form action="" method="post">
         <div class="username-container">
             <input type="text" placeholder="Username" name="username" class="username-box box-style" required>
-         </div>
-         <div class="password-container">   
-            <input type="password" placeholder="password" name="password" class="password-box box-style">
+        </div>
+        <div class="password-container" style="position: relative;">   
+            <input type="password" placeholder="password" name="password" class="password-box box-style" id="password" style="padding-right: 30px;">
+            <i id="togglePassword" class="fa fa-eye" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
         </div>
         <div class="submit-btn-container" name="submit">
             <input type="submit" class="sign-in-button" name="submit">
         </div>
-          </form> 
-            <h4 class="login-info"><?=$msg?></h4>
-    </div>
-  
+    </form> 
+    <h4 class="login-info"><?=$msg?></h4>
+</div>
   
  <footer>
         <p>&copy; 2023 Athleto Sports Management. All rights reserved.</p>
@@ -120,6 +122,18 @@ if (window.history && window.history.pushState) {
         window.history.pushState(null, "", window.location.href);
     };
 }
+</script>
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+
+        togglePassword.classList.toggle('fa-eye');
+        togglePassword.classList.toggle('fa-eye-slash');
+    });
 </script>
 
 </html>    

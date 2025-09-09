@@ -66,6 +66,7 @@
     border:solid 1px grey;
     outline: none;
     border-radius: .5rem;
+    max-width: 200px;
     
 }
 .box-style:focus{
@@ -100,4 +101,8 @@
     font-weight: bold;
     margin: 10px auto;
     text-align: center;
+}
+#togglePassword{
+    margin-top: -7px;
+    font-size: 14px;
 }

@@ -24,7 +24,7 @@
 <body data-view="relays"  data-user="<?=$role?>">
      <div class="whole-blur-container"></div>
      <h2>Relay Participants</h2>
-        <?php  echo "user:".$user;
+        <?php
         
         $sql="SELECT 
         rt.team_id,

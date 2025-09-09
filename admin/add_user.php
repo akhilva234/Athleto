@@ -103,9 +103,6 @@
 </head>
 <body>
     <h2 class="add-heading">Add Users</h2>
-    <?php  echo "user:".$user;
-           // echo session_id();
-?>
     <div class="insert-container">
         <div class="form-container">
             <form action="" method="post" class="form">
@@ -113,13 +110,20 @@
                 Username<br>
                 <input type="text" placeholder="Username" name="username" class="username-input">
             </div>
-            <div class="set-password">
+                <div class="set-password">
                 Password<br>
-                <input type="text" placeholder="Set Password" name="password" class="password-input">
+                <div class="password-wrapper">
+                    <input type="password" placeholder="Set Password" name="password" class="password-input">
+                    <i class="fa-solid fa-eye toggle-password"></i>
+                </div>
             </div>
+
             <div class="confirm-password">
-               Confirm Password <br>
-               <input type="text" placeholder="Confirm Password" name="cpassword" class="password-input">
+                Confirm Password <br>
+                <div class="password-wrapper">
+                    <input type="password" placeholder="Confirm Password" name="cpassword" class="password-input">
+                    <i class="fa-solid fa-eye toggle-password"></i>
+                </div>
             </div>
             <div class="add-email">
                 Email
@@ -160,4 +164,21 @@
     <?php endif; ?>
     <script src="../assets/js/pageReload.js"></script>
 </body>
+<script>
+document.querySelectorAll('.toggle-password').forEach(toggleIcon => {
+    toggleIcon.addEventListener('click', function() {
+        const input = this.previousElementSibling;
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.classList.remove('fa-eye');
+            this.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            this.classList.remove('fa-eye-slash');
+            this.classList.add('fa-eye');
+        }
+    });
+});
+</script>
+
 </html>

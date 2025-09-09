@@ -163,8 +163,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <h2>Add Athlete</h2>
 
-    <p>User: <?= htmlspecialchars($user) ?></p>
-
     <div class="insert-container">
         <div class="form-container">
             <form action="" method="post" class="form">

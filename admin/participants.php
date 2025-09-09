@@ -25,7 +25,6 @@
 <body data-view="participants" data-user="<?=$role?>">
     <div class="whole-blur-container"></div>
     <h2>Individual Participants</h2>
-    <?php  echo "user:".$user;?>
     <?php
         $Participants=$pdo->query("SELECT  
     a.athlete_id,   
