@@ -158,5 +158,5 @@ try{
 <script src="../assets/js/pageReload.js"></script>
 <script src="../assets/js/deleteuser.js"></script>
 </body>
-<script src="../assets/js/userinfoFetch.js"></script>
+<script src="../assets/js/userInfofetch.js"></script>
 </html>
