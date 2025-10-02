@@ -11,30 +11,31 @@ body{
 .dashboard-header{
 
     display: flex;
-     background-color:  #1f2937;
+    background-color:  #1f2937;
     position: fixed;
     color:#f8fafc;
     z-index: 1000;
     padding: 7px;
-    width: 180px;
+    width: 190px;
      box-shadow: 5px 0px 10px rgba(0,0,0,0.1);
+      transition: width 0.3s ease, padding 0.3s ease;
 }
 
 .left-body {
-  position: fixed;          /* Fixes it in place */
-  top: 4rem;                /* Matches your .dashboard-header height */
+  position: fixed;
+  top: 4rem;
   left: 0;
-  width: 180px;
-  height: calc(100vh - 4rem);  /* Full height minus header */
+  width: 190px;
+  height: calc(100vh - 4rem);
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 30px;
   background-color: #1f2937;
-  color:#f8fafc;
+  color: #f8fafc;
   box-shadow: 5px 0px 10px rgba(0,0,0,0.1);
-  overflow-y: auto;         /* Optional: scroll inside if content overflows */
-  z-index: 999;             /* Below header but above content */
+  overflow-y: auto;
+  transition: width 0.3s ease;
 }
 
 .font,a{
@@ -63,4 +64,58 @@ select{
     border-radius: 1rem;
 }
 
+.left-body.collapsed {
+  width: 60px;   /* only icons visible */
+  padding: 20px 10px;
+}
 
+.left-body.collapsed a,
+.left-body.collapsed .font {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-body.collapsed a span,
+.left-body.collapsed .label,
+.left-body.collapsed select{
+  display: none;  /* hide text + selects */
+}
+
+.left-body.collapsed a,
+.left-body.collapsed .menu-item,
+.left-body.collapsed p{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;  /* icons centered only */
+}
+.right-body {
+  margin-left: 180px;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-header.collapsed {
+  width: 60px;                 /* shrink same as sidebar */
+  justify-content: center;     /* center the logo */
+}
+
+
+.dashboard-header.collapsed .title {
+  display: none;               /* hide text */
+}
+
+.left-body.collapsed ~ .right-body {
+  margin-left: 60px; /* adjust content when sidebar shrinks */
+}
+
+/* Toggle Button Styling */
+.toggle-btn {
+  margin-left: .5rem;
+  background: none;
+  border: none;
+  color: #f8fafc;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: center;
+}
