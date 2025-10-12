@@ -57,7 +57,7 @@
             <th>Category</th>
             <th>Event</th>
             <th>Position</th>
-            <th>Department</th>
+            <th>Course</th>
             <th>Year</th>
             <th>Verified by</th>
             <th>Time</th>

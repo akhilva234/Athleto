@@ -11,16 +11,23 @@
 
         $pdo->beginTransaction();
 
-        $deldept=$pdo->prepare("DELETE FROM departments WHERE dept_id=?");
+            $delRelayTeams = $pdo->prepare("DELETE FROM relay_teams WHERE dept_id IN (SELECT dept_id FROM departments WHERE hd_id = ?)");
+            $delRelayTeams->execute([$dept_id]);
+
+        $deldept=$pdo->prepare("DELETE FROM departments WHERE hd_id=?");
 
         $deldept->execute([$dept_id]);
+
+        $delhead=$pdo->prepare("DELETE FROM headdepartment WHERE hd_id=?");
+
+        $delhead->execute([$dept_id]);
 
         $pdo->commit();
 
         echo json_encode(["success" => true, "message" => "Department  deleted sucessfully"]);
     }catch(PDOException $e){
 
-    echo json_encode(["success" => false , "messsage" => "Department deletion failed"]);
+    echo json_encode(["success" => false , "messsage" => "Department deletion failed","error"=>$e->getMessage()]);
 
     }
 ?>

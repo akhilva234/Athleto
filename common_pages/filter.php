@@ -21,7 +21,7 @@
     </span>
     <div class="filter-section">
      <div class="dropdown-checkbox" id="deptDropdown">
-        <button type="button" class="dropdown-btn">Departments ▼</button>
+        <button type="button" class="dropdown-btn">Courses ▼</button>
         <div class="dropdown-content">
              <input type="text" class="dropdown-search" placeholder="Search departments...">
             <?php foreach ($departments as $dept): ?>

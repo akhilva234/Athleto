@@ -60,7 +60,7 @@ if (!isset($_SESSION['user'])) {
             <tr>
             <th>SI.NO</th>
             <th>Chest Number</th>
-            <th>Department</th>
+            <th>Course</th>
             <th>Athletes</th>
             <th>Category</th>
             <th>Event</th>

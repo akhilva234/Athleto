@@ -1,5 +1,5 @@
 <?php
 
-        $password=password_hash("yoyohoneysingh@123",PASSWORD_DEFAULT);
+        $password=password_hash("test@123",PASSWORD_DEFAULT);
         echo $password;
     ?>

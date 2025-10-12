@@ -56,7 +56,7 @@
             <th>Chest Number</th>
             <th>Name</th>
             <th>Category</th>
-            <th>Department</th>
+            <th>Course</th>
             <th>Year</th>
             <th>Update</th>
             <th>Delete</th>
@@ -99,6 +99,7 @@
         
     </div>
 </div>
+
 <script src="../assets/js/pageReload.js"></script>
 </body>
 <script src="../assets/js/limitCheck.js" type="module"></script>

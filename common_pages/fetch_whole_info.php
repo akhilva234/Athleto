@@ -55,7 +55,21 @@
         $isFull=count($registered_event_ids)>=3;
 
         $events=$pdo->query("SELECT * FROM events WHERE is_relay=0");
-        $departments=$pdo->query("SELECT * FROM departments");
+
+            // Fetch all head departments
+            $headDepartments = $pdo->query("SELECT * FROM headdepartment")->fetchAll(PDO::FETCH_ASSOC);
+
+            // Get athlete's current head department (based on their department)
+            $headDeptQuery = $pdo->prepare("SELECT hd_id FROM departments WHERE dept_id = ?");
+            $headDeptQuery->execute([$athlete['dept_id']]);
+            $athleteHdId = $headDeptQuery->fetchColumn();
+
+            // Fetch departments under that head department
+            $departmentsStmt = $pdo->prepare("SELECT * FROM departments WHERE hd_id = ?");
+            $departmentsStmt->execute([$athleteHdId]);
+            $departments = $departmentsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+            
         $categories=$pdo->query("SELECT * FROM categories");
          $relay_events=$pdo->query("SELECT * FROM events WHERE is_relay=1");
 
@@ -108,9 +122,21 @@
         <?php endfor; ?>
     </select><br>
 
-    <!-- Department -->
+        <!-- Head Department -->
     <label>Department:</label>
-    <select name="dept_id">
+    <select name="hd_id" id="headDeptSelect">
+        <option value="">-- Select Head Department --</option>
+        <?php foreach ($headDepartments as $hd): ?>
+            <option value="<?= $hd['hd_id'] ?>" <?= $hd['hd_id'] == $athleteHdId ? 'selected' : '' ?>>
+                <?= htmlspecialchars($hd['hd_name']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select><br>
+
+
+    <!-- Department -->
+    <label>Course:</label>
+    <select name="dept_id" id="deptSelect">
         <?php foreach ($departments as $dept): ?>
             <option value="<?= $dept['dept_id'] ?>" <?= $athlete['dept_id'] == $dept['dept_id'] ? 'selected' : '' ?>>
                 <?= htmlspecialchars($dept['dept_name']) ?>
@@ -174,6 +200,38 @@
         </div>
     <button type="submit" name="update">Update</button>
 </form>
+
+<script>
+document.getElementById('headDeptSelect').addEventListener('change', function() {
+    const hdId = this.value;
+    const deptSelect = document.getElementById('deptSelect');
+    
+    deptSelect.innerHTML = '<option value="">Loading...</option>';
+
+    if (hdId) {
+        fetch(`../common_pages/get_departments.php?hd_id=${hdId}`)
+            .then(res => res.json())
+            .then(data => {
+                deptSelect.innerHTML = '<option value="">-- Select Course --</option>';
+                if (data.length > 0) {
+                    data.forEach(dep => {
+                        const opt = document.createElement('option');
+                        opt.value = dep.dept_id;
+                        opt.textContent = dep.dept_name;
+                        deptSelect.appendChild(opt);
+                    });
+                } else {
+                    deptSelect.innerHTML = '<option value="">No departments found</option>';
+                }
+            })
+            .catch(() => {
+                deptSelect.innerHTML = '<option value="">Error loading departments</option>';
+            });
+    } else {
+        deptSelect.innerHTML = '<option value="">-- Select Course --</option>';
+    }
+});
+</script>
 <?php
 // Capture the output into a variable
 $htmlForm = ob_get_clean();

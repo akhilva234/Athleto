@@ -18,9 +18,16 @@ try {
     // 4. Define all table creation queries
     $tables = [
 
+          "CREATE TABLE IF NOT EXISTS headdepartment (
+            hd_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+            hd_name VARCHAR(50) NOT NULL UNIQUE
+        )",
+
         "CREATE TABLE IF NOT EXISTS departments (
             dept_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-            dept_name VARCHAR(50) NOT NULL UNIQUE
+            dept_name VARCHAR(50) NOT NULL UNIQUE,
+            hd_id   INT(5) NOT NULL,
+            FOREIGN KEY (hd_id) REFERENCES headdepartment(hd_id)
         )",
 
         "CREATE TABLE IF NOT EXISTS categories (
@@ -34,8 +41,9 @@ try {
             password VARCHAR(255) NOT NULL,
             email VARCHAR(50) NOT NULL,
             role ENUM('admin', 'faculty', 'captain') NOT NULL,
-            dept_id INT(5) NOT NULL,
-            FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+            hd_id   INT(5) NOT NULL,
+            FOREIGN KEY (hd_id) REFERENCES headdepartment(hd_id)
+           
         )",
 
         "CREATE TABLE IF NOT EXISTS athletes (
@@ -109,17 +117,6 @@ try {
             file_path VARCHAR(255),
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )",
-
-        "CREATE TABLE IF NOT EXISTS certificates (
-            certificate_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-            template_id INT(5) NOT NULL,
-            result_id INT(5) NOT NULL,
-            issued_by INT(5),
-            issued_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (template_id) REFERENCES certificate_templates(template_id),
-            FOREIGN KEY (result_id) REFERENCES results(result_id),
-            FOREIGN KEY (issued_by) REFERENCES users(user_id)
-        )"
     ];
 
     foreach ($tables as $sql) {

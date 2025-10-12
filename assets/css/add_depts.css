@@ -1,22 +1,302 @@
-.add-btn{
-      padding: .7rem;
-    min-width: 70px;
-     border-radius: 1rem;
-     margin-left: 2rem;
+/* Courses Dropdown */
+.courses-dropdown {
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #f9f9f9; /* light background for dropdown */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Course list */
+.courses-dropdown ul.course-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0 0 10px 0;
+}
+
+.courses-dropdown ul.course-list li {
+    display: flex;
+    justify-content: space-between; /* Align course name and delete button */
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.courses-dropdown ul.course-list li:last-child {
+    border-bottom: none;
+}
+
+/* Buttons inside dropdown */
+.courses-dropdown button,.delete-dept-btn {
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 4px;
     border: none;
-    outline: none;
-    background-color:  #1f2937;
-    color: white;
-    font-weight: bold;
     cursor: pointer;
-     transition: all .3s ease;
+}
+
+/* Delete course button */
+.courses-dropdown .delete-course-btn ,.delete-dept-btn {
+    background-color: #e74c3c;
+    color: #fff;
+    margin-left: 10px;
+    transition: background 0.2s;
+}
+
+.courses-dropdown .delete-course-btn:hover,.delete-dept-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Add course button */
+.courses-dropdown .add-course-btn {
+    background-color: #2ecc71;
+    color: #fff;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+    transition: background 0.2s;
+}
+
+.courses-dropdown .add-course-btn:hover {
+    background-color: #27ae60;
+}
+
+/* Toggle courses button */
+.toggle-courses-btn {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s;
+}
+
+.toggle-courses-btn:hover {
+    background-color: #2980b9;
+}
+
+/* Optional: Add hover effect on course list items */
+.courses-dropdown ul.course-list li:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* modal styles */
+/* Modal overlay */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* Modal box */
+.modal-content {
+  background: #fff;
+  margin: 10% auto;
+  padding: 20px 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Header */
+.modal-content h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+/* Form inputs */
+.modal-content input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.modal-content input[type="text"]:focus {
+  border-color: #007bff;
+}
+
+/* Buttons */
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  color: #555;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* add dept modal style */
+/* ====== Add Department Modal ====== */
+.deptmodal {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal Container */
+.modal-container {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 420px;
+  animation: scaleUp 0.25s ease-in-out;
+  position: relative;
+}
+
+/* Modal Header */
+.result-form-head {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+/* Form styling */
+.result-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Input field */
+.input-style {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-style:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Buttons */
+.btns{
+  margin-top: 10px;
+  margin-left: 3px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+  max-width: 120px;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: #222;
+}
+
+.cancel-btn:hover {
+  background-color: #b3b3b3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .modal-container {
+    width: 90%;
+    padding: 20px;
+  }
+}
+
+.add-btn{
+   border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+  max-width: 200px;
+  white-space: nowrap;
+   background-color: #3498db;
+  color: white;
+   transition: 0.3s;
 }
 
 .add-btn:hover{
-    
-    transform: scale(1.1);
+  background-color: #0056b3;
 }
 
-.deptmodal{
-  display:none;
-}

@@ -46,10 +46,10 @@ function deleteDept(){
     if(!tableBody) return;
 
     tableBody.addEventListener('click',function(e){
-        if(e.target.classList.contains('delete-btn')){
+        if(e.target.classList.contains('delete-dept-btn')){
             const btn = e.target;
 
-            const deptId=btn.getAttribute('data-dept-id');
+            const deptId=btn.getAttribute('data-hd-id');
             const row = document.getElementById(`row-${deptId}`);
 
             if (!row) return;

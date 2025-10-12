@@ -176,18 +176,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     Lastname<br>
                     <input type="text" name="lastname" placeholder="Lastname" required>
                 </div>
+                <div class="head-department-container">
+            Department<br>
+            <select name="hd_id" id="hd-select" required>
+                <option value="">-- Select Head Department --</option>
+                <?php
+                $headDepts = $pdo->query("SELECT hd_id, hd_name FROM headdepartment")->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($headDepts as $hd): ?>
+                    <option value="<?= htmlspecialchars($hd['hd_id']) ?>">
+                        <?= htmlspecialchars($hd['hd_name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
                 <div class="department-container">
-                    Department<br>
-                    <select name="dep_id" required>
+                    Course<br>
+                    <select name="dep_id" id="dep-select" required>
                         <option value="">-- Select Department --</option>
-                        <?php
-                        $departments = $pdo->query("SELECT dept_id, dept_name FROM departments");
-                        foreach ($departments as $department): ?>
-                            <option value="<?= htmlspecialchars($department['dept_id']) ?>" class="department">
-                                <?= htmlspecialchars($department['dept_name']) ?>
-                            </option>
-                        <?php endforeach; ?>
                     </select>
                 </div>
 
@@ -273,6 +279,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php endif; ?>
     </script>
     <?php endif; ?>
+
+     <script>
+    document.getElementById('hd-select').addEventListener('change', function() {
+        const hdId = this.value;
+        const depSelect = document.getElementById('dep-select');
+        depSelect.innerHTML = '<option value="">-- Loading --</option>';
+
+        if (!hdId) {
+            depSelect.innerHTML = '<option value="">-- Select Department --</option>';
+            return;
+        }
+
+        fetch(`../common_pages/get_departments.php?hd_id=${hdId}`)
+            .then(res => res.json())
+            .then(data => {
+                depSelect.innerHTML = '<option value="">-- Select Department --</option>';
+                data.forEach(dep => {
+                    const option = document.createElement('option');
+                    option.value = dep.dept_id;
+                    option.textContent = dep.dept_name;
+                    depSelect.appendChild(option);
+                });
+            })
+            .catch(err => {
+                depSelect.innerHTML = '<option value="">-- Error loading departments --</option>';
+                console.error(err);
+            });
+    });
+    </script>
+
 
     <script type="module" src="../assets/js/maxEventRestrict.js"></script>
     <script src="../assets/js/eventSearch.js"></script>

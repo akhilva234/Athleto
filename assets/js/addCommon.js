@@ -25,21 +25,21 @@ function addDept() {
     const closeButton = document.querySelector('.cancel-btn');
     const addButton = document.querySelector('.add-btn');
     const form = document.querySelector('.deptmodal');
-    const blurOverlay = document.querySelector('.whole-blur-container');
+    // const blurOverlay = document.querySelector('.whole-blur-container');
 
-    if (!closeButton || !addButton || !form || !blurOverlay) {
+    if (!closeButton || !addButton || !form /*|| !blurOverlay*/) {
         console.error("Missing required DOM elements.");
         return;
     }
 
     addButton.addEventListener('click', () => {
         form.style.display = 'grid';
-        blurOverlay.style.display = 'block';
+        // blurOverlay.style.display = 'block';
     });
 
     closeButton.addEventListener('click', () => {
         form.style.display = 'none';
-        blurOverlay.style.display = 'none';
+        // blurOverlay.style.display = 'none';
     });
 }
 

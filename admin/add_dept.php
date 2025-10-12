@@ -18,7 +18,7 @@
 
             $pdo->beginTransaction();
 
-            $dept=$pdo->prepare("INSERT INTO departments (dept_name) VALUES (?)");
+            $dept=$pdo->prepare("INSERT INTO headdepartment (hd_name) VALUES (?)");
 
             $dept->execute([$dept_name]);
 
