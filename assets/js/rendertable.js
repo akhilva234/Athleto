@@ -29,7 +29,7 @@ export function renderParticipantsTable(data,currenUser) {
     // Add the button column only if user is NOT a captain
     if (currenUser !== 'captain') {
         rowHTML += `
-            <td>
+            <td class="print-exclude">
                 <button class="result-entry-btn" data-athlete-id="${athlete.athlete_id}" data-event-id="${athlete.event_id}">
                     Enter Result
                 </button>
@@ -114,7 +114,7 @@ export function renderResultsTable(data,currenUser){
             <td>${athlete.recorded_at}</td>`;
 
             if(currenUser!=='captain'){
-                rowHTML+=`<td><button class="result-entry-btn dwnld-btn" data-result-id="${athlete.result_id}"
+                rowHTML+=`<td class="print-exclude"><button class="result-entry-btn dwnld-btn" data-result-id="${athlete.result_id}"
                       data-athlete-id="${athlete.athlete_id}">
                         Download</button></td> `;
             }
@@ -146,7 +146,7 @@ export function renderRelayTable(data,currenUser){
             <td>${athlete.team_members}</td>`;
 
               if(currenUser!=='captain'){
-           rowHTML+=`<td><button class="result-entry-btn" data-team-id="${athlete.team_id}" data-event-id="${athlete.event_id}">
+           rowHTML+=`<td class="print-exclude"><button class="result-entry-btn" data-team-id="${athlete.team_id}" data-event-id="${athlete.event_id}">
                     Enter Result</button></td>`;
     }
         row.innerHTML=rowHTML;
@@ -173,17 +173,18 @@ export function relayResultsTable(data,currenUser){
         let rowHTML = `
             <td>${count++}</td>
             <td><span class="chest-no-tr">${athlete.team_id}</span></td>
-            <td>${athlete.dept_name}</td>
              <td>${athlete.team_members}</td>
-            <td>${athlete.category_name}</td>
-            <td>${athlete.event_name}</td>
-            <td>${athlete.position}</td>
-            <td>${athlete.username}</td>
-            <td>${athlete.recorded_at}</td>
-            <td><button class="result-entry-btn team-btn" data-result-id="${athlete.result_id}"
+             <td>${athlete.category_name}</td>
+              <td>${athlete.event_name}</td>
+              <td>${athlete.position}</td>
+            <td>${athlete.dept_name}</td>
+            <td class="print-exclude">${athlete.username}</td>
+            <td class="print-exclude">${athlete.recorded_at}</td>
+            <td class="print-exclude"><button class="result-entry-btn team-btn" data-result-id="${athlete.result_id}"
                       data-team-id="${athlete.team_id}">
                         Download</button></td>
         `;
+        row.innerHTML=rowHTML;
         tableBody.appendChild(row);
     });
 

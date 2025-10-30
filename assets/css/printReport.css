@@ -1,0 +1,88 @@
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #print-header, 
+    .participants-table-container, 
+    .result-table-container,
+    #print-header *, 
+    .participants-table-container *, 
+    .result-table-container * {
+        visibility: visible;
+    }
+
+    .participants-table-container, 
+    .result-table-container {
+        position: absolute;
+        left: 0;
+        top: 120px;
+        width: 100%;
+    }
+
+    /* .print-exclude,
+  th.print-exclude,
+  td.print-exclude {
+    display: none !important;
+    visibility: hidden !important;
+  } */
+
+    .print-exclude,
+    .print-exclude * {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    #print-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .print-container, .filter-section, .btns, .whole-blur-container {
+        display: none !important;
+    }
+     table {
+        width: 100%;
+    }
+    html, body {
+        overflow: hidden !important;
+        height: auto !important;
+    }
+
+    /* Remove any visible scrollbars in print */
+    ::-webkit-scrollbar {
+        display: none !important;
+    }
+
+   
+}
+.filter-print-container {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0px 0px 20px 0px;
+}
+
+/* Style print button */
+#print-btn{
+    background-color: #1f2937;
+    color: white;
+    max-height:50px ;
+    max-width:120px ;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+#print-btn:hover {
+    background-color: #374151;
+}

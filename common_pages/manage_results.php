@@ -15,6 +15,7 @@
     <title></title>
      <link rel="stylesheet" href="../assets/css/common.css">
       <link rel="stylesheet" href="../assets/css/common_css/tables.css">
+      <link rel="stylesheet" href="../assets/css/printReport.css">
 </head>
 <body data-view="results"  data-user="<?=$role?>">
     <h2>Individual Results</h2>
@@ -46,8 +47,14 @@
     $results=$results->fetchAll();
     ?>
     <br>
-    <?php $filter_type = 'individual'; ?>
-     <?php include_once "../common_pages/filter.php";?>
+     <div class="filter-print-container">
+    <?php 
+        $filter_type = "individual"; // or "relay" depending on page
+        include "../common_pages/filter.php"; 
+    ?>
+    <button id="print-btn">🖨️ Print List</button>
+    </div>
+
     <div class="result-table-container table-whole-container">
         <table class="result-table">
             <thead>
@@ -60,9 +67,9 @@
             <th>Position</th>
             <th>Course</th>
             <th>Year</th>
-            <th>Verified by</th>
-            <th>Time</th>
-            <th>Certificate</th>
+            <th class="print-exclude">Verified by</th>
+            <th class="print-exclude">Time</th>
+            <th class="print-exclude">Certificate</th>
             </tr>
             </thead>
              
@@ -89,9 +96,9 @@
                     <td><?=htmlspecialchars($result['position'])?></td>
                     <td><?=htmlspecialchars($result['dept_name'])?></td>
                     <td><?=htmlspecialchars($result['year'])?></td>
-                    <td><?=htmlspecialchars($result['username'])?></td>
-                    <td><?=htmlspecialchars($result['recorded_at'])?></td>
-                     <td><button class="result-entry-btn dwnld-btn" data-result-id="<?=$result['result_id']?>"
+                    <td class="print-exclude"><?=htmlspecialchars($result['username'])?></td>
+                    <td class="print-exclude"><?=htmlspecialchars($result['recorded_at'])?></td>
+                     <td class="print-exclude"><button class="result-entry-btn dwnld-btn" data-result-id="<?=$result['result_id']?>"
                       data-athlete-id="<?=$result['athlete_id']?>">
                         Download</button></td>
                 </tr>    
@@ -102,5 +109,6 @@
     </div>
     <script src="../assets/js/pageReload.js"></script>
     <script src="../assets/js/certificate.js"></script>
+    <script src="../assets/js/printTable.js"></script>
 </body>
 </html>

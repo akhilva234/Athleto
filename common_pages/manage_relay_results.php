@@ -20,6 +20,7 @@ if (!isset($_SESSION['user'])) {
     <title></title>
      <link rel="stylesheet" href="../assets/css/common.css">
       <link rel="stylesheet" href="../assets/css/common_css/tables.css">
+      <link rel="stylesheet" href="../assets/css/printReport.css">
 </head>
 <body data-view="relayResults"  data-user="<?=$role?>">
     <h2>Relay Results</h2>
@@ -53,8 +54,13 @@ if (!isset($_SESSION['user'])) {
     $results=$results->fetchAll();
     ?>
     <br>
-    <?php $filter_type = 'relay'; ?>
-    <?php include_once '../common_pages/filter.php' ;?>
+    <div class="filter-print-container">
+    <?php 
+        $filter_type = "relay";
+        include "../common_pages/filter.php"; 
+    ?>
+    <button id="print-btn">🖨️ Print List</button>
+    </div>
     <div class="result-table-container table-whole-container">
         <table class="result-table participants-table">
             <thead>
@@ -66,9 +72,9 @@ if (!isset($_SESSION['user'])) {
             <th>Event</th>
             <th>Position</th>
             <th>Course</th>
-            <th>Verified by</th>
-            <th>Time</th>
-            <th>certificate</th>
+            <th  class="print-exclude">Verified by</th>
+            <th  class="print-exclude">Time</th>
+            <th  class="print-exclude">certificate</th>
             </tr>
             </thead>
             <tbody>
@@ -91,9 +97,9 @@ if (!isset($_SESSION['user'])) {
                     <td><?=htmlspecialchars($result['event_name'])?></td>
                     <td><?=htmlspecialchars($result['position'])?></td>
                     <td><?=htmlspecialchars($result['dept_name'])?></td>
-                    <td><?=htmlspecialchars($result['username'])?></td>
-                    <td><?=htmlspecialchars($result['recorded_at'])?></td>
-                    <td><button class="result-entry-btn team-btn" data-result-id="<?=$result['result_id']?>"
+                    <td  class="print-exclude"><?=htmlspecialchars($result['username'])?></td>
+                    <td  class="print-exclude"><?=htmlspecialchars($result['recorded_at'])?></td>
+                    <td  class="print-exclude"><button class="result-entry-btn team-btn" data-result-id="<?=$result['result_id']?>"
                       data-team-id="<?=$result['team_id']?>">
                         Download</button></td>  
                 </tr>    
@@ -106,4 +112,5 @@ if (!isset($_SESSION['user'])) {
 </body>
 <script src="../assets/js/infoFetch.js" type="module"></script>
 <script src="../assets/js/certificate.js"></script>
+<script src="../assets/js/printTable.js"></script>
 </html>

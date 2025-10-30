@@ -21,6 +21,7 @@
      <link rel="stylesheet" href="../assets/css/common.css">
      <link rel="stylesheet" href="../assets/css/common_css/tables.css">
      <link rel="stylesheet" href="../assets/css/result_form.css">
+     <link rel="stylesheet" href="../assets/css/printReport.css">
 </head>
 <body data-view="participants" data-user="<?=$role?>">
     <div class="whole-blur-container"></div>
@@ -53,8 +54,14 @@ ORDER BY
 $Participants=$Participants->fetchAll();
     ?>
     <br>
-   <?php $filter_type = 'individual'; ?>
-     <?php include_once "../common_pages/filter.php";?>
+   <div class="filter-print-container">
+    <?php 
+        $filter_type = "individual"; // or "relay" depending on page
+        include "../common_pages/filter.php"; 
+    ?>
+    <button id="print-btn">🖨️ Print List</button>
+    </div>
+
     <div class="participants-table-container table-whole-container">
         <table class="participants-table">
             <thead>
@@ -67,7 +74,7 @@ $Participants=$Participants->fetchAll();
             <th>Department</th>
             <th>Year</th>
             <?php if($role!=='captain'):?>  
-            <th>Result Entry</th>
+            <th class="print-exclude">Result Entry</th>
               <?php endif;?>
             </tr>
             </thead>
@@ -92,7 +99,7 @@ $Participants=$Participants->fetchAll();
                     <td><?=htmlspecialchars($athlete['dept_name'])?></td>
                     <td><?=htmlspecialchars($athlete['year'])?></td>
                   <?php if($role!=='captain'):?>  
-                    <td><button class="result-entry-btn" data-athlete-id="<?=$athlete['athlete_id']?>" data-event-id="<?=$athlete['event_id']?>">
+                    <td class="print-exclude"><button class="result-entry-btn" data-athlete-id="<?=$athlete['athlete_id']?>" data-event-id="<?=$athlete['event_id']?>">
                         Enter Result</button></td>  
                   <?php endif;?>       
                 </tr>
@@ -140,4 +147,5 @@ $Participants=$Participants->fetchAll();
 <script src="../assets/js/infoFetch.js" type="module"></script>
 <script src="../assets/js/messagePopup.js"></script>
 <script src="../assets/js/delete.js" type="module"></script>
+<script src="../assets/js/printTable.js"></script>
 </html>

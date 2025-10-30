@@ -20,6 +20,7 @@
      <link rel="stylesheet" href="../assets/css/common.css">
      <link rel="stylesheet" href="../assets/css/common_css/tables.css">
      <link rel="stylesheet" href="../assets/css/result_form.css">
+     <link rel="stylesheet" href="../assets/css/printReport.css">
 </head>
 <body data-view="relays"  data-user="<?=$role?>">
      <div class="whole-blur-container"></div>
@@ -46,8 +47,14 @@
     $relayParticipants=$pdo->query($sql);
 ?>
 <br>
-<?php $filter_type = 'relay'; ?>
-<?php include_once '../common_pages/filter.php' ;?>
+
+<div class="filter-print-container">
+    <?php 
+        $filter_type = "relay"; 
+        include "../common_pages/filter.php"; 
+    ?>
+    <button id="print-btn">🖨️ Print List</button>
+    </div>
     <div class="participants-table-container table-whole-container">
         <table class="participants-table">
         <thead>
@@ -59,7 +66,7 @@
                 <th>Department</th>
                 <th>Team Members</th>
                  <?php if($role!=='captain'):?> 
-                <th>Result</th>
+                <th class="print-exclude">Result</th>
                  <?php endif;?> 
             </tr>
         </thead>
@@ -81,7 +88,7 @@
                  <td><?=htmlspecialchars($relay['dept_name'])?></td>
                  <td><?=htmlspecialchars($relay['team_members'])?></td>
              <?php if($role!=='captain'):?> 
-                 <td><button class="result-entry-btn" data-team-id="<?=$relay['team_id']?>"
+                 <td class="print-exclude"><button class="result-entry-btn" data-team-id="<?=$relay['team_id']?>"
                   data-event-id="<?=$relay['event_id']?>">
                         Enter Result</button></td>
               <?php endif;?>            
@@ -128,4 +135,5 @@
         <script src="../assets/js/pageReload.js"></script>
 </body>
 <script type="module" src="../assets/js/relayInfoFetch.js"></script>
+<script src="../assets/js/printTable.js"></script>
 </html>

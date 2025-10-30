@@ -74,7 +74,7 @@ try {
     $stmt->execute($params);
 
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
-}else if($view ==='relayResults'){
+}else if($view === 'relayResults'){
     if (!empty($dept)) {
         $in = implode(',', array_fill(0, count($dept), '?'));
         $where[] = "d.dept_id IN ($in)";
