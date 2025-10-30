@@ -31,7 +31,7 @@ if (!isset($_SESSION['user'])) {
         c.category_name,
         e.event_name,
         e.event_id,
-        GROUP_CONCAT(CONCAT(a.first_name,' ',a.last_name) SEPARATOR ', ') AS athletes,
+        GROUP_CONCAT(CONCAT(a.first_name,' ',a.last_name) SEPARATOR ',') AS athletes,
         r.position,
         u.username,
         r.recorded_at,
@@ -50,39 +50,47 @@ if (!isset($_SESSION['user'])) {
 
         echo "Failed:".$e->getMessage();
     }  
+    $results=$results->fetchAll();
     ?>
     <br>
     <?php $filter_type = 'relay'; ?>
     <?php include_once '../common_pages/filter.php' ;?>
     <div class="result-table-container table-whole-container">
-        <table class="result-table">
+        <table class="result-table participants-table">
             <thead>
             <tr>
             <th>SI.NO</th>
             <th>Chest Number</th>
-            <th>Course</th>
             <th>Athletes</th>
             <th>Category</th>
             <th>Event</th>
             <th>Position</th>
+            <th>Course</th>
             <th>Verified by</th>
             <th>Time</th>
             <th>certificate</th>
             </tr>
             </thead>
-             <?php $count=1;?>
             <tbody>
+                  <?php if (empty($results)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Results found.
+                </td>
+            </tr>
+        <?php else: ?>
+                <?php $count=1;?>
                 <?php foreach($results as $result):?>
                       <tr id="row-<?= $result['team_id'] . '-' . $result['event_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
                     <td><span class="chest-no-tr">
                         <?=htmlspecialchars($result['team_id'])?>
                     </span></td>
-                    <td><?=htmlspecialchars($result['dept_name'])?></td>
-                    <td><?=htmlspecialchars($result['athletes'])?></td>
+                     <td><?=htmlspecialchars($result['athletes'])?></td>
                     <td><?=htmlspecialchars($result['category_name'])?></td>
                     <td><?=htmlspecialchars($result['event_name'])?></td>
                     <td><?=htmlspecialchars($result['position'])?></td>
+                    <td><?=htmlspecialchars($result['dept_name'])?></td>
                     <td><?=htmlspecialchars($result['username'])?></td>
                     <td><?=htmlspecialchars($result['recorded_at'])?></td>
                     <td><button class="result-entry-btn team-btn" data-result-id="<?=$result['result_id']?>"
@@ -90,6 +98,7 @@ if (!isset($_SESSION['user'])) {
                         Download</button></td>  
                 </tr>    
             <?php endforeach ;?>
+            <?php endif; ?>
             </tbody>
         </table>
     </div>

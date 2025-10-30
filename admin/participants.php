@@ -49,6 +49,8 @@ JOIN
 ORDER BY 
     a.athlete_id
 ");
+
+$Participants=$Participants->fetchAll();
     ?>
     <br>
    <?php $filter_type = 'individual'; ?>
@@ -69,8 +71,15 @@ ORDER BY
               <?php endif;?>
             </tr>
             </thead>
-            <?php $count=1;?>
             <tbody>
+                <?php if (empty($Participants)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Participants found.
+                </td>
+            </tr>
+        <?php else: ?>
+            <?php $count=1;?>
             <?php foreach($Participants as $athlete):?>
                 <tr id="row-<?= $athlete['athlete_id'] . '-' . $athlete['event_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
@@ -88,6 +97,7 @@ ORDER BY
                   <?php endif;?>       
                 </tr>
             <?php endforeach ;?>
+             <?php endif;?> 
             </tbody>
         </table>
     </div>

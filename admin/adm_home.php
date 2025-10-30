@@ -40,8 +40,9 @@ try{
         ORDER BY total_points DESC LIMIT 3
     ");
     $ranks=$standings->fetchAll();
-
+    $results=$results->fetchAll();
     $users=$pdo->query("SELECT * FROM users WHERE role!='admin'");
+    $users=$users->fetchAll();
 
 }catch(PDOException $e ){
     echo "Failed:".$e->getMessage();
@@ -79,6 +80,13 @@ try{
             </tr>
         </thead>
         <tbody>
+            <?php if (empty($results)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Results found.
+                </td>
+            </tr>
+        <?php else: ?>
             <?php foreach($results as $res): ?>
             <tr>
                 <td><?=htmlspecialchars($res['athlete_id'])?></td>
@@ -87,6 +95,7 @@ try{
                  <td><?=htmlspecialchars($res['position'])?></td>
             </tr>
             <?php endforeach; ?>
+             <?php endif; ?>
         </tbody>
     </table>
 </div>
@@ -100,15 +109,24 @@ try{
                 <th>Points</th>
             </tr>
         </thead>
-        <?php $count=1;?>
+       
         <tbody>
+             <?php if (empty($ranks)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Standings found.
+                </td>
+            </tr>
+        <?php else: ?>
+             <?php $count=1;?>
             <?php foreach($ranks as $rank): ?>
             <tr>
                 <td><?=htmlspecialchars($count++)?></td>
                 <td><?=htmlspecialchars($rank['dept_name'])?></td>
                 <td><?=htmlspecialchars($rank['total_points'])?></td>
             </tr>
-          <?php endforeach;?>  
+          <?php endforeach;?> 
+          <?php endif; ?> 
         </tbody>
     </table>
 </div>
@@ -128,6 +146,13 @@ try{
             </tr>
         </thead>
         <tbody>
+            <?php if (empty($users)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No users found.
+                </td>
+            </tr>
+        <?php else: ?>
             <?php foreach($users as $user) :?>
             <tr id="row-<?= $user['user_id']?>">
                 <td><?=htmlspecialchars($user['user_id'])?></td>
@@ -142,6 +167,7 @@ try{
                     </button></td>
             </tr>
             <?php endforeach;?>
+              <?php endif; ?> 
         </tbody>
     </table>
 </div>

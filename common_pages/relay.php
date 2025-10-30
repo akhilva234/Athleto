@@ -63,8 +63,15 @@
                  <?php endif;?> 
             </tr>
         </thead>
-        <?php $count=1;?>
         <tbody>
+             <?php if (empty($relayParticipants)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Participants found.
+                </td>
+            </tr>
+        <?php else: ?>
+            <?php $count=1;?>
             <?php foreach($relayParticipants as $relay) :?>
             <tr id="row-<?= $relay['team_id'] . '-' . $relay['event_id']?>">
                 <td><?=htmlspecialchars($count++)?></td>
@@ -80,6 +87,7 @@
               <?php endif;?>            
             </tr>
          <?php endforeach ;?>   
+         <?php endif;?>
         </tbody>
     </table>
     </div>

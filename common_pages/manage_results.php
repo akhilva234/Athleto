@@ -43,6 +43,7 @@
 
         echo "Failed:".$e->getMessage();
     }  
+    $results=$results->fetchAll();
     ?>
     <br>
     <?php $filter_type = 'individual'; ?>
@@ -64,8 +65,16 @@
             <th>Certificate</th>
             </tr>
             </thead>
-             <?php $count=1;?>
+             
             <tbody>
+                <?php if (empty($results)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Results found.
+                </td>
+            </tr>
+        <?php else: ?>
+                <?php $count=1;?>
                 <?php foreach($results as $result):?>
                 <tr id="row-<?= $result['athlete_id'] . '-' . $result['event_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
@@ -87,6 +96,7 @@
                         Download</button></td>
                 </tr>    
             <?php endforeach ;?>
+             <?php endif; ?>
             </tbody>
         </table>
     </div>

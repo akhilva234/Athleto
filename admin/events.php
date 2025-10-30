@@ -46,7 +46,7 @@
         echo "Query failed: " . $ex->getMessage();
         exit;
     }
-        
+    $events=$events->fetchAll();
     ?>
     <br>
     <button class="add-btn">
@@ -64,8 +64,16 @@
             <th>Delete</th>
             </tr>
             </thead>
-            <?php $count=1;?>
+           
             <tbody>
+                 <?php if (empty($events)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Events found.
+                </td>
+            </tr>
+        <?php else: ?>
+             <?php $count=1;?>
             <?php foreach($events as $event):?>
                 <tr id="row-<?=$event['event_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
@@ -78,6 +86,7 @@
                         Delete</button></td>  
                 </tr>
             <?php endforeach ;?>
+             <?php endif; ?>
             </tbody>
         </table>
     </div>

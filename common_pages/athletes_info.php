@@ -27,6 +27,8 @@
     JOIN categories c ON a.category_id=c.category_id
     JOIN departments d ON a.dept_id=d.dept_id 
     ORDER BY a.athlete_id");
+
+    $athletes = $athletes->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -62,8 +64,15 @@
             <th>Delete</th>
             </tr>
             </thead>
-            <?php $count=1;?>
             <tbody>
+                 <?php if (empty($athletes)): ?>
+            <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No athletes found.
+                </td>
+            </tr>
+        <?php else: ?>
+            <?php $count=1;?>
             <?php foreach($athletes as $athlete):?>
                 <tr id="row-<?= $athlete['athlete_id']?>">
                     <td><?=htmlspecialchars($count++)?></td>
@@ -82,6 +91,7 @@
                     </button></td>
                  </tr>   
             <?php endforeach ;?>
+              <?php endif; ?>
             </tbody>
         </table>
     </div>

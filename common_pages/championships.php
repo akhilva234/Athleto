@@ -113,8 +113,16 @@ $categoryWise = $stmt->fetchAll();
             <th>Total Points</th>
             </tr>
         </thead>
-         <?php $count=1;?>
         <tbody>
+             <tbody>
+                   <?php if (empty($deptChampions)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Team championship found.
+                </td>
+            </tr>
+        <?php else: ?>
+              <?php $count=1;?>
             <?php foreach($deptChampions as $dept): ?>
                 <tr>
                      <td><?=htmlspecialchars($count++)?></td>
@@ -122,6 +130,7 @@ $categoryWise = $stmt->fetchAll();
                      <td><?=htmlspecialchars($dept['total_points'])?></td>
                 </tr>
                 <?php endforeach;?>
+                <?php endif; ?>
         </tbody>
     </table>
    </div> 
@@ -139,8 +148,15 @@ $categoryWise = $stmt->fetchAll();
             <th>Total points</th>
             </tr>
         </thead>
-         <?php $count=1;?>
         <tbody>
+        <?php if (empty($maleChampions)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Men championship found.
+                </td>
+            </tr>
+        <?php else: ?>
+             <?php $count=1;?>
             <?php foreach($maleChampions as $cat): ?>
                 <tr>
                      <td><?=htmlspecialchars($count++)?></td>
@@ -150,6 +166,7 @@ $categoryWise = $stmt->fetchAll();
                      <td><?=htmlspecialchars($cat['total_points'])?></td>
                 </tr>
                 <?php endforeach;?>
+                 <?php endif; ?>
         </tbody>
     </table>
    </div> 
@@ -166,8 +183,15 @@ $categoryWise = $stmt->fetchAll();
             <th>Total points</th>
             </tr>
         </thead>
-         <?php $count=1;?>
         <tbody>
+                   <?php if (empty($femaleChampions)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Women championship found.
+                </td>
+            </tr>
+        <?php else: ?>
+            <?php $count=1;?>
             <?php foreach($femaleChampions as $cat): ?>
                 <tr>
                      <td><?=htmlspecialchars($count++)?></td>
@@ -177,6 +201,7 @@ $categoryWise = $stmt->fetchAll();
                      <td><?=htmlspecialchars($cat['total_points'])?></td>
                 </tr>
                 <?php endforeach;?>
+                 <?php endif; ?>
         </tbody>
     </table>
    </div> 
@@ -193,8 +218,16 @@ $categoryWise = $stmt->fetchAll();
             <th>Total Points</th>
             </tr>
         </thead>
-         <?php $count=1;?>
         <tbody>
+             <tbody>
+                   <?php if (empty($topAthlete)): ?>
+                <tr>
+                <td colspan="8" style="text-align:center; font-weight:bold; color:#555;">
+                    No Individual championship found.
+                </td>
+            </tr>
+        <?php else: ?>
+            <?php $count=1;?>
             <?php foreach($topAthlete as $athlete): ?>
                 <tr>
                      <td><?=htmlspecialchars($count++)?></td>
@@ -204,6 +237,7 @@ $categoryWise = $stmt->fetchAll();
                      <td><?=htmlspecialchars($athlete['total_points'])?></td>
                 </tr>
                 <?php endforeach;?>
+                <?php endif; ?>
         </tbody>
     </table>
    </div> 
