@@ -33,19 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        $positionExists = $pdo->prepare("
-            SELECT r.result_id 
-            FROM results r
-            INNER JOIN athletes a ON r.athlete_id = a.athlete_id
-            WHERE r.event_id = ? AND r.position = ? AND a.category_id = ?
-        ");
-        $positionExists->execute([$event_id, $position, $athleteCategory]);
+        // $positionExists = $pdo->prepare("
+        //     SELECT r.result_id 
+        //     FROM results r
+        //     INNER JOIN athletes a ON r.athlete_id = a.athlete_id
+        //     WHERE r.event_id = ? AND r.position = ? AND a.category_id = ?
+        // ");
+        // $positionExists->execute([$event_id, $position, $athleteCategory]);
 
-        if ($positionExists->fetch()) {
-            $_SESSION['result-add-msg'] = "Failed: Position already taken for this event in the selected category.";
-            header("Location: $redirectPage&status=error");
-            exit;
-        }
+        // if ($positionExists->fetch()) {
+        //     $_SESSION['result-add-msg'] = "Failed: Position already taken for this event in the selected category.";
+        //     header("Location: $redirectPage&status=error");
+        //     exit;
+        // }
 
         $result_add = $pdo->prepare("INSERT INTO results(event_id, athlete_id, position, added_by)
             VALUES(:eventid, :athleteid, :position, :added)");
