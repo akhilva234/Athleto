@@ -43,6 +43,7 @@ function getCheckedValues(classname) {
         .map(cb => cb.value);
 }
 
+
 export async function loadAthletes() {
         const chestNoInput = document.querySelector('.search-box input');
         const chestNo = chestNoInput ? chestNoInput.value.trim() : '';
@@ -51,6 +52,7 @@ export async function loadAthletes() {
             dept: getCheckedValues('dept-checkbox').join(','),
             event: getCheckedValues('event-checkbox').join(','),
             category: getCheckedValues('cat-checkbox').join(','),
+            year: getCheckedValues('year-checkbox').join(','),
             chest_no: chestNo,
             view:currentView
         });
@@ -90,6 +92,11 @@ if (chestNoInput) {
 
 document.querySelectorAll('.dropdown-checkbox input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', loadAthletes);
+});
+
+// Auto-load filtered data on page load
+window.addEventListener('DOMContentLoaded', () => {
+    loadAthletes();
 });
 
 

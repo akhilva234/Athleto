@@ -18,6 +18,11 @@ try {
     // 4. Define all table creation queries
     $tables = [
 
+            "CREATE TABLE IF NOT EXISTS degree (
+            degree_id INT AUTO_INCREMENT PRIMARY KEY,
+            degree_name VARCHAR(50)
+            )",
+
           "CREATE TABLE IF NOT EXISTS headdepartment (
             hd_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
             hd_name VARCHAR(50) NOT NULL UNIQUE
@@ -27,7 +32,8 @@ try {
             dept_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
             dept_name VARCHAR(50) NOT NULL UNIQUE,
             hd_id   INT(5) NOT NULL,
-            FOREIGN KEY (hd_id) REFERENCES headdepartment(hd_id)
+            FOREIGN KEY (hd_id) REFERENCES headdepartment(hd_id),
+            FOREIGN KEY (degree_id) REFERENCES degree(degree_id)
         )",
 
         "CREATE TABLE IF NOT EXISTS categories (
@@ -75,6 +81,7 @@ try {
             part_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
             athlete_id INT(5) NOT NULL,
             event_id INT(5) NOT NULL,
+            meet_year YEAR NOT NULL DEFAULT YEAR(CURDATE()),
             FOREIGN KEY (athlete_id) REFERENCES athletes(athlete_id),
             FOREIGN KEY (event_id) REFERENCES events(event_id)
         )",
@@ -105,6 +112,7 @@ try {
             position INT(5) NOT NULL,
             added_by INT(5) NOT NULL,
             recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            meet_year YEAR NOT NULL DEFAULT YEAR(CURDATE()),
             FOREIGN KEY (event_id) REFERENCES events(event_id),
             FOREIGN KEY (athlete_id) REFERENCES athletes(athlete_id),
             FOREIGN KEY (relay_team_id) REFERENCES relay_teams(team_id),

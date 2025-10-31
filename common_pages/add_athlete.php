@@ -176,6 +176,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     Lastname<br>
                     <input type="text" name="lastname" placeholder="Lastname" required>
                 </div>
+         <div class="degree-container">
+            Degree<br>
+            <select name="degree_id" id="degree-select" required>
+                <option value="">-- Select Degree --</option>
+                <?php
+                $degrees = $pdo->query("SELECT degree_id, degree_name FROM degree")->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($degrees as $degree): ?>
+                    <option value="<?= htmlspecialchars($degree['degree_id']) ?>" 
+                    data-name="<?= htmlspecialchars(strtolower($degree['degree_name'])) ?>">
+                <?= htmlspecialchars($degree['degree_name']) ?>
+            </option>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
                 <div class="head-department-container">
             Department<br>
             <select name="hd_id" id="hd-select" required>
@@ -254,12 +270,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="year-container">
                     Year<br>
-                    <select name="year_select" required>
+                    <select name="year_select" id="year-select" required>
                         <option value="">-- Select Year --</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
                     </select>
                 </div>
 
@@ -281,35 +293,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php endif; ?>
 
      <script>
-    document.getElementById('hd-select').addEventListener('change', function() {
-        const hdId = this.value;
+        document.getElementById('hd-select').addEventListener('change', loadDepartments);
+        document.getElementById('degree-select').addEventListener('change', loadDepartments);
+
+    function loadDepartments() {
+
+        const degreeId = document.getElementById('degree-select').value;
+        const hdId = document.getElementById('hd-select').value;
         const depSelect = document.getElementById('dep-select');
+
         depSelect.innerHTML = '<option value="">-- Loading --</option>';
 
-        if (!hdId) {
+        if (!degreeId || !hdId) {
             depSelect.innerHTML = '<option value="">-- Select Department --</option>';
             return;
         }
 
-        fetch(`../common_pages/get_departments.php?hd_id=${hdId}`)
+        fetch(`../common_pages/get_departments.php?degree_id=${degreeId}&hd_id=${hdId}`)
             .then(res => res.json())
             .then(data => {
                 depSelect.innerHTML = '<option value="">-- Select Department --</option>';
-                data.forEach(dep => {
-                    const option = document.createElement('option');
-                    option.value = dep.dept_id;
-                    option.textContent = dep.dept_name;
-                    depSelect.appendChild(option);
-                });
+                if (data.length === 0) {
+                    depSelect.innerHTML = '<option value="">-- No departments found --</option>';
+                } else {
+                    data.forEach(dep => {
+                        const option = document.createElement('option');
+                        option.value = dep.dept_id;
+                        option.textContent = dep.dept_name;
+                        depSelect.appendChild(option);
+                    });
+                }
             })
             .catch(err => {
                 depSelect.innerHTML = '<option value="">-- Error loading departments --</option>';
                 console.error(err);
             });
-    });
+    }
+
     </script>
-
-
+    <script src="../assets/js/yearSelection.js"></script>
     <script type="module" src="../assets/js/maxEventRestrict.js"></script>
     <script src="../assets/js/eventSearch.js"></script>
     <script src="../assets/js/pageReload.js"></script>

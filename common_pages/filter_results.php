@@ -8,6 +8,7 @@ $user = $_SESSION['user'];
 $dept     = isset($_GET['dept'])      && $_GET['dept']      !== '' ? explode(',', $_GET['dept'])      : [];
 $events   = isset($_GET['event'])     && $_GET['event']     !== '' ? explode(',', $_GET['event'])     : [];
 $cat      = isset($_GET['category'])  && $_GET['category']  !== '' ? explode(',', $_GET['category'])  : [];
+$year     = isset($_GET['year'])      && $_GET['year']      !== '' ? explode(',', $_GET['year'])      : [];
 $chest_no = isset($_GET['chest_no'])  && $_GET['chest_no']  !== '' ? trim($_GET['chest_no'])          : '';
 $view=isset($_GET['view']) ? $_GET['view'] : '';
 
@@ -36,6 +37,11 @@ try {
         $where[] = "c.category_id IN ($in)";
         $params = array_merge($params, $cat);
     }
+    if (!empty($year)) {
+            $in = implode(',', array_fill(0, count($year), '?'));
+            $where[] = "r.meet_year IN ($in)";
+            $params = array_merge($params, $year);
+        }
 
     if ($chest_no !== '') {
         $where[] = "a.athlete_id LIKE ?";
@@ -59,7 +65,8 @@ try {
         c.category_name,
         e.event_id,
         e.event_name,
-        u.username
+        u.username,
+        r.meet_year
     FROM results r
     JOIN athletes a ON a.athlete_id = r.athlete_id
     JOIN events e   ON e.event_id   = r.event_id
@@ -90,6 +97,11 @@ try {
     $where[] = "c.category_id IN ($in)";
     $params = array_merge($params, $cat);
     }
+    if (!empty($year)) {
+            $in = implode(',', array_fill(0, count($year), '?'));
+            $where[] = "r.meet_year IN ($in)";
+            $params = array_merge($params, $year);
+        }
     if ($chest_no !== '') {
         $where[] = "rt.team_id LIKE ?";
         $params[] = "%$chest_no%";
@@ -110,7 +122,8 @@ try {
             d.dept_name,
             c.category_name,
             GROUP_CONCAT(a.first_name, ' ', a.last_name) as team_members,
-            u.username
+            u.username,
+            r.meet_year
         FROM results r
         JOIN relay_teams rt         ON rt.team_id   = r.relay_team_id
         JOIN events e              ON e.event_id   = rt.event_id

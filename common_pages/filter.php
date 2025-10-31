@@ -40,8 +40,8 @@
             <?php foreach ($events as $event): ?>
                 <?php
 
-                     if ($filter_type === 'individual' && $event['is_relay'] === 1) continue;
-                     if($filter_type === 'relay' && $event['is_relay'] === 0) continue;
+                     if ($filter_type === 'individual' && $event['is_relay'] == 1) continue;
+                     if($filter_type === 'relay' && $event['is_relay'] == 0) continue;
                     ?>
                 <label>
                     <input type="checkbox" class="event-checkbox" value="<?= htmlspecialchars($event['event_id']) ?>">
@@ -63,6 +63,35 @@
             <?php endforeach; ?>
         </div>
     </div>
+    <div class="dropdown-checkbox" id="yearDropdown">
+    <button type="button" class="dropdown-btn">Meet Year ▼</button>
+    <div class="dropdown-content">
+        <input type="text" class="dropdown-search" placeholder="Search year...">
+        <?php 
+            $startYear = 2023; // start year
+            $currentYear = date("Y");
+
+            // Fetch distinct meet years from participation table that are >= 2023
+            $stmt = $pdo->query("SELECT DISTINCT meet_year FROM participation WHERE meet_year >= $startYear ORDER BY meet_year DESC");
+            $meetYears = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            // Ensure current year is included even if no records yet
+            if (!in_array($currentYear, $meetYears)) {
+                array_unshift($meetYears, $currentYear); // add at beginning
+            }
+
+            foreach ($meetYears as $year):
+                $checked = ($year == $currentYear) ? "checked" : "";
+                $label = $year . '-' . ($year + 1); // display as 2023-24
+        ?>
+            <label>
+                <input type="checkbox" class="year-checkbox" value="<?= $year ?>" <?= $checked ?>>
+                <?= $label ?>
+            </label><br>
+        <?php endforeach; ?>
+    </div>
+</div>
+
     <div class="search-box">
         <label>
             <input type="text" placeholder="Enter chest no.">
