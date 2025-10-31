@@ -7,6 +7,7 @@
     if($_SERVER['REQUEST_METHOD']=='POST'){
 
         $dept_name=ucwords(strtolower(trim($_POST['dept_name'])));
+        
 
         if(empty($dept_name)){
              $_SESSION['dept-msg']="Failed: All fields are necessary";

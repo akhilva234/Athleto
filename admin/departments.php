@@ -159,6 +159,18 @@ $departments = array_values($departments);
       
       <label for="dept_name">Course Name</label>
       <input type="text" id="dept_name" name="dept_name" placeholder="Enter course name" required>
+       <label for="degree_id">Degree</label><br>
+            <select name="degree_id" id="degree_id" class="input-style" required>
+                <option value="">-- Select Degree --</option>
+                <?php
+                $degrees = $pdo->query("SELECT degree_id, degree_name FROM degree")->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($degrees as $deg):
+                ?>
+                    <option value="<?= htmlspecialchars($deg['degree_id']) ?>">
+                        <?= htmlspecialchars($deg['degree_name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select><br><br>
 
       <button type="submit" class="submit-btn">Add Course</button>
     </form>

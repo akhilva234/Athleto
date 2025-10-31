@@ -1,4 +1,4 @@
-// assets/js/printTable.js
+
 document.addEventListener("DOMContentLoaded", function () {
     const printBtn = document.getElementById("print-btn");
     if (!printBtn) return;
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
             filterText = `<em>No specific filters applied</em>`;
         }
 
-        // ====== Create Printable Header ======
+  
         const headerDiv = document.createElement("div");
         headerDiv.id = "print-header";
         headerDiv.style.textAlign = "center";
@@ -78,13 +78,11 @@ document.addEventListener("DOMContentLoaded", function () {
             <hr style="margin:10px 0;">
         `;
 
-        // ====== Add header before table ======
         tableContainer.parentNode.insertBefore(headerDiv, tableContainer);
 
-        // ====== Print Page ======
         window.print();
 
-        // ====== Remove header after print ======
+       
         headerDiv.remove();
     });
 
@@ -108,24 +106,25 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // ====== Academic Year Logic (Auto Adjusts) ======
-        const now = new Date();
-        let startYear = now.getFullYear();
-        let endYear = startYear + 1;
+        const yearRadios = document.querySelectorAll('#yearDropdown .year-radio');
 
-        // If before July (academic year logic)
-        if (now.getMonth() < 6) {
-            startYear = startYear - 1;
-            endYear = startYear + 1;
-        }
+        
+        const selectedYear = [...yearRadios]  
+            .map(radio => radio.checked ? radio.parentElement.textContent.trim() : null)  
+            .filter(val => val !== null)[0];
 
-        const meetHeader = `MES College Marampally Athletic Meet (${startYear} - ${endYear})`;
+          let filterText = "";
+          if(selectedYear.length)
+            filterText = `<strong>Year:</strong> ${selectedYear}<br>`;
+              
 
-        // ====== Get Page Heading ======
+        const meetHeader = `MES College Marampally Athletic Meet `;
+
+       
         const pageHeading = document.querySelector("h2")?.innerText || "Athletic Meet Report";
 
     
-        // ====== Create Printable Header ======
+      
         const headerDiv = document.createElement("div");
         headerDiv.id = "print-header";
         headerDiv.style.textAlign = "center";
@@ -133,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
         headerDiv.innerHTML = `
             <h2 style="margin:0; font-size:20px;">${meetHeader}</h2>
             <h3 style="margin:5px 0; font-weight:bold;">${pageHeading}</h3>
+            <div style="margin-top:3px; font-size:14px; line-height:1.4;">${filterText}</div>
             <hr style="margin:10px 0;">
         `;
 

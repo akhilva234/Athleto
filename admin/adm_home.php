@@ -14,19 +14,27 @@
 }
 try{
 
-    $results=$pdo->query("SELECT 
+    $currentYear= date('Y');
+
+    $stmt=$pdo->prepare("SELECT 
     r.position,
     e.event_name,
     a.athlete_id,
+    r.meet_year,
     GROUP_CONCAT(CONCAT(a.first_name,'',a.last_name) SEPARATOR ',') AS athlete_name
     FROM results r 
     JOIN athletes a ON r.athlete_id= a.athlete_id
     JOIN events e ON r.event_id=e.event_id
+    WHERE r.meet_year=?
      GROUP BY r.position, e.event_name, a.athlete_id
     ORDER BY r.result_id DESC LIMIT 3");
 
-    $standings=$pdo->query(" SELECT 
+    $stmt->execute([$currentYear]);
+    $results=$stmt->fetchAll();
+
+    $standings=$pdo->prepare(" SELECT 
             d.dept_name,
+            r.meet_year,
             SUM(CASE r.position
                 WHEN 1 THEN 5
                 WHEN 2 THEN 3
@@ -36,11 +44,13 @@ try{
         FROM results r
         JOIN athletes a ON r.athlete_id = a.athlete_id
         JOIN departments d ON a.dept_id = d.dept_id
+        WHERE r.meet_year=?
         GROUP BY d.dept_id
         ORDER BY total_points DESC LIMIT 3
     ");
+    $standings->execute([$currentYear]);
     $ranks=$standings->fetchAll();
-    $results=$results->fetchAll();
+
     $users=$pdo->query("SELECT * FROM users WHERE role!='admin'");
     $users=$users->fetchAll();
 
