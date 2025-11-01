@@ -9,6 +9,8 @@
 
      try{
     
+         $currentYear=date('Y');
+
         $sql="SELECT 
         a.athlete_id,
         a.first_name,
@@ -18,12 +20,17 @@
         c.category_name,
         d.dept_id,
         d.dept_name,
+        p.meet_year,
+        dg.degree_id,
+        dg.degree_name,
         GROUP_CONCAT(p.event_id) as registered_event_ids,
          GROUP_CONCAT(e.event_name) AS registered_event_names
 
         FROM athletes a
 
         JOIN   departments d ON a.dept_id = d.dept_id
+
+        JOIN degree dg ON dg.degree_id= d.degree_id
         
          JOIN categories c ON a.category_id = c.category_id
 
@@ -33,12 +40,13 @@
          LEFT JOIN 
              events e ON p.event_id = e.event_id    
         WHERE 
-            a.athlete_id = ?
+            a.athlete_id = ? AND
+            p.meet_year=?
         GROUP BY 
             a.athlete_id";
 
          $stmnt=$pdo->prepare($sql);
-         $stmnt->execute([$athlete_id]);
+         $stmnt->execute([$athlete_id,$currentYear]);
          
          $athlete=$stmnt->fetch(PDO::FETCH_ASSOC);
 
@@ -55,6 +63,8 @@
         $isFull=count($registered_event_ids)>=3;
 
         $events=$pdo->query("SELECT * FROM events WHERE is_relay=0");
+
+        $degrees = $pdo->query("SELECT degree_id, degree_name FROM degree")->fetchAll(PDO::FETCH_ASSOC);
 
             // Fetch all head departments
             $headDepartments = $pdo->query("SELECT * FROM headdepartment")->fetchAll(PDO::FETCH_ASSOC);
@@ -116,11 +126,24 @@
 
     <!-- Year -->
     <label>Year:</label>
-    <select name="year">
+    <select name="year" id="year-select">
         <?php for ($i = 1; $i <= 4; $i++): ?>
-            <option value="<?= $i ?>" <?= $athlete['year'] == $i ? 'selected' : '' ?>>Year <?= $i ?></option>
+            <option value="<?= $i ?>" <?= $athlete['year'] == $i ? 'selected' : '' ?>><?= $i ?></option>
         <?php endfor; ?>
     </select><br>
+
+        <!-- Degree -->
+    <label>Degree:</label>
+    <select name="degree_id" id="degreeSelect">
+        <option value="">-- Select Degree --</option>
+        <?php foreach ($degrees as $deg): ?>
+            <option value="<?= $deg['degree_id'] ?>" <?= $deg['degree_id'] == $athlete['degree_id'] ? 'selected' : '' ?>
+                data-name="<?= htmlspecialchars(strtolower($deg['degree_name'])) ?>">
+                <?= htmlspecialchars($deg['degree_name']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select><br>
+
 
         <!-- Head Department -->
     <label>Department:</label>
@@ -201,37 +224,72 @@
     <button type="submit" name="update">Update</button>
 </form>
 
-<script>
-document.getElementById('headDeptSelect').addEventListener('change', function() {
-    const hdId = this.value;
-    const deptSelect = document.getElementById('deptSelect');
-    
-    deptSelect.innerHTML = '<option value="">Loading...</option>';
+ <script>
+        function loadDepartments() {
 
-    if (hdId) {
-        fetch(`../common_pages/get_departments.php?hd_id=${hdId}`)
+        const degreeId = document.getElementById('degreeSelect').value;
+        const hdId = document.getElementById('headDeptSelect').value;
+        const depSelect = document.getElementById('deptSelect');
+
+        depSelect.innerHTML = '<option value="">-- Loading --</option>';
+
+        if (!degreeId || !hdId) {
+            depSelect.innerHTML = '<option value="">-- Select Department --</option>';
+            return;
+        }
+
+        fetch(`../common_pages/get_departments.php?degree_id=${degreeId}&hd_id=${hdId}`)
             .then(res => res.json())
             .then(data => {
-                deptSelect.innerHTML = '<option value="">-- Select Course --</option>';
-                if (data.length > 0) {
-                    data.forEach(dep => {
-                        const opt = document.createElement('option');
-                        opt.value = dep.dept_id;
-                        opt.textContent = dep.dept_name;
-                        deptSelect.appendChild(opt);
-                    });
+                depSelect.innerHTML = '<option value="">-- Select Department --</option>';
+                if (data.length === 0) {
+                    depSelect.innerHTML = '<option value="">-- No Courses found --</option>';
                 } else {
-                    deptSelect.innerHTML = '<option value="">No departments found</option>';
+                    data.forEach(dep => {
+                        const option = document.createElement('option');
+                        option.value = dep.dept_id;
+                        option.textContent = dep.dept_name;
+                        depSelect.appendChild(option);
+                    });
                 }
             })
-            .catch(() => {
-                deptSelect.innerHTML = '<option value="">Error loading departments</option>';
+            .catch(err => {
+                depSelect.innerHTML = '<option value="">-- Error loading courses --</option>';
+                console.error(err);
             });
+    }
+    document.getElementById('degreeSelect').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const degreeName = selectedOption.getAttribute('data-name');
+    const yearSelect = document.getElementById('year-select');
+
+    // Reset year options
+    yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
+
+    // UG → 4 years, PG → 2 years
+    if (degreeName === 'undergraduate') {
+        for (let i = 1; i <= 4; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+    } else if (degreeName === 'postgraduate') {
+        for (let i = 1; i <= 2; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
     } else {
-        deptSelect.innerHTML = '<option value="">-- Select Course --</option>';
+        yearSelect.innerHTML = '<option value="">-- Select Year --</option>';
     }
 });
-</script>
+
+          document.getElementById('headDeptSelect').addEventListener('change', loadDepartments);
+        document.getElementById('degreeSelect').addEventListener('change', loadDepartments);
+      
+    </script>
 <?php
 // Capture the output into a variable
 $htmlForm = ob_get_clean();

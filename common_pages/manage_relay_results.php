@@ -74,7 +74,9 @@ if (!isset($_SESSION['user'])) {
             <th>Course</th>
             <th  class="print-exclude">Verified by</th>
             <th  class="print-exclude">Time</th>
+             <?php if($_SESSION['role']!='captain'):?>
             <th  class="print-exclude">certificate</th>
+            <?php endif;?>
             </tr>
             </thead>
             <tbody>

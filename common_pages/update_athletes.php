@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $pdo->beginTransaction();
 
                 // Update athlete info
-                $athleteSql = $pdo->prepare("UPDATE athletes SET first_name=?, last_name=?, category_id=?, dept_id=?, year=? WHERE athlete_id=?");
+                $athleteSql = $pdo->prepare("UPDATE athletes SET first_name=?, last_name=?, category_id=?,dept_id=?, year=? WHERE athlete_id=?");
                 $athleteSql->execute([
                     $fname,
                     $lname,

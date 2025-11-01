@@ -101,7 +101,7 @@ echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 
      if (!empty($year)) {
          $in = implode(',', array_fill(0, count($year), '?'));
-         $where[] = "p.meet_year IN ($in)";
+         $where[] = "rt.meet_year IN ($in)";
          $params = array_merge($params, $year);
      }
 
@@ -117,13 +117,12 @@ echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         GROUP_CONCAT(a.first_name, ' ', a.last_name) as team_members,
         d.dept_name,
         c.category_name,
-        p.meet_year
+        rt.meet_year
     FROM relay_teams rt
     JOIN events e ON e.event_id = rt.event_id
     JOIN relay_team_members rtm ON rt.team_id = rtm.team_id
     JOIN athletes a ON a.athlete_id = rtm.athlete_id
     JOIN departments d ON a.dept_id = d.dept_id
-    JOIN participation p ON p.athlete_id = a.athlete_id AND p.event_id = rt.event_id
     JOIN categories c ON rt.category_id=c.category_id
     $whereSql
     GROUP BY rt.team_id

@@ -62,30 +62,99 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (empty($validEvents)) {
                     $message = "No valid events selected.";
                 } else {
+                    $pdo->beginTransaction();
                     try {
-                        $pdo->beginTransaction();
-                        $completed=false;
-                        $athleteSql = $pdo->prepare("INSERT INTO athletes (first_name, last_name, category_id, dept_id,year) 
-                                                    VALUES (:fname, :lname, :category, :department, :yr)");
-
-                        $athleteSql->execute([
+                                                // Step 1: Check if athlete exists (ignore year here)
+                        $athleteCheck = $pdo->prepare("SELECT athlete_id FROM athletes WHERE first_name = :fname AND last_name = :lname AND dept_id = :dep LIMIT 1");
+                        $athleteCheck->execute([
                             'fname' => $fname,
                             'lname' => $lname,
-                            'category' => $cat_id,
-                            'department' => $dep_id,
-                            'yr' => $year
+                            'dep'   => $dep_id
                         ]);
 
-                        $athleteId = $pdo->lastInsertId();
+                        if ($athleteCheck->rowCount() > 0) {
+                            $athleteId = $athleteCheck->fetchColumn(); // Use existing athlete
 
-                        $participation = $pdo->prepare("INSERT INTO participation (athlete_id, event_id) VALUES (:athleteid, :eventid)");
+                            $updateYear = $pdo->prepare("
+                                UPDATE athletes 
+                                SET year = :yr 
+                                WHERE athlete_id = :id
+                            ");
+                            $updateYear->execute([
+                                'yr' => $year,  // from your form
+                                'id' => $athleteId
+                            ]);
+                        } else {
+                            // Insert new athlete
+                            $athleteSql = $pdo->prepare("INSERT INTO athletes (first_name, last_name, category_id, dept_id, year) 
+                                                        VALUES (:fname, :lname, :category, :department, :yr)");
+                            $athleteSql->execute([
+                                'fname' => $fname,
+                                'lname' => $lname,
+                                'category' => $cat_id,
+                                'department' => $dep_id,
+                                'yr' => $year
+                            ]);
+                            $athleteId = $pdo->lastInsertId();
+                        }
+
+                        $currentYear=date('Y');
+
+                        $insertedCount = 0;
+
+                       $alreadyRegisteredEvents = [];
+                        $participationCheck = $pdo->prepare("
+                            SELECT event_id 
+                            FROM participation 
+                            WHERE athlete_id = :athleteid AND meet_year = :meetyear AND event_id = :eventid
+                        ");
+
+                        $participationInsert = $pdo->prepare("
+                            INSERT INTO participation (athlete_id, event_id)
+                            VALUES (:athleteid, :eventid)
+                        ");
 
                         foreach ($validEvents as $event_id) {
-                            $insert_Participant=$participation->execute([
+                            $participationCheck->execute([
                                 'athleteid' => $athleteId,
-                                'eventid' => $event_id
+                                'eventid'   => $event_id,
+                                'meetyear'      => $currentYear
                             ]);
+                            
+                            if ($participationCheck->rowCount() > 0) {
+                                // Already registered for this event in this year
+                                $alreadyRegisteredEvents[] = $event_id;
+                                continue; // Skip insertion
+                            }
+                            
+                            $participationInsert->execute([
+                                'athleteid' => $athleteId,
+                                'eventid'   => $event_id
+                            ]);
+
+                              $insertedCount++;
                         }
+
+                        if ($insertedCount > 0) {
+                            $message .= "Athlete & $insertedCount event(s) successfully registered. ";
+                        }
+
+                        if (!empty($alreadyRegisteredEvents)) {
+                            $eventNames = [];
+                            // Fetch event names to display
+                            $eventQuery = $pdo->prepare("SELECT event_name FROM events WHERE event_id = ?");
+                            foreach ($alreadyRegisteredEvents as $eid) {
+                                $eventQuery->execute([$eid]);
+                                $eventNames[] = $eventQuery->fetchColumn();
+                            }
+                            $message .= "Already registered for these events in $currentYear: " . implode(", ", $eventNames) ."Other events added. ";
+                        }
+
+                        if ($insertedCount === 0 && !empty($alreadyRegisteredEvents)) {
+                            $message = "Failed:No new participation was added.Already registered for all these events";
+                        }
+
+
 
                     $relayEvents = $pdo->prepare("SELECT event_id FROM events WHERE is_relay = 1");
                     $relayEvents->execute();
@@ -94,8 +163,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     foreach ($validEvents as $event_id) {
                         if (in_array($event_id, $relayEventIds)) {
 
-                            $checkTeam = $pdo->prepare("SELECT team_id FROM relay_teams WHERE event_id = ? AND dept_id = ? AND category_id=?");
-                            $checkTeam->execute([$event_id, $dep_id, $cat_id]);
+                            $checkTeam = $pdo->prepare("SELECT team_id FROM relay_teams WHERE event_id = ? AND dept_id = ? AND category_id=? 
+                            AND meet_year=?");
+                            $checkTeam->execute([$event_id, $dep_id, $cat_id,$currentYear]);
                             $team = $checkTeam->fetch();
 
                             if ($team) {
@@ -122,20 +192,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                            
                         }
                     }
-                        $completed=true;
+                        // $completed=true;
                         $pdo->commit();
-                        if($completed){
-                          $_SESSION['athlete-msg'] = "Athlete and participation successfully registered!";
-                            header("Location: $redirectPage&status=success");
-                            exit;
-                        }
+                        // if($completed){
+                        //   $_SESSION['athlete-msg'] = "Athlete and participation successfully registered!";
+                        //     header("Location: $redirectPage&status=success");
+                        //     exit;
+                        // }
+
+                        $_SESSION['athlete-msg'] = $message;
+                        header("Location: $redirectPage&status=success");
+                        exit;
                     } catch (PDOException $e) {
                         $pdo->rollBack();
-                         if (isset($e->errorInfo[1]) && $e->errorInfo[1]== 1062) { 
-                        $message="Duplicate athlete found. Insertion skipped.";
-                    } else {
                         $message = "Failed: " . $e->getMessage();
-                    }
                 }catch (Exception $e) {
                     $pdo->rollBack();
                     $message = $e->getMessage();

@@ -68,7 +68,7 @@ export async function loadAthletes() {
         
     }
     else if(currentView==='athletes'){
-        renderAthletesTable(data);
+        renderAthletesTable(data,currenUser);
     }
     else if(currentView==='relays'){
         renderRelayTable(data,currenUser);

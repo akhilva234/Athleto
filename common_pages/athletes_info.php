@@ -4,6 +4,7 @@
       include_once "../nocache.php";
     include "../config.php";
     $user= $_SESSION['user'];
+    $role=$_SESSION['role'];
 
     if(isset($_POST['update'])){
 
@@ -16,17 +17,25 @@
         $message=$_SESSION['athlete-msg'];
         unset($_SESSION['athlete-msg']);
     }
-    $athletes=$pdo->query("SELECT 
+
+    $currentYear=date('Y');
+
+    $athletes=$pdo->prepare("SELECT 
     a.athlete_id,
     a.first_name,
     a.last_name,
     a.year,
     c.category_name,
-    d.dept_name
+    d.dept_name,
+    p.meet_year
     FROM athletes a
     JOIN categories c ON a.category_id=c.category_id
     JOIN departments d ON a.dept_id=d.dept_id 
+    JOIN participation p ON a.athlete_id=p.athlete_id
+    WHERE p.meet_year=?
     ORDER BY a.athlete_id");
+
+    $athletes->execute([$currentYear]);
 
     $athletes = $athletes->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -45,7 +54,7 @@
     <link rel="stylesheet" href="../assets/css/update_form.css">
     <link rel="stylesheet" href="../assets/css/athlete_info.css">
 </head>
-<body class="hide-events-filter" data-view="athletes">
+<body class="hide-events-filter" data-view="athletes" data-user="<?=$role?>">
     <h2>Athletes</h2>
     <br>
      <?php include_once "../common_pages/filter.php"?>
@@ -61,7 +70,9 @@
             <th>Course</th>
             <th>Year</th>
             <th>Update</th>
+            <?php if($role!=='captain'):?>
             <th>Delete</th>
+            <?php endif; ?>
             </tr>
             </thead>
             <tbody>

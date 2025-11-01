@@ -69,7 +69,9 @@
             <th>Year</th>
             <th class="print-exclude">Verified by</th>
             <th class="print-exclude">Time</th>
+            <?php if($_SESSION['role']!='captain'):?>
             <th class="print-exclude">Certificate</th>
+            <?php endif ;?>
             </tr>
             </thead>
              

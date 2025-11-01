@@ -91,6 +91,7 @@ try {
             dept_id INT(5) NOT NULL,
             event_id INT(5) NOT NULL,
             category_id INT NOT NULL,
+            meet_year YEAR NOT NULL DEFAULT YEAR(CURDATE()),
             FOREIGN KEY (dept_id) REFERENCES departments(dept_id),
             FOREIGN KEY (event_id) REFERENCES events(event_id),
             FOREIGN KEY (category_id) REFERENCES categories(category_id) 

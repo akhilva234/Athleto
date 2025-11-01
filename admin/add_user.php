@@ -55,15 +55,15 @@
             
                 try{
 
-                    $usersql=$pdo->prepare("insert into users(username,password,email,role,dept_id) 
-                    values(:uname,:password,:email,:role,:dep_id)");
+                    $usersql=$pdo->prepare("insert into users(username,password,email,role,hd_id) 
+                    values(:uname,:password,:email,:role,:hd_id)");
 
                     $success=$usersql->execute([
                         'uname' => $uname,
                         'password' => $password,
                         'email' => $email,
                         'role' => $role,
-                        'dep_id' => $dep_id
+                        'hd_id' => $dep_id
                     ]);
                     if($success){
 
@@ -139,11 +139,11 @@
             </div>
             <div class="dep-id-container">
                 Department
-                <?php $dep=$pdo->query("select * from departments");?>
+                <?php $dep=$pdo->query("select * from headdepartment");?>
                 <br><select name="dep-select"  class="dep-insert">
                     <option value="">-- Select Action --</option>
                     <?php foreach($dep as $deps):?>
-                        <option value="<?=$deps['dept_id']?>"><?=$deps['dept_name']?></option>
+                        <option value="<?=$deps['hd_id']?>"><?=$deps['hd_name']?></option>
                     <?php endforeach; ?>    
                  </select>   
             </div>

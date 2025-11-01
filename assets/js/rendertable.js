@@ -3,6 +3,13 @@ import { deleteEntry } from "./delete.js";
 import { deleteWhole } from "./delete_whole.js";
 import { relayResultEntry } from "./relayInfoFetch.js";
 
+function getCourseYearAtMeet(currentCourseYear, meetYear) {
+    const currentYear = new Date().getFullYear(); // e.g., 2026
+    const courseYearAtMeet = currentCourseYear - (currentYear - meetYear);
+    return courseYearAtMeet > 0 ? courseYearAtMeet : 1; // min 1
+}
+
+
 export function renderParticipantsTable(data,currenUser) {
     const tableBody = document.querySelector('.participants-table tbody');
     tableBody.innerHTML = '';
@@ -16,6 +23,8 @@ export function renderParticipantsTable(data,currenUser) {
     const row = document.createElement('tr');
     row.id = `row-${athlete.athlete_id}-${athlete.event_id}`;
 
+    const courseYear = getCourseYearAtMeet(athlete.year, athlete.meet_year);
+
     let rowHTML = `
         <td>${count++}</td>
         <td><span class="chest-no-tr">${athlete.athlete_id}</span></td>
@@ -23,7 +32,7 @@ export function renderParticipantsTable(data,currenUser) {
         <td>${athlete.category_name}</td>
         <td>${athlete.event_name}</td>
         <td>${athlete.dept_name}</td>
-        <td>${athlete.year}</td>
+        <td>${courseYear}</td>
     `;
 
     // Add the button column only if user is NOT a captain
@@ -46,9 +55,11 @@ export function renderParticipantsTable(data,currenUser) {
     //deleteEntry();
 
 }
-export function renderAthletesTable(data) {
+export function renderAthletesTable(data,currenUser) {
     const tableBody = document.querySelector('.athletes-table tbody');
     if (!tableBody) return;
+
+    console.log(currenUser)
 
     tableBody.innerHTML = '';
 
@@ -69,16 +80,23 @@ export function renderAthletesTable(data) {
     uniqueAthletes.forEach(athlete => {
         const row = document.createElement('tr');
         row.id = `row-${athlete.athlete_id}`;
+        
+    const courseYear = getCourseYearAtMeet(athlete.year, athlete.meet_year);
+
         row.innerHTML = `
             <td>${count++}</td>
             <td><span class="chest-no-tr">${athlete.athlete_id}</span></td>
             <td>${athlete.first_name} ${athlete.last_name}</td>
             <td>${athlete.category_name}</td>
             <td>${athlete.dept_name}</td>
-            <td>${athlete.year}</td>
-            <td><button class="update-btn" data-athlete-id="${athlete.athlete_id}">Update</button></td>
-            <td><button class="delete-btn" data-athlete-id="${athlete.athlete_id}">Delete</button></td>
-        `;
+            <td>${courseYear}</td>
+            <td><button class="update-btn" data-athlete-id="${athlete.athlete_id}">Update</button></td>`
+
+            if(currenUser!=='captain'){
+                     row.innerHTML+=`<td><button class="delete-btn" data-athlete-id="${athlete.athlete_id}">Delete</button></td>`;
+            }
+
+       
         tableBody.appendChild(row);
     });
 
@@ -101,6 +119,9 @@ export function renderResultsTable(data,currenUser){
     data.forEach(athlete => {
         const row = document.createElement('tr');
         row.id = `row-${athlete.athlete_id}-${athlete.event_id}`; 
+        
+    const courseYear = getCourseYearAtMeet(athlete.year, athlete.meet_year);
+
         let rowHTML= `
             <td>${count++}</td>
             <td><span class="chest-no-tr">${athlete.athlete_id}</span></td>
@@ -109,7 +130,7 @@ export function renderResultsTable(data,currenUser){
             <td>${athlete.event_name}</td>
             <td>${athlete.position}</td>
             <td>${athlete.dept_name}</td>
-            <td>${athlete.year}</td>
+            <td>${courseYear}</td>
             <td>${athlete.username}</td>
             <td>${athlete.recorded_at}</td>`;
 
@@ -137,6 +158,8 @@ export function renderRelayTable(data,currenUser){
     data.forEach(athlete => {
         const row = document.createElement('tr');
         row.id = `row-${athlete.team_id}-${athlete.event_id}`; 
+        
+
         let rowHTML= `
             <td>${count++}</td>
             <td><span class="chest-no-tr">${athlete.team_id}</span></td>
@@ -179,11 +202,15 @@ export function relayResultsTable(data,currenUser){
               <td>${athlete.position}</td>
             <td>${athlete.dept_name}</td>
             <td class="print-exclude">${athlete.username}</td>
-            <td class="print-exclude">${athlete.recorded_at}</td>
-            <td class="print-exclude"><button class="result-entry-btn team-btn" data-result-id="${athlete.result_id}"
+            <td class="print-exclude">${athlete.recorded_at}</td>`;
+            
+            if(currenUser!='captain'){
+                      rowHTML+=`<td class="print-exclude"><button class="result-entry-btn team-btn" data-result-id="${athlete.result_id}"
                       data-team-id="${athlete.team_id}">
                         Download</button></td>
         `;
+            }
+         
         row.innerHTML=rowHTML;
         tableBody.appendChild(row);
     });

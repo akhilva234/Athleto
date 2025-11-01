@@ -99,7 +99,7 @@ try {
     }
     if (!empty($year)) {
             $in = implode(',', array_fill(0, count($year), '?'));
-            $where[] = "r.meet_year IN ($in)";
+            $where[] = "rt.meet_year IN ($in)";
             $params = array_merge($params, $year);
         }
     if ($chest_no !== '') {
@@ -123,7 +123,7 @@ try {
             c.category_name,
             GROUP_CONCAT(a.first_name, ' ', a.last_name) as team_members,
             u.username,
-            r.meet_year
+            rt.meet_year
         FROM results r
         JOIN relay_teams rt         ON rt.team_id   = r.relay_team_id
         JOIN events e              ON e.event_id   = rt.event_id
