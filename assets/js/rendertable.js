@@ -94,8 +94,8 @@ export function renderAthletesTable(data, currentUser) {
 
     if (hasActiveMeetYear) {
         headerHTML += `<th>Update</th>`;
-        if (currentUser !== 'captain') headerHTML += `<th>Delete</th>`;
     }
+     if (currentUser !== 'captain') headerHTML += `<th>Delete</th>`;
 
     headerHTML += `</tr>`;
     tableHead.innerHTML = headerHTML;
@@ -118,10 +118,10 @@ export function renderAthletesTable(data, currentUser) {
 
         if (athlete.meet_year >= currentYear) {
             row.innerHTML += `<td><button class="update-btn" data-athlete-id="${athlete.athlete_id}">Update</button></td>`;
-            if (currentUser !== 'captain') {
+        }
+         if (currentUser !== 'captain') {
                 row.innerHTML += `<td><button class="delete-btn" data-athlete-id="${athlete.athlete_id}">Delete</button></td>`;
             }
-        }
 
         tableBody.appendChild(row);
     });
