@@ -55,15 +55,17 @@ export function renderParticipantsTable(data,currenUser) {
     //deleteEntry();
 
 }
-export function renderAthletesTable(data,currenUser) {
-    const tableBody = document.querySelector('.athletes-table tbody');
-    if (!tableBody) return;
+export function renderAthletesTable(data, currentUser) {
+    const table = document.querySelector('.athletes-table');
+    if (!table) return;
 
-    console.log(currenUser)
+    const tableHead = table.querySelector('thead');
+    const tableBody = table.querySelector('tbody');
+    if (!tableBody || !tableHead) return;
+
+    console.log(currentUser);
 
     tableBody.innerHTML = '';
-
-    // Deduplicate by athlete_id
     const seen = new Set();
     const uniqueAthletes = data.filter(a => {
         if (seen.has(a.athlete_id)) return false;
@@ -76,12 +78,35 @@ export function renderAthletesTable(data,currenUser) {
         return;
     }
 
+    // Determine whether to show Update/Delete columns based on the latest athlete
+    const currentYear = new Date().getFullYear();
+    const hasActiveMeetYear = uniqueAthletes.some(a => a.meet_year >= currentYear);
+
+    // Build table header dynamically
+    let headerHTML = `
+        <tr>
+            <th>SI.NO</th>
+            <th>Chest No</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Department</th>
+            <th>Course Year</th>`;
+
+    if (hasActiveMeetYear) {
+        headerHTML += `<th>Update</th>`;
+        if (currentUser !== 'captain') headerHTML += `<th>Delete</th>`;
+    }
+
+    headerHTML += `</tr>`;
+    tableHead.innerHTML = headerHTML;
+
+    // Build table body
     let count = 1;
     uniqueAthletes.forEach(athlete => {
         const row = document.createElement('tr');
         row.id = `row-${athlete.athlete_id}`;
-        
-    const courseYear = getCourseYearAtMeet(athlete.year, athlete.meet_year);
+
+        const courseYear = getCourseYearAtMeet(athlete.year, athlete.meet_year);
 
         row.innerHTML = `
             <td>${count++}</td>
@@ -89,14 +114,15 @@ export function renderAthletesTable(data,currenUser) {
             <td>${athlete.first_name} ${athlete.last_name}</td>
             <td>${athlete.category_name}</td>
             <td>${athlete.dept_name}</td>
-            <td>${courseYear}</td>
-            <td><button class="update-btn" data-athlete-id="${athlete.athlete_id}">Update</button></td>`
+            <td>${courseYear}</td>`;
 
-            if(currenUser!=='captain'){
-                     row.innerHTML+=`<td><button class="delete-btn" data-athlete-id="${athlete.athlete_id}">Delete</button></td>`;
+        if (athlete.meet_year >= currentYear) {
+            row.innerHTML += `<td><button class="update-btn" data-athlete-id="${athlete.athlete_id}">Update</button></td>`;
+            if (currentUser !== 'captain') {
+                row.innerHTML += `<td><button class="delete-btn" data-athlete-id="${athlete.athlete_id}">Delete</button></td>`;
             }
+        }
 
-       
         tableBody.appendChild(row);
     });
 
@@ -104,6 +130,7 @@ export function renderAthletesTable(data,currenUser) {
         deleteWhole();
     }
 }
+
 
 export function renderResultsTable(data,currenUser){
 

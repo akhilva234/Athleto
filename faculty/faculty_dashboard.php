@@ -45,7 +45,7 @@ ob_start();
             </a>
             </span>
 
-            <div class="select-container">
+            <!-- <div class="select-container">
                  <p class="add-phrase">
                     <i class="fas fa-plus-circle"></i>
                     <span class="label">Add</span>
@@ -55,7 +55,7 @@ ob_start();
                      <span class="add-athlete-container">Athlete</span>
                 </option>
             </select>
-            </div>
+            </div> -->
 
             <div class="menu-item">
                  <div class="view-atheletes-container select-container font">
@@ -101,7 +101,7 @@ ob_start();
 
                $allowed = [
                 'fac_home' => 'fac_home.php',
-                'add_athlete' => '../common_pages/add_athlete.php',
+                // 'add_athlete' => '../common_pages/add_athlete.php',
                 'athletes_info' => '../common_pages/athletes_info.php',
                 'manage_results' => '../common_pages/manage_results.php',
                 'manage_relay_results' => '../common_pages/manage_relay_results.php',
