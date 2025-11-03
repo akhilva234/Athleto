@@ -3,6 +3,7 @@ require_once "../session_check.php";
 include_once "../nocache.php";
 include "../config.php";
 $user= $_SESSION['user'];
+$role=$_SESSION['role'];
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +38,9 @@ $user= $_SESSION['user'];
 </div>
 
 <div class="print-controls">
-    <button id="print-btn-championship" class="print-btn">🖨️ Print</button>
+   <?php if($role!=='captain'):?>
+    <button  id="print-btn-championship" class="print-btn">🖨️ Print List</button>
+    <?php endif;?>
 </div>
 <br><br>
 <!-- Team Championship -->
@@ -47,7 +50,7 @@ $user= $_SESSION['user'];
     <thead>
         <tr>
             <th>SI.No</th>
-            <th>Department</th>
+            <th>Team</th>
             <th>Total Points</th>
         </tr>
     </thead>
@@ -65,8 +68,9 @@ $user= $_SESSION['user'];
         <tr>
             <th>SI.No</th>
             <th>Category</th>
+            <th>Chest No</th>
             <th>Name</th>
-            <th>Department</th>
+            <th>Course</th>
             <th>Total points</th>
         </tr>
     </thead>
@@ -81,8 +85,9 @@ $user= $_SESSION['user'];
         <tr>
             <th>SI.No</th>
             <th>Category</th>
+            <th>Chest No</th>
             <th>Name</th>
-            <th>Department</th>
+            <th>Course</th>
             <th>Total points</th>
         </tr>
     </thead>
@@ -99,7 +104,7 @@ $user= $_SESSION['user'];
             <th>SI.No</th>
             <th>Chest No</th>
             <th>Name</th>
-            <th>Department</th>
+            <th>Course</th>
             <th>Total Points</th>
         </tr>
     </thead>

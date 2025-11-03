@@ -59,7 +59,9 @@ $Participants=$Participants->fetchAll();
         $filter_type = "individual"; // or "relay" depending on page
         include "../common_pages/filter.php"; 
     ?>
+    <?php if($role!=='captain'):?>
     <button id="print-btn">🖨️ Print List</button>
+    <?php endif;?>
     </div>
 
     <div class="participants-table-container table-whole-container">
@@ -71,7 +73,7 @@ $Participants=$Participants->fetchAll();
             <th>Name</th>
             <th>Category</th>
             <th>Event</th>
-            <th>Department</th>
+            <th>Course</th>
             <th>Year</th>
             <?php if($role!=='captain'):?>  
             <th class="print-exclude">Result Entry</th>

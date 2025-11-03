@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `<td>${i + 1}</td>
                                         <td>${c.category_name}</td>
+                                        <td>${c.athlete_id}</td>
                                         <td>${c.first_name} ${c.last_name}</td>
                                         <td>${c.dept_name}</td>
                                         <td>${c.total_points}</td>`;

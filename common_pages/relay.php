@@ -53,7 +53,9 @@
         $filter_type = "relay"; 
         include "../common_pages/filter.php"; 
     ?>
+    <?php if($role!=='captain'):?>
     <button id="print-btn">🖨️ Print List</button>
+    <?php endif;?>
     </div>
     <div class="participants-table-container table-whole-container">
         <table class="participants-table">
@@ -63,7 +65,7 @@
                 <th>Team Id</th>
                 <th>Event Name</th>
                 <th>Category</th>
-                <th>Department</th>
+                <th>Course</th>
                 <th>Team Members</th>
                  <?php if($role!=='captain'):?> 
                 <th class="print-exclude">Result</th>

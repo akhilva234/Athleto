@@ -89,8 +89,8 @@ export function renderAthletesTable(data, currentUser) {
             <th>Chest No</th>
             <th>Name</th>
             <th>Category</th>
-            <th>Department</th>
-            <th>Course Year</th>`;
+            <th>Course</th>
+            <th>Year</th>`;
 
     if (hasActiveMeetYear) {
         headerHTML += `<th>Update</th>`;

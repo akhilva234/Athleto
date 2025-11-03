@@ -52,7 +52,9 @@
         $filter_type = "individual"; // or "relay" depending on page
         include "../common_pages/filter.php"; 
     ?>
+    <?php if($role!=='captain'):?>
     <button id="print-btn">🖨️ Print List</button>
+    <?php endif;?>
     </div>
 
     <div class="result-table-container table-whole-container">
