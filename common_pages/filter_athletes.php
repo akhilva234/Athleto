@@ -17,67 +17,118 @@ $params = [];
 
 
 try{
+        if ($view === 'athletes') {
+    // Show ALL athletes (individual + relay)
 
-    if($view ==='participants' || $view == 'athletes'){
+    if (!empty($dept)) {
+        $in = implode(',', array_fill(0, count($dept), '?'));
+        $where[] = "d.dept_id IN ($in)";
+        $params = array_merge($params, $dept);
+    }
 
+    if (!empty($cat)) {
+        $in = implode(',', array_fill(0, count($cat), '?'));
+        $where[] = "c.category_id IN ($in)";
+        $params = array_merge($params, $cat);
+    }
 
-        if (!empty($dept)) {
-    $in = implode(',', array_fill(0, count($dept), '?'));
-    $where[] = "d.dept_id IN ($in)";
-    $params = array_merge($params, $dept);
-}
+    if (!empty($year)) {
+        $in = implode(',', array_fill(0, count($year), '?'));
+        $where[] = "(p.meet_year IN ($in) OR rt.meet_year IN ($in))";
+        $params = array_merge($params, $year, $year);
+    }
 
-if (!empty($events)) {
-    $in = implode(',', array_fill(0, count($events), '?'));
-    $where[] = "e.event_id IN ($in)";
-    $params = array_merge($params, $events);
-}
+    if ($chest_no !== '') {
+        $where[] = "a.athlete_id LIKE ?";
+        $params[] = "%$chest_no%";
+    }
 
-if (!empty($cat)) {
-    $in = implode(',', array_fill(0, count($cat), '?'));
-    $where[] = "c.category_id IN ($in)";
-    $params = array_merge($params, $cat);
-}
-if (!empty($year)) {
-            $in = implode(',', array_fill(0, count($year), '?'));
-            $where[] = "p.meet_year IN ($in)";
-            $params = array_merge($params, $year);
-        }
-if ($chest_no !== '') {
-    $where[] = "a.athlete_id LIKE ?";
-    $params[] = "%$chest_no%";
-}
+    $whereSql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
-$where[] = "e.is_relay = 0";
+    $sql = "
+        SELECT DISTINCT
+            a.athlete_id,
+            a.first_name,
+            a.last_name,
+            a.year,
+            d.dept_name,
+            c.category_name,
+            COALESCE(p.meet_year, rt.meet_year) AS meet_year,
+            CASE 
+                WHEN p.athlete_id IS NOT NULL AND rt.team_id IS NOT NULL THEN 'Both'
+                WHEN p.athlete_id IS NOT NULL THEN 'Individual'
+                WHEN rt.team_id IS NOT NULL THEN 'Relay'
+                ELSE 'None'
+            END AS participation_type
+        FROM athletes a
+        JOIN departments d ON a.dept_id = d.dept_id
+        JOIN categories c ON a.category_id = c.category_id
+        LEFT JOIN participation p ON a.athlete_id = p.athlete_id
+        LEFT JOIN events e1 ON e1.event_id = p.event_id
+        LEFT JOIN relay_team_members rtm ON a.athlete_id = rtm.athlete_id
+        LEFT JOIN relay_teams rt ON rt.team_id = rtm.team_id
+        LEFT JOIN events e2 ON e2.event_id = rt.event_id
+        $whereSql
+        ORDER BY a.athlete_id
+    ";
 
-$whereSql = $where ? 'WHERE ' . implode('AND ', $where) : '';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 
-$sql = "
-SELECT 
-    a.athlete_id, 
-    a.first_name, 
-    a.last_name,
-    a.year,
-    d.dept_name, 
-    c.category_name,
-    e.event_id,
-    e.event_name,
-    p.meet_year
-FROM participation p
-JOIN athletes a ON a.athlete_id = p.athlete_id
-JOIN events e ON e.event_id = p.event_id
-JOIN departments d ON a.dept_id = d.dept_id
-JOIN categories c ON a.category_id = c.category_id
-$whereSql
-ORDER BY a.athlete_id
-";
+} elseif ($view === 'participants') {
+    // Show ONLY individual event participants (no relay)
 
-$stmt = $pdo->prepare($sql);
-$stmt->execute($params);
+    if (!empty($dept)) {
+        $in = implode(',', array_fill(0, count($dept), '?'));
+        $where[] = "d.dept_id IN ($in)";
+        $params = array_merge($params, $dept);
+    }
 
-echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+    if (!empty($cat)) {
+        $in = implode(',', array_fill(0, count($cat), '?'));
+        $where[] = "c.category_id IN ($in)";
+        $params = array_merge($params, $cat);
+    }
 
-}elseif($view === 'relays'){
+    if (!empty($year)) {
+        $in = implode(',', array_fill(0, count($year), '?'));
+        $where[] = "p.meet_year IN ($in)";
+        $params = array_merge($params, $year);
+    }
+
+    if ($chest_no !== '') {
+        $where[] = "a.athlete_id LIKE ?";
+        $params[] = "%$chest_no%";
+    }
+
+    $where[] = "e.is_relay = 0";
+    $whereSql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+
+    $sql = "
+        SELECT DISTINCT
+            a.athlete_id,
+            a.first_name,
+            a.last_name,
+            a.year,
+            d.dept_name,
+            c.category_name,
+            e.event_name,
+            p.meet_year
+        FROM participation p
+        JOIN athletes a ON a.athlete_id = p.athlete_id
+        JOIN events e ON e.event_id = p.event_id
+        JOIN departments d ON a.dept_id = d.dept_id
+        JOIN categories c ON a.category_id = c.category_id
+        $whereSql
+        ORDER BY a.athlete_id
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+    
+} elseif($view === 'relays'){
     if (!empty($dept)) {
         $in = implode(',', array_fill(0, count($dept), '?'));
         $where[] = "d.dept_id IN ($in)";

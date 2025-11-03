@@ -11,42 +11,39 @@
     
          $currentYear=date('Y');
 
-        $sql="SELECT 
-        a.athlete_id,
-        a.first_name,
-        a.last_name,
-        a.year,
-        c.category_id,
-        c.category_name,
-        d.dept_id,
-        d.dept_name,
-        p.meet_year,
-        dg.degree_id,
-        dg.degree_name,
-        GROUP_CONCAT(p.event_id) as registered_event_ids,
-         GROUP_CONCAT(e.event_name) AS registered_event_names
+            $sql = "
+                    SELECT 
+                        a.athlete_id,
+                        a.first_name,
+                        a.last_name,
+                        a.year,
+                        c.category_id,
+                        c.category_name,
+                        d.dept_id,
+                        d.dept_name,
+                        dg.degree_id,
+                        dg.degree_name,
+                        GROUP_CONCAT(DISTINCT p.event_id) AS registered_individual_ids,
+                        GROUP_CONCAT(DISTINCT e.event_name) AS registered_individual_names,
+                        GROUP_CONCAT(DISTINCT rt.event_id) AS registered_relay_ids,
+                        GROUP_CONCAT(DISTINCT re.event_name) AS registered_relay_names
+                    FROM athletes a
+                    JOIN departments d ON a.dept_id = d.dept_id
+                    JOIN degree dg ON dg.degree_id = d.degree_id
+                    JOIN categories c ON a.category_id = c.category_id
+                    LEFT JOIN participation p 
+                        ON a.athlete_id = p.athlete_id AND p.meet_year = ?
+                    LEFT JOIN events e ON p.event_id = e.event_id
+                    LEFT JOIN relay_team_members rtm ON a.athlete_id = rtm.athlete_id
+                    LEFT JOIN relay_teams rt ON rt.team_id = rtm.team_id
+                    LEFT JOIN events re ON rt.event_id = re.event_id
+                    WHERE a.athlete_id = ?
+                    GROUP BY a.athlete_id
+                    ";
 
-        FROM athletes a
-
-        JOIN   departments d ON a.dept_id = d.dept_id
-
-        JOIN degree dg ON dg.degree_id= d.degree_id
-        
-         JOIN categories c ON a.category_id = c.category_id
-
-        LEFT JOIN 
-            participation p ON a.athlete_id= p.athlete_id
-
-         LEFT JOIN 
-             events e ON p.event_id = e.event_id    
-        WHERE 
-            a.athlete_id = ? AND
-            p.meet_year=?
-        GROUP BY 
-            a.athlete_id";
 
          $stmnt=$pdo->prepare($sql);
-         $stmnt->execute([$athlete_id,$currentYear]);
+         $stmnt->execute([$currentYear, $athlete_id]);
          
          $athlete=$stmnt->fetch(PDO::FETCH_ASSOC);
 
@@ -54,11 +51,17 @@
             throw new Exception("Athlete not found!.");
          }
 
-         $registered_event_ids=!empty($athlete['registered_event_ids'])
-         ? explode(',',$athlete['registered_event_ids']) : [];
+         $registered_individual_ids = !empty($athlete['registered_individual_ids'])
+        ? explode(',', $athlete['registered_individual_ids'])
+        : [];
 
-         $registered_event_names=!empty($athlete['registered_event_names'])
-         ? explode(',',$athlete['registered_event_names']) : [];
+        $registered_relay_ids = !empty($athlete['registered_relay_ids'])
+            ? explode(',', $athlete['registered_relay_ids'])
+            : [];
+
+        // Merge both and remove duplicates
+        $registered_event_ids = array_unique(array_merge($registered_individual_ids, $registered_relay_ids));
+
 
         $isFull=count($registered_event_ids)>=3;
 
