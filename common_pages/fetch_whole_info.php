@@ -35,7 +35,8 @@
                         ON a.athlete_id = p.athlete_id AND p.meet_year = ?
                     LEFT JOIN events e ON p.event_id = e.event_id
                     LEFT JOIN relay_team_members rtm ON a.athlete_id = rtm.athlete_id
-                    LEFT JOIN relay_teams rt ON rt.team_id = rtm.team_id
+                    LEFT JOIN relay_teams rt 
+                     ON rt.team_id = rtm.team_id AND rt.meet_year = ?
                     LEFT JOIN events re ON rt.event_id = re.event_id
                     WHERE a.athlete_id = ?
                     GROUP BY a.athlete_id
@@ -43,7 +44,7 @@
 
 
          $stmnt=$pdo->prepare($sql);
-         $stmnt->execute([$currentYear, $athlete_id]);
+         $stmnt->execute([$currentYear, $currentYear,$athlete_id]);
          
          $athlete=$stmnt->fetch(PDO::FETCH_ASSOC);
 

@@ -62,13 +62,14 @@ if (empty($validIndividualEvents) && empty($validRelayEvents)) {
 try {
     $pdo->beginTransaction();
 
+    $currentYear=date('Y');
+
     // Update athlete info
     $athleteSql = $pdo->prepare("UPDATE athletes SET first_name=?, last_name=?, category_id=?, dept_id=?, year=? WHERE athlete_id=?");
     $athleteSql->execute([$fname, $lname, $categoryId, $depId, $year, $athleteId]);
 
     // Delete old participation and relay entries
     $pdo->prepare("DELETE FROM participation WHERE athlete_id = ?")->execute([$athleteId]);
-    $pdo->prepare("DELETE FROM relay_team_members WHERE athlete_id = ?")->execute([$athleteId]);
 
     // Insert only INDIVIDUAL events into participation
     $insertParticipation = $pdo->prepare("INSERT INTO participation (athlete_id, event_id) VALUES (?, ?)");
@@ -79,8 +80,8 @@ try {
     // Handle RELAY events separately
     foreach ($validRelayEvents as $event_id) {
         // Find or create team
-        $checkTeam = $pdo->prepare("SELECT team_id FROM relay_teams WHERE event_id = ? AND dept_id = ? AND category_id = ?");
-        $checkTeam->execute([$event_id, $depId, $categoryId]);
+        $checkTeam = $pdo->prepare("SELECT team_id FROM relay_teams WHERE event_id = ? AND dept_id = ? AND category_id = ? AND meet_year=?");
+        $checkTeam->execute([$event_id, $depId, $categoryId,$currentYear]);
         $team = $checkTeam->fetch();
 
         if ($team) {
@@ -91,7 +92,12 @@ try {
             $relayTeamId = $pdo->lastInsertId();
         }
 
-        // Check team member count
+        $alreadyMember = $pdo->prepare("SELECT COUNT(*) FROM relay_team_members WHERE team_id = ? AND athlete_id = ?");
+        $alreadyMember->execute([$relayTeamId, $athleteId]);
+        $isMember = $alreadyMember->fetchColumn();
+
+    if ($isMember==0) {
+
         $memberCount = $pdo->prepare("SELECT COUNT(*) FROM relay_team_members WHERE team_id = ?");
         $memberCount->execute([$relayTeamId]);
         $count = $memberCount->fetchColumn();
@@ -103,6 +109,7 @@ try {
             throw new Exception("Failed: Relay team for event ID $event_id already has 5 participants.");
         }
     }
+}  
 
             $pdo->commit();
 

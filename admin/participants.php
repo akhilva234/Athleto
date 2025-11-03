@@ -27,6 +27,7 @@
     <div class="whole-blur-container"></div>
     <h2>Individual Participants</h2>
     <?php
+    
         $Participants=$pdo->query("SELECT  
     a.athlete_id,   
     a.first_name,
@@ -125,7 +126,7 @@ $Participants=$Participants->fetchAll();
         <div class="modal-container">
         <form action="" class="result-form" method='post'>
             <input type="number" class="athlete-id input-style" name="athleteid" readonly>
-            <input type="hidden" class="event-id " name="eventid">
+            <input type="hidden" class="event-id" name="eventid">
 
             <input type="text" class="athlete-name input-style" name="athelete_name" readonly><br>
             <input type="text" class="event-name input-style" name="event_name" readonly><br>

@@ -114,7 +114,8 @@ try{
             d.dept_name,
             c.category_name,
             e.event_name,
-            p.meet_year
+            p.meet_year,
+            e.event_id
         FROM participation p
         JOIN athletes a ON a.athlete_id = p.athlete_id
         JOIN events e ON e.event_id = p.event_id
