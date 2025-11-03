@@ -32,6 +32,7 @@ try {
             dept_id INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
             dept_name VARCHAR(50) NOT NULL UNIQUE,
             hd_id   INT(5) NOT NULL,
+            degree_id INT(5) NOT NULL,
             FOREIGN KEY (hd_id) REFERENCES headdepartment(hd_id),
             FOREIGN KEY (degree_id) REFERENCES degree(degree_id)
         )",
