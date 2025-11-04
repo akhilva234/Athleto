@@ -90,11 +90,8 @@ export function renderAthletesTable(data, currentUser) {
             <th>Name</th>
             <th>Category</th>
             <th>Course</th>
-            <th>Year</th>`;
-
-    if (hasActiveMeetYear) {
-        headerHTML += `<th>Update</th>`;
-    }
+            <th>Year</th>
+            <th>Update</th>`;
      if (currentUser !== 'captain') headerHTML += `<th>Delete</th>`;
 
     headerHTML += `</tr>`;
@@ -114,11 +111,9 @@ export function renderAthletesTable(data, currentUser) {
             <td>${athlete.first_name} ${athlete.last_name}</td>
             <td>${athlete.category_name}</td>
             <td>${athlete.dept_name}</td>
-            <td>${courseYear}</td>`;
-
-        if (athlete.meet_year >= currentYear) {
-            row.innerHTML += `<td><button class="update-btn" data-athlete-id="${athlete.athlete_id}">Update</button></td>`;
-        }
+            <td>${courseYear}</td>
+            <td><button class="update-btn" data-athlete-id="${athlete.athlete_id}">Update</button></td>`;
+            
          if (currentUser !== 'captain') {
                 row.innerHTML += `<td><button class="delete-btn" data-athlete-id="${athlete.athlete_id}">Delete</button></td>`;
             }
