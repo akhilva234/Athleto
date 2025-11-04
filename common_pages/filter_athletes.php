@@ -90,6 +90,11 @@ try{
         $where[] = "c.category_id IN ($in)";
         $params = array_merge($params, $cat);
     }
+    if (!empty($events)) {
+        $in = implode(',', array_fill(0, count($events), '?'));
+        $where[] = "e.event_id IN ($in)";
+        $params = array_merge($params, $events);
+    }
 
     if (!empty($year)) {
         $in = implode(',', array_fill(0, count($year), '?'));
