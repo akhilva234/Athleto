@@ -16,7 +16,7 @@ try{
     echo json_encode(["success" => true, "message" => "User deleted sucessfully"]);
 
 }catch(PDOException $e){
-    echo json_encode(["success" => false, "message" => "User deletion failed"]);
+    echo json_encode(["success" => false, "message" => $e->getMessage()."User deletion failed"]);
 
 }
 ?>

@@ -64,14 +64,16 @@ export async function loadAthletes() {
 
     console.log(currentView);
     if(currentView==='participants'){
-        renderParticipantsTable(data,currenUser);
+        const data2= await response2.json();
+        renderParticipantsTable(data,data2,currenUser);
         
     }
     else if(currentView==='athletes'){
         renderAthletesTable(data,currenUser);
     }
     else if(currentView==='relays'){
-        renderRelayTable(data,currenUser);
+         const data2= await response2.json();
+        renderRelayTable(data,data2,currenUser);
     }
     else if(currentView==='results'){
         const data2= await response2.json();
@@ -79,7 +81,6 @@ export async function loadAthletes() {
     }
     else if(currentView==='relayResults'){
         const data2= await response2.json();
-        console.log("relay results");
         relayResultsTable(data2,currenUser);
     }
     

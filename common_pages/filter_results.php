@@ -17,7 +17,7 @@ $params = [];
 
 try {
 
-    if($view ==='results'){
+    if($view ==='results' || $view=='participants'){
 
     // Filters
     if (!empty($dept)) {
@@ -81,7 +81,7 @@ try {
     $stmt->execute($params);
 
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
-}else if($view === 'relayResults'){
+}else if($view === 'relayResults'|| $view=='relays'){
     if (!empty($dept)) {
         $in = implode(',', array_fill(0, count($dept), '?'));
         $where[] = "d.dept_id IN ($in)";

@@ -152,7 +152,7 @@ try{
                 <th>Email</th>
                 <th>Role</th>
                 <th>Update</th>
-                <th>Delete</th>
+                <!-- <th>Delete</th> -->
             </tr>
         </thead>
         <tbody>
@@ -172,9 +172,9 @@ try{
                  <td><button class="update-btn" data-user-id="<?=htmlspecialchars($user['user_id'])?>">
                         Update
                     </button></td>
-                      <td><button class="delete-btn" data-user-id="<?=htmlspecialchars($user['user_id'])?>">
+                      <!-- <td><button class="delete-btn" data-user-id="<?=htmlspecialchars($user['user_id'])?>">
                         Delete
-                    </button></td>
+                    </button></td> -->
             </tr>
             <?php endforeach;?>
               <?php endif; ?> 

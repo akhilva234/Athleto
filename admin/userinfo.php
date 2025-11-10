@@ -7,9 +7,9 @@ $userId = isset($_GET['user_id']) ? (int)$_GET['user_id'] : 0;
 
 try {
     $query = $pdo->prepare("
-        SELECT u.username, u.role, u.user_id, u.email, d.dept_name
+        SELECT u.username, u.role, u.user_id, u.email, hd.hd_name
         FROM users u
-        JOIN departments d ON u.dept_id = d.dept_id
+        JOIN headdepartment hd ON u.hd_id = hd.hd_id
         WHERE u.user_id = ?
     ");
     $query->execute([$userId]);
