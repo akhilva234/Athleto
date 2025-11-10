@@ -4,10 +4,29 @@ import { deleteWhole } from "./delete_whole.js";
 import { relayResultEntry } from "./relayInfoFetch.js";
 
 function getCourseYearAtMeet(currentCourseYear, meetYear) {
-    const currentYear = new Date().getFullYear(); // e.g., 2026
-    const courseYearAtMeet = currentCourseYear - (currentYear - meetYear);
-    return courseYearAtMeet > 0 ? courseYearAtMeet : 1; // min 1
+    const currentYear = new Date().getFullYear();
+
+    // If the meet is in the past, we should not move beyond their final year
+    const difference = currentYear - meetYear;
+
+    // If athlete's course year or meet year is missing, fallback gracefully
+    if (!currentCourseYear || !meetYear) return '-';
+
+    // If meet year is current or future, normal calculation
+    if (meetYear >= currentYear) {
+        return currentCourseYear;
+    }
+
+    // If meet is in the past, estimate backward but cap between 1 and 4 (or course length)
+    const courseYearAtMeet = currentCourseYear - difference;
+
+    // Prevent invalid years
+    if (courseYearAtMeet < 1) return 1;
+    if (courseYearAtMeet > 4) return 4;
+
+    return courseYearAtMeet;
 }
+
 
 
 export function renderParticipantsTable(data,currenUser) {
@@ -90,9 +109,9 @@ export function renderAthletesTable(data, currentUser) {
             <th>Name</th>
             <th>Category</th>
             <th>Course</th>
-            <th>Year</th>
-            <th>Update</th>`;
-     if (currentUser !== 'captain') headerHTML += `<th>Delete</th>`;
+            <th>Year</th>`;
+     if (currentUser !== 'captain') headerHTML += ` <th>Update</th>
+     <th>Delete</th>`;
 
     headerHTML += `</tr>`;
     tableHead.innerHTML = headerHTML;
@@ -111,11 +130,12 @@ export function renderAthletesTable(data, currentUser) {
             <td>${athlete.first_name} ${athlete.last_name}</td>
             <td>${athlete.category_name}</td>
             <td>${athlete.dept_name}</td>
-            <td>${courseYear}</td>
-            <td><button class="update-btn" data-athlete-id="${athlete.athlete_id}">Update</button></td>`;
+            <td>${courseYear}</td>`
             
          if (currentUser !== 'captain') {
-                row.innerHTML += `<td><button class="delete-btn" data-athlete-id="${athlete.athlete_id}">Delete</button></td>`;
+                row.innerHTML += `
+                <td><button class="update-btn" data-athlete-id="${athlete.athlete_id}">Update</button></td>
+                <td><button class="delete-btn" data-athlete-id="${athlete.athlete_id}">Delete</button></td>`;
             }
 
         tableBody.appendChild(row);

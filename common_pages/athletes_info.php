@@ -69,8 +69,8 @@
             <th>Category</th>
             <th>Course</th>
             <th>Year</th>
+             <?php if($role!=='captain'):?>
             <th>Update</th>
-            <?php if($role!=='captain'):?>
             <th>Delete</th>
             <?php endif; ?>
             </tr>
@@ -94,12 +94,14 @@
                     <td><?=htmlspecialchars($athlete['category_name'])?></td>
                     <td><?=htmlspecialchars($athlete['dept_name'])?></td>
                     <td><?=htmlspecialchars($athlete['year'])?></td>
+                      <?php if($role!=='captain'):?>
                     <td><button class="update-btn" data-athlete-id="<?=htmlspecialchars($athlete['athlete_id'])?>">
                         Update
                     </button></td>
                       <td><button class="delete-btn" data-athlete-id="<?=htmlspecialchars($athlete['athlete_id'])?>">
                         Delete
                     </button></td>
+                <?php endif; ?>
                  </tr>   
             <?php endforeach ;?>
               <?php endif; ?>
