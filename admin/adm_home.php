@@ -51,7 +51,10 @@ try{
     $standings->execute([$currentYear]);
     $ranks=$standings->fetchAll();
 
-    $users=$pdo->query("SELECT * FROM users WHERE role!='admin'");
+    $users=$pdo->query("SELECT u.* ,hd.hd_name FROM users u
+    JOIN headdepartment hd ON u.hd_id=hd.hd_id
+    
+    WHERE role!='admin'");
     $users=$users->fetchAll();
 
 }catch(PDOException $e ){
@@ -150,6 +153,7 @@ try{
                 <th>Id</th>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Department</th>
                 <th>Role</th>
                 <th>Update</th>
                 <!-- <th>Delete</th> -->
@@ -168,6 +172,7 @@ try{
                 <td><?=htmlspecialchars($user['user_id'])?></td>
                 <td><?=htmlspecialchars($user['username'])?></td>
                 <td><?=htmlspecialchars($user['email'])?></td>
+                <td><?=htmlspecialchars($user['hd_name'])?></td>
                 <td><?=htmlspecialchars($user['role'])?></td>
                  <td><button class="update-btn" data-user-id="<?=htmlspecialchars($user['user_id'])?>">
                         Update
