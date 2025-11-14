@@ -69,7 +69,18 @@ try {
     $athleteSql->execute([$fname, $lname, $categoryId, $depId, $year, $athleteId]);
 
     // Delete old participation and relay entries
-    $pdo->prepare("DELETE FROM participation WHERE athlete_id = ?")->execute([$athleteId]);
+    $pdo->prepare("DELETE FROM participation WHERE athlete_id = ? AND meet_year=?")->execute([$athleteId,$currentYear]);
+
+    // Delete old relay team members for this athlete for current meet year
+    $deleteRelay = $pdo->prepare("
+        DELETE rtm FROM relay_team_members rtm
+        INNER JOIN relay_teams rt ON rt.team_id = rtm.team_id
+        WHERE rtm.athlete_id = ? AND rt.meet_year = ?
+    ");
+    $deleteRelay->execute([$athleteId, $currentYear]);
+
+
+
 
     // Insert only INDIVIDUAL events into participation
     $insertParticipation = $pdo->prepare("INSERT INTO participation (athlete_id, event_id) VALUES (?, ?)");

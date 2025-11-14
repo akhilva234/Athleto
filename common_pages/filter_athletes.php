@@ -32,12 +32,12 @@ try{
         $params = array_merge($params, $cat);
     }
 
+    
     if (!empty($year)) {
         $in = implode(',', array_fill(0, count($year), '?'));
-        $where[] = "(p.meet_year IN ($in) OR rt.meet_year IN ($in))";
-        $params = array_merge($params, $year, $year);
+        $where[] = "combined.meet_year IN ($in)";
+        $params = array_merge($params, $year);
     }
-
     if ($chest_no !== '') {
         $where[] = "a.athlete_id LIKE ?";
         $params[] = "%$chest_no%";
@@ -46,31 +46,39 @@ try{
     $whereSql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
     $sql = "
-        SELECT DISTINCT
-            a.athlete_id,
-            a.first_name,
-            a.last_name,
-            a.year,
-            d.dept_name,
-            c.category_name,
-            COALESCE(p.meet_year, rt.meet_year) AS meet_year,
-            CASE 
-                WHEN p.athlete_id IS NOT NULL AND rt.team_id IS NOT NULL THEN 'Both'
-                WHEN p.athlete_id IS NOT NULL THEN 'Individual'
-                WHEN rt.team_id IS NOT NULL THEN 'Relay'
-                ELSE 'None'
-            END AS participation_type
-        FROM athletes a
-        JOIN departments d ON a.dept_id = d.dept_id
-        JOIN categories c ON a.category_id = c.category_id
-        LEFT JOIN participation p ON a.athlete_id = p.athlete_id
-        LEFT JOIN events e1 ON e1.event_id = p.event_id
-        LEFT JOIN relay_team_members rtm ON a.athlete_id = rtm.athlete_id
-        LEFT JOIN relay_teams rt ON rt.team_id = rtm.team_id
-        LEFT JOIN events e2 ON e2.event_id = rt.event_id
-        $whereSql
-        ORDER BY a.athlete_id
-    ";
+    SELECT DISTINCT
+        a.athlete_id,
+        a.first_name,
+        a.last_name,
+        a.year,
+        d.dept_name,
+        c.category_name,
+        combined.meet_year,
+        CASE 
+            WHEN p.athlete_id IS NOT NULL AND rt.team_id IS NOT NULL THEN 'Both'
+            WHEN p.athlete_id IS NOT NULL THEN 'Individual'
+            WHEN rt.team_id IS NOT NULL THEN 'Relay'
+            ELSE 'None'
+        END AS participation_type
+    FROM athletes a
+    JOIN departments d ON a.dept_id = d.dept_id
+    JOIN categories c ON a.category_id = c.category_id
+
+    LEFT JOIN participation p ON p.athlete_id = a.athlete_id
+    LEFT JOIN relay_team_members rtm ON rtm.athlete_id = a.athlete_id
+    LEFT JOIN relay_teams rt ON rt.team_id = rtm.team_id
+
+    LEFT JOIN (
+        SELECT athlete_id, meet_year FROM participation
+        UNION
+        SELECT rtm.athlete_id, rt.meet_year
+        FROM relay_teams rt
+        JOIN relay_team_members rtm ON rtm.team_id = rt.team_id
+    ) AS combined ON combined.athlete_id = a.athlete_id
+
+    $whereSql
+    ORDER BY a.athlete_id
+";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);

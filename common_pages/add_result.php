@@ -12,6 +12,7 @@ $redirects = [
 ];
 
 $redirectPage = $redirects[$role] ?? 'index.php';
+$currentYear = date('Y');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $athlete_id = (int)$_POST['athleteid'];
@@ -25,8 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $catStmt->execute([$athlete_id]);
         $athleteCategory = $catStmt->fetchColumn();
 
-        $ifExists = $pdo->prepare("SELECT 1 FROM results WHERE athlete_id = ? AND event_id = ?");
-        $ifExists->execute([$athlete_id, $event_id]);
+        $ifExists = $pdo->prepare("SELECT 1 FROM results WHERE athlete_id = ? AND event_id = ? AND meet_year=?");
+        $ifExists->execute([$athlete_id, $event_id,$currentYear]);
         if ($ifExists->fetch()) {
             $_SESSION['result-add-msg'] = "Failed: Position for event already secured by this athlete.";
             header("Location: $redirectPage&status=error");
@@ -37,9 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //     SELECT r.result_id 
         //     FROM results r
         //     INNER JOIN athletes a ON r.athlete_id = a.athlete_id
-        //     WHERE r.event_id = ? AND r.position = ? AND a.category_id = ?
+        //     WHERE r.event_id = ? AND r.position = ? AND a.category_id = ? AND meet_year=?
         // ");
-        // $positionExists->execute([$event_id, $position, $athleteCategory]);
+        // $positionExists->execute([$event_id, $position, $athleteCategory,$currentYear]);
 
         // if ($positionExists->fetch()) {
         //     $_SESSION['result-add-msg'] = "Failed: Position already taken for this event in the selected category.";
